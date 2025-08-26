@@ -1,8 +1,8 @@
 /**
  * Credit System API Service
  * 
- * This service simulates the credit system API endpoints for the TeacH platform.
- * In a real implementation, these would make HTTP requests to your backend.
+ * This service integrates with localStorage and is ready for Supabase migration.
+ * All data is structured for easy transition to Supabase database.
  */
 
 export interface CreditBalance {
@@ -44,6 +44,24 @@ export interface PaymentResult {
 
 class CreditSystemAPI {
   private baseUrl = '/api/credits';
+  private userId: string | null = null;
+
+  constructor() {
+    // Get current user from localStorage
+    try {
+      const authData = localStorage.getItem('kv-auth-data');
+      if (authData) {
+        const parsed = JSON.parse(authData);
+        this.userId = parsed.user?.id || null;
+      }
+    } catch (error) {
+      console.warn('Failed to get user ID from localStorage:', error);
+    }
+  }
+
+  private getUserStorageKey(key: string): string {
+    return this.userId ? `supabase_${key}_${this.userId}` : `supabase_${key}`;
+  }
 
   /**
    * Get current credit balance for the user
@@ -52,7 +70,30 @@ class CreditSystemAPI {
     // Simulate API call
     await this.delay(500);
     
-    // Mock data - in real app, this would come from your backend
+    try {
+      // Try to get real balance from localStorage
+      const creditsKey = this.getUserStorageKey('analytics');
+      const stored = localStorage.getItem(creditsKey);
+      
+      if (stored) {
+        const analytics = JSON.parse(stored);
+        const userAnalytics = Array.isArray(analytics) ? analytics[0] : analytics;
+        
+        if (userAnalytics && userAnalytics.data?.credits) {
+          const credits = userAnalytics.data.credits;
+          return {
+            current: credits.current || 100,
+            maximum: credits.monthly || 100,
+            renewDate: new Date(Date.now() + 15 * 24 * 60 * 60 * 1000),
+            planType: 'inicial'
+          };
+        }
+      }
+    } catch (error) {
+      console.warn('Failed to get balance from localStorage:', error);
+    }
+    
+    // Fallback to default values
     return {
       current: 85,
       maximum: 100,
@@ -157,12 +198,34 @@ class CreditSystemAPI {
   async getTransactionHistory(limit = 50): Promise<CreditTransaction[]> {
     await this.delay(600);
     
-    // Mock transaction data
+    try {
+      // Try to get real transactions from localStorage
+      const transactionsKey = this.getUserStorageKey('transactions');
+      const stored = localStorage.getItem(transactionsKey);
+      
+      if (stored) {
+        const transactions = JSON.parse(stored);
+        return transactions.slice(0, limit).map((t: any) => ({
+          id: t.id,
+          type: t.type === 'debit' ? 'consumption' : 
+                t.type === 'credit' ? 'purchase' : 
+                t.type,
+          amount: Math.abs(t.amount),
+          description: t.description,
+          timestamp: new Date(t.created_at),
+          metadata: t.metadata
+        }));
+      }
+    } catch (error) {
+      console.warn('Failed to get transactions from localStorage:', error);
+    }
+    
+    // Fallback to mock transaction data
     return [
       {
         id: '1',
         type: 'consumption',
-        amount: -5,
+        amount: 5,
         description: 'Conversa com assistente de matemática',
         timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000),
         metadata: {
@@ -173,7 +236,7 @@ class CreditSystemAPI {
       {
         id: '2',
         type: 'consumption',
-        amount: -8,
+        amount: 8,
         description: 'Geração de exercícios personalizados',
         timestamp: new Date(Date.now() - 6 * 60 * 60 * 1000),
         metadata: {
@@ -190,7 +253,7 @@ class CreditSystemAPI {
       {
         id: '4',
         type: 'consumption',
-        amount: -2,
+        amount: 2,
         description: 'Análise de progresso semanal',
         timestamp: new Date(Date.now() - 24 * 60 * 60 * 1000),
         metadata: {
