@@ -71,8 +71,13 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Switch } from '@/components/ui/switch'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { Slider } from '@/components/ui/slider'
-import { useKV } from '@github/spark/hooks'
 import { useAuth } from '@/contexts/AuthContext'
+import { 
+  useSupabaseStorage, 
+  SupabaseConversation,
+  SupabaseMessage, 
+  SupabaseStudySession 
+} from '@/hooks/useSupabaseStorage'
 import CreditDashboard from '@/components/CreditDashboard'
 import CreditWidget from '@/components/CreditWidget'
 import PaymentFlow from '@/components/PaymentFlow'
@@ -112,16 +117,6 @@ interface ContentBlock {
   title?: string
 }
 
-interface Conversation {
-  id: string
-  title: string
-  lastMessage: string
-  timestamp: Date
-  messageCount: number
-  assistant: string
-  credits: number
-}
-
 interface Lesson {
   id: string
   title: string
@@ -131,15 +126,6 @@ interface Lesson {
   subject: string
   completed: boolean
   progress: number
-}
-
-interface StudySession {
-  id: string
-  date: Date
-  duration: number
-  credits: number
-  assistant: string
-  focus: boolean
 }
 
 export default function DashboardDemo({ onBackToHome }: DashboardDemoProps) {
@@ -175,13 +161,48 @@ export default function DashboardDemo({ onBackToHome }: DashboardDemoProps) {
   const sessionInterval = useRef<NodeJS.Timeout>()
   const fileInputRef = useRef<HTMLInputElement>(null)
 
-  // Persistent data
-  const [conversations, setConversations] = useKV<Conversation[]>('conversations', [])
-  const [messages, setMessages] = useKV<ChatMessage[]>('current-messages', [])
-  const [studySessions, setStudySessions] = useKV<StudySession[]>('study-sessions', [])
-  const [completedLessons, setCompletedLessons] = useKV<string[]>('completed-lessons', [])
+  // Supabase-compatible storage hooks
+  const conversationsStorage = useSupabaseStorage<SupabaseConversation>('conversations', user?.id)
+  const messagesStorage = useSupabaseStorage<SupabaseMessage>('messages', user?.id)
+  const studySessionsStorage = useSupabaseStorage<SupabaseStudySession>('study_sessions', user?.id)
 
-  // Sample lessons
+  // Current conversation state
+  const [currentConversationId, setCurrentConversationId] = useState<string | null>(null)
+  const [messages, setMessages] = useState<ChatMessage[]>([])
+  const [completedLessons, setCompletedLessons] = useState<string[]>(() => {
+    const saved = localStorage.getItem(`completed_lessons_${user?.id}`)
+    return saved ? JSON.parse(saved) : []
+  })
+
+  // Load current conversation messages
+  useEffect(() => {
+    if (currentConversationId) {
+      const conversationMessages = messagesStorage.data
+        .filter(msg => msg.conversation_id === currentConversationId)
+        .map(msg => ({
+          id: msg.id,
+          role: msg.role as 'user' | 'assistant',
+          content: msg.content,
+          timestamp: new Date(msg.created_at),
+          credits: msg.credits_used,
+          assistant: msg.metadata?.assistant_id,
+          blocks: msg.metadata?.blocks
+        }))
+        .sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime())
+      
+      setMessages(conversationMessages)
+    } else {
+      setMessages([])
+    }
+  }, [currentConversationId, messagesStorage.data])
+
+  // Save completed lessons to localStorage
+  useEffect(() => {
+    if (user?.id) {
+      localStorage.setItem(`completed_lessons_${user.id}`, JSON.stringify(completedLessons))
+    }
+  }, [completedLessons, user?.id])
+  // Sample lessons data
   const lessons: Lesson[] = [
     {
       id: '1',
@@ -190,8 +211,8 @@ export default function DashboardDemo({ onBackToHome }: DashboardDemoProps) {
       duration: '45 min',
       level: 'Iniciante',
       subject: 'Matemática',
-      completed: true,
-      progress: 100
+      completed: completedLessons.includes('1'),
+      progress: completedLessons.includes('1') ? 100 : 0
     },
     {
       id: '2', 
@@ -200,8 +221,8 @@ export default function DashboardDemo({ onBackToHome }: DashboardDemoProps) {
       duration: '60 min',
       level: 'Intermediário',
       subject: 'Física',
-      completed: false,
-      progress: 65
+      completed: completedLessons.includes('2'),
+      progress: completedLessons.includes('2') ? 100 : 65
     },
     {
       id: '3',
@@ -210,8 +231,8 @@ export default function DashboardDemo({ onBackToHome }: DashboardDemoProps) {
       duration: '50 min',
       level: 'Avançado',
       subject: 'Literatura',
-      completed: false,
-      progress: 30
+      completed: completedLessons.includes('3'),
+      progress: completedLessons.includes('3') ? 100 : 30
     }
   ]
 
@@ -247,7 +268,7 @@ export default function DashboardDemo({ onBackToHome }: DashboardDemoProps) {
   }
 
   const handleSendMessage = async () => {
-    if (!currentMessage.trim() || isTyping) return
+    if (!currentMessage.trim() || isTyping || !user) return
 
     const assistant = AVAILABLE_ASSISTANTS.find(a => a.id === selectedAssistant.id)!
     
@@ -258,37 +279,59 @@ export default function DashboardDemo({ onBackToHome }: DashboardDemoProps) {
       return
     }
 
+    // Create or get current conversation
+    let conversationId = currentConversationId
+    if (!conversationId) {
+      const newConversation = await conversationsStorage.insert({
+        user_id: user.id,
+        assistant_id: selectedAssistant.id,
+        title: currentMessage.substring(0, 50) + '...',
+        message_count: 0,
+        total_credits_used: 0,
+        status: 'active' as const
+      })
+      conversationId = newConversation.id
+      setCurrentConversationId(conversationId)
+    }
+
     // Start analytics session if not already active
     if (!sessionActive) {
       setSessionActive(true)
       await startStudySession(assistant.specialization, currentMessage.substring(0, 50))
     }
 
-    const userMessage: ChatMessage = {
-      id: `msg-${Date.now()}`,
-      role: 'user',
+    // Save user message
+    const userMessage = await messagesStorage.insert({
+      conversation_id: conversationId,
+      role: 'user' as const,
       content: currentMessage,
-      timestamp: new Date(),
-      assistant: selectedAssistant.id
-    }
+      credits_used: 0,
+      metadata: {
+        assistant_id: selectedAssistant.id
+      }
+    })
 
-    setMessages((current) => [...current, userMessage])
     setCurrentMessage('')
     setIsTyping(true)
 
     // Simulate AI response
     setTimeout(async () => {
-      const assistantMessage: ChatMessage = {
-        id: `msg-${Date.now()}-ai`,
-        role: 'assistant',
+      const assistantResponse = await messagesStorage.insert({
+        conversation_id: conversationId,
+        role: 'assistant' as const,
         content: generateAIResponse(currentMessage, assistant),
-        timestamp: new Date(),
-        credits: assistant.creditsPerMessage,
-        assistant: selectedAssistant.id,
-        blocks: generateContentBlocks(currentMessage)
-      }
+        credits_used: assistant.creditsPerMessage,
+        metadata: {
+          assistant_id: selectedAssistant.id,
+          blocks: generateContentBlocks(currentMessage)
+        }
+      })
 
-      setMessages((current) => [...current, assistantMessage])
+      // Update conversation
+      await conversationsStorage.update(conversationId, {
+        message_count: messages.length + 2,
+        total_credits_used: assistant.creditsPerMessage
+      })
       
       // Consume credits using our new system
       const success = await consumeCredits(
@@ -299,7 +342,7 @@ export default function DashboardDemo({ onBackToHome }: DashboardDemoProps) {
       setIsTyping(false)
 
       if (speechEnabled) {
-        speakText(assistantMessage.content)
+        speakText(assistantResponse.content)
       }
 
       if (success) {
@@ -383,37 +426,40 @@ export default function DashboardDemo({ onBackToHome }: DashboardDemoProps) {
   }
 
   const startNewConversation = () => {
-    if (messages.length > 0) {
-      const newConversation: Conversation = {
-        id: `conv-${Date.now()}`,
-        title: messages[0]?.content.substring(0, 50) + '...' || 'Nova Conversa',
-        lastMessage: messages[messages.length - 1]?.content || '',
-        timestamp: new Date(),
-        messageCount: messages.length,
-        assistant: selectedAssistant,
-        credits: messages.filter(m => m.credits).reduce((sum, m) => sum + (m.credits || 0), 0)
-      }
-      
-      setConversations((current) => [newConversation, ...current])
-    }
-    
+    setCurrentConversationId(null)
     setMessages([])
     toast.success('Nova conversa iniciada!')
+  }
+
+  const loadConversation = async (conversationId: string) => {
+    setCurrentConversationId(conversationId)
+    // Messages will be loaded automatically by useEffect
+    const conversation = conversationsStorage.data.find(c => c.id === conversationId)
+    if (conversation) {
+      const assistant = AVAILABLE_ASSISTANTS.find(a => a.id === conversation.assistant_id)
+      if (assistant) {
+        setSelectedAssistant(assistant)
+      }
+    }
   }
 
   const toggleSession = async () => {
     if (sessionActive) {
       // End session
-      const session: StudySession = {
-        id: `session-${Date.now()}`,
-        date: new Date(),
-        duration: sessionTime,
-        credits: messages.filter(m => m.credits).reduce((sum, m) => sum + (m.credits || 0), 0),
-        assistant: selectedAssistant,
-        focus: focusMode
-      }
-      
-      setStudySessions((current) => [session, ...current])
+      const session = await studySessionsStorage.insert({
+        user_id: user!.id,
+        assistant_id: selectedAssistant.id,
+        subject: selectedAssistant.specialization,
+        topic: 'Conversa com IA',
+        start_time: new Date(Date.now() - sessionTime * 1000).toISOString(),
+        end_time: new Date().toISOString(),
+        duration_minutes: Math.round(sessionTime / 60),
+        credits_used: messages.filter(m => m.credits).reduce((sum, m) => sum + (m.credits || 0), 0),
+        completed: true,
+        metadata: {
+          focus: focusMode
+        }
+      })
       
       // End analytics session
       await endStudySession(85, 'Sessão completa com IA') // 85% score as example
@@ -455,9 +501,8 @@ export default function DashboardDemo({ onBackToHome }: DashboardDemoProps) {
     setShowExportDialog(false)
   }
 
-  const filteredConversations = conversations.filter(conv => 
-    conv.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    conv.lastMessage.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredConversations = conversationsStorage.data.filter(conv => 
+    conv.title.toLowerCase().includes(searchQuery.toLowerCase())
   )
 
   // Função para consumir créditos
@@ -676,23 +721,50 @@ export default function DashboardDemo({ onBackToHome }: DashboardDemoProps) {
                       
                       <div className="space-y-2">
                         {filteredConversations.map((conv) => (
-                          <Card key={conv.id} className="hover:shadow-md transition-shadow cursor-pointer">
+                          <Card 
+                            key={conv.id} 
+                            className="hover:shadow-md transition-shadow cursor-pointer"
+                            onClick={() => loadConversation(conv.id)}
+                          >
                             <CardContent className="p-3">
                               <h4 className="font-medium text-sm mb-1">{conv.title}</h4>
                               <p className="text-xs text-muted-foreground mb-2">
-                                {conv.lastMessage.substring(0, 60)}...
+                                Assistente: {AVAILABLE_ASSISTANTS.find(a => a.id === conv.assistant_id)?.name || 'Desconhecido'}
                               </p>
                               <div className="flex justify-between items-center">
                                 <span className="text-xs text-muted-foreground">
-                                  {conv.messageCount} mensagens
+                                  {conv.message_count} mensagens
                                 </span>
-                                <Badge variant="outline" className="text-xs">
-                                  {conv.credits} créditos
-                                </Badge>
+                                <div className="flex items-center space-x-2">
+                                  <Badge variant="outline" className="text-xs">
+                                    {conv.total_credits_used} créditos
+                                  </Badge>
+                                  <Badge 
+                                    variant={conv.status === 'active' ? 'default' : 'secondary'} 
+                                    className="text-xs"
+                                  >
+                                    {conv.status}
+                                  </Badge>
+                                </div>
                               </div>
                             </CardContent>
                           </Card>
                         ))}
+                        
+                        {filteredConversations.length === 0 && (
+                          <div className="text-center py-8 text-muted-foreground">
+                            <ChatCircle className="h-8 w-8 mx-auto mb-2 opacity-50" />
+                            <p className="text-sm">Nenhuma conversa encontrada</p>
+                            <Button 
+                              variant="outline" 
+                              size="sm" 
+                              onClick={startNewConversation}
+                              className="mt-2"
+                            >
+                              Iniciar nova conversa
+                            </Button>
+                          </div>
+                        )}
                       </div>
                     </div>
                   </TabsContent>
