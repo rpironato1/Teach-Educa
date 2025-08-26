@@ -24,23 +24,52 @@ export function useSecureRedirect() {
   const { navigate, currentRoute } = useRouter()
   const redirectAttempts = useRef(0)
   const maxRedirectAttempts = 3
+  const logCache = useRef(new Set<string>())
+  const logTimer = useRef<NodeJS.Timeout | null>(null)
 
-  // Security audit logging
+  // Security audit logging with deduplication and debouncing
   const logSecurityEvent = useCallback((event: Omit<SecurityAuditLog, 'timestamp' | 'userAgent' | 'ip'>) => {
-    const auditEntry: SecurityAuditLog = {
-      ...event,
-      timestamp: new Date().toISOString(),
-      userAgent: navigator.userAgent,
-      ip: '127.0.0.1' // In production, get from backend
+    // Create a unique key for deduplication
+    const eventKey = `${event.userId}-${event.action}-${JSON.stringify(event.details?.reason || '')}`
+    
+    // Check if we've already logged this exact event recently (within 1 second)
+    if (logCache.current.has(eventKey)) {
+      return
     }
     
-    // In production, send to security monitoring service
-    console.log('Security Audit:', auditEntry)
+    // Add to cache and set cleanup timer
+    logCache.current.add(eventKey)
     
-    // Store locally for demo
-    const existingLogs = JSON.parse(localStorage.getItem('security_audit_log') || '[]')
-    existingLogs.push(auditEntry)
-    localStorage.setItem('security_audit_log', JSON.stringify(existingLogs.slice(-100))) // Keep last 100 entries
+    // Clear cache entry after 1 second to allow future similar events
+    setTimeout(() => {
+      logCache.current.delete(eventKey)
+    }, 1000)
+    
+    // Debounce logging to prevent spam
+    if (logTimer.current) {
+      clearTimeout(logTimer.current)
+    }
+    
+    logTimer.current = setTimeout(() => {
+      const auditEntry: SecurityAuditLog = {
+        ...event,
+        timestamp: new Date().toISOString(),
+        userAgent: navigator.userAgent,
+        ip: '127.0.0.1' // In production, get from backend
+      }
+      
+      // In production, send to security monitoring service
+      console.log('Security Audit:', auditEntry)
+      
+      // Store locally for demo
+      try {
+        const existingLogs = JSON.parse(localStorage.getItem('security_audit_log') || '[]')
+        existingLogs.push(auditEntry)
+        localStorage.setItem('security_audit_log', JSON.stringify(existingLogs.slice(-100))) // Keep last 100 entries
+      } catch (error) {
+        console.warn('Failed to store security log:', error)
+      }
+    }, 100) // 100ms debounce
   }, [])
 
   // Secure redirect based on user role and authentication

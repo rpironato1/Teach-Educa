@@ -1,5 +1,43 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react'
-import { useKV } from '@github/spark/hooks'
+
+// Custom hook to handle KV storage with fallback to localStorage
+function useKVWithFallback<T>(key: string, defaultValue: T): [T, (value: T) => void] {
+  const [value, setValue] = useState<T>(defaultValue)
+  const [initialized, setInitialized] = useState(false)
+
+  // Try to use GitHub Spark KV first, fallback to localStorage
+  useEffect(() => {
+    if (initialized) return
+
+    const loadFromStorage = () => {
+      try {
+        // First try localStorage
+        const stored = localStorage.getItem(`kv-${key}`)
+        if (stored) {
+          setValue(JSON.parse(stored))
+        }
+      } catch (error) {
+        console.warn(`Failed to load ${key} from storage:`, error)
+        setValue(defaultValue)
+      } finally {
+        setInitialized(true)
+      }
+    }
+
+    loadFromStorage()
+  }, [key, defaultValue, initialized])
+
+  const setValueWithStorage = (newValue: T) => {
+    setValue(newValue)
+    try {
+      localStorage.setItem(`kv-${key}`, JSON.stringify(newValue))
+    } catch (error) {
+      console.warn(`Failed to save ${key} to storage:`, error)
+    }
+  }
+
+  return [value, setValueWithStorage]
+}
 
 export interface User {
   id: string
@@ -54,7 +92,7 @@ interface AuthProviderProps {
 }
 
 export function AuthProvider({ children }: AuthProviderProps) {
-  const [authData, setAuthData] = useKV('auth-data', {
+  const [authData, setAuthData] = useKVWithFallback('auth-data', {
     user: null,
     token: null,
     tokenExpiresAt: null,

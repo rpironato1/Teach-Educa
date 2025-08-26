@@ -77,9 +77,16 @@ function AppContent() {
 
   const handleLogout = async () => {
     try {
+      // Prevent multiple logout calls
+      if (isLoading) return
+      
       await logout()
-      navigate('home')
-      toast.success('Logout realizado com sucesso!')
+      
+      // Small delay to ensure auth state is fully updated before navigation
+      setTimeout(() => {
+        navigate('home')
+        toast.success('Logout realizado com sucesso!')
+      }, 100)
     } catch (error) {
       toast.error('Erro ao fazer logout')
     }
@@ -118,23 +125,28 @@ function AppContent() {
 
   // Automatic navigation based on authentication and user role with security
   useEffect(() => {
-    if (isAuthenticated && user && currentRoute === 'auth') {
-      // User just logged in, redirect to appropriate dashboard with security validation
-      const targetRoute = user.role === 'admin' ? 'admin-dashboard' : 'dashboard'
+    // Only proceed if we have valid auth state and are on the auth route
+    if (!isLoading && isAuthenticated && user?.id && currentRoute === 'auth') {
+      // Use timeout to prevent re-render loops during auth state transitions
+      const redirectTimer = setTimeout(() => {
+        const targetRoute = user.role === 'admin' ? 'admin-dashboard' : 'dashboard'
+        
+        // Security audit log
+        console.log('Secure redirect:', {
+          userId: user.id,
+          role: user.role,
+          targetRoute,
+          timestamp: new Date().toISOString(),
+          sessionId: user.sessionId
+        })
+        
+        navigate(targetRoute)
+        toast.success(`Login realizado com sucesso! Bem-vindo, ${user.fullName}`)
+      }, 50) // Small delay to prevent re-render loops
       
-      // Security audit log
-      console.log('Secure redirect:', {
-        userId: user.id,
-        role: user.role,
-        targetRoute,
-        timestamp: new Date().toISOString(),
-        sessionId: user.sessionId
-      })
-      
-      navigate(targetRoute)
-      toast.success(`Login realizado com sucesso! Bem-vindo, ${user.fullName}`)
+      return () => clearTimeout(redirectTimer)
     }
-  }, [isAuthenticated, user, currentRoute, navigate])
+  }, [isAuthenticated, user?.id, user?.role, user?.fullName, currentRoute, navigate, isLoading])
 
   // Show loading state while checking authentication
   if (isLoading) {

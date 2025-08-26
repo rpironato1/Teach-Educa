@@ -111,6 +111,9 @@ export default function LoginForm({ onForgotPassword, onSuccess, redirectUrl }: 
             onChange={handleInputChange('email')}
             className={errors.email ? 'border-destructive' : ''}
             disabled={isLoading}
+            autoComplete="email"
+            autoCapitalize="none"
+            autoCorrect="off"
           />
           {errors.email && (
             <p className="text-sm text-destructive">{errors.email}</p>
@@ -129,6 +132,7 @@ export default function LoginForm({ onForgotPassword, onSuccess, redirectUrl }: 
               onChange={handleInputChange('password')}
               className={`pr-10 ${errors.password ? 'border-destructive' : ''}`}
               disabled={isLoading}
+              autoComplete="current-password"
             />
             <Button
               type="button"
