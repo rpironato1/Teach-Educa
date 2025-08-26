@@ -33,9 +33,7 @@ pids
 
 .spark-workbench-id
 # Testing Infrastructure
-tests/
 test-results/
-*.log
 coverage/
 .nyc_output/
 lighthouse-report.html
