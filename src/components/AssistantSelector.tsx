@@ -33,7 +33,7 @@ export default function AssistantSelector({
   onAssistantSelect
 }: AssistantSelectorProps) {
   const [expandedAssistant, setExpandedAssistant] = useState<string | null>(null)
-  const { balance, checkCreditRequirement } = useCredit()
+  const { balance, checkCreditSufficiency } = useCredit()
   
   const totalCredits = balance.current + balance.monthly + balance.bonus
 
@@ -74,7 +74,7 @@ export default function AssistantSelector({
   }
 
   const canAffordAssistant = (assistant: Assistant) => {
-    return checkCreditRequirement(assistant.creditCost)
+    return checkCreditSufficiency(assistant.creditCost)
   }
 
   const getAffordabilityMessage = (assistant: Assistant) => {

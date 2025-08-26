@@ -252,7 +252,7 @@ export default function DashboardDemo({ onBackToHome }: DashboardDemoProps) {
     const assistant = AVAILABLE_ASSISTANTS.find(a => a.id === selectedAssistant.id)!
     
     // Check if user has enough credits before proceeding
-    if (!checkCreditRequirement(assistant.creditsPerMessage)) {
+    if (!checkCreditSufficiency(assistant.creditsPerMessage)) {
       toast.error('Créditos insuficientes para esta conversa')
       setShowPaymentFlow(true)
       return
