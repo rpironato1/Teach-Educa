@@ -1,5 +1,5 @@
 import React from 'react'
-import { useCredits } from '@/contexts/CreditContext'
+import { useCredit } from '@/contexts/CreditContext'
 import { Button } from '@/components/ui/button'
 import { AlertTriangle, Zap } from '@phosphor-icons/react'
 import { toast } from 'sonner'
@@ -24,10 +24,10 @@ const CreditGuard: React.FC<CreditGuardProps> = ({
   onUpgrade,
   fallback
 }) => {
-  const { balance, checkCreditRequirement, consumeCredits } = useCredits()
+  const { balance, checkCreditSufficiency, consumeCredits } = useCredit()
   
   const totalCredits = balance.current + balance.monthly + balance.bonus
-  const hasEnoughCredits = checkCreditRequirement(creditsRequired)
+  const hasEnoughCredits = checkCreditSufficiency(creditsRequired)
   
   // If user has enough credits, render children
   if (hasEnoughCredits) {
@@ -71,10 +71,10 @@ const CreditGuard: React.FC<CreditGuardProps> = ({
  * Hook to consume credits with automatic error handling
  */
 export const useCreditConsumption = () => {
-  const { consumeCredits, checkCreditRequirement } = useCredits()
+  const { consumeCredits, checkCreditSufficiency } = useCredit()
   
   const tryConsumeCredits = async (amount: number, description: string): Promise<boolean> => {
-    if (!checkCreditRequirement(amount)) {
+    if (!checkCreditSufficiency(amount)) {
       toast.error(`Você precisa de ${amount} créditos para esta ação`)
       return false
     }
@@ -82,7 +82,7 @@ export const useCreditConsumption = () => {
     return consumeCredits(amount, description)
   }
   
-  return { tryConsumeCredits, checkCreditRequirement }
+  return { tryConsumeCredits, checkCreditSufficiency }
 }
 
 export default CreditGuard

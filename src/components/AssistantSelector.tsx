@@ -21,7 +21,7 @@ import { Badge } from '@/components/ui/badge'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
 import { type Assistant, AVAILABLE_ASSISTANTS } from '@/services/aiService'
-import { useCredits } from '@/contexts/CreditContext'
+import { useCredit } from '@/contexts/CreditContext'
 
 interface AssistantSelectorProps {
   selectedAssistant: Assistant
@@ -33,7 +33,7 @@ export default function AssistantSelector({
   onAssistantSelect
 }: AssistantSelectorProps) {
   const [expandedAssistant, setExpandedAssistant] = useState<string | null>(null)
-  const { balance, checkCreditRequirement } = useCredits()
+  const { balance, checkCreditSufficiency } = useCredit()
   
   const totalCredits = balance.current + balance.monthly + balance.bonus
 
@@ -74,7 +74,7 @@ export default function AssistantSelector({
   }
 
   const canAffordAssistant = (assistant: Assistant) => {
-    return checkCreditRequirement(assistant.creditCost)
+    return checkCreditSufficiency(assistant.creditCost)
   }
 
   const getAffordabilityMessage = (assistant: Assistant) => {

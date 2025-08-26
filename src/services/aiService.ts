@@ -265,32 +265,91 @@ class AIService {
     )
 
     try {
-      // Usa a API do Spark para gerar resposta
-      const prompt = spark.llmPrompt`${adaptivePrompt}`
-      const response = await spark.llm(prompt, 'gpt-4o')
+      // Verifica se a API Spark está disponível
+      if (typeof window !== 'undefined' && window.spark && window.spark.llm) {
+        const prompt = window.spark.llmPrompt`${adaptivePrompt}`
+        const response = await window.spark.llm(prompt, 'gpt-4o')
 
-      // Analisa a resposta para extrair metadados
-      const metadata = this.analyzeResponse(response, profile)
+        // Analisa a resposta para extrair metadados
+        const metadata = this.analyzeResponse(response, profile)
 
-      return {
-        id: `assistant-${Date.now()}`,
-        role: 'assistant',
-        content: response,
-        timestamp: new Date(),
-        assistantId: assistant.id,
-        creditsCost: assistant.creditCost,
-        metadata
+        return {
+          id: `assistant-${Date.now()}`,
+          role: 'assistant',
+          content: response,
+          timestamp: new Date(),
+          assistantId: assistant.id,
+          creditsCost: assistant.creditCost,
+          metadata
+        }
+      } else {
+        // Fallback: gera resposta simulada quando API não está disponível
+        return this.generateFallbackResponse(userMessage, assistant, profile)
       }
     } catch (error) {
       console.error('Erro ao gerar resposta do assistente:', error)
       
-      return {
-        id: `assistant-${Date.now()}`,
-        role: 'assistant',
-        content: 'Desculpe, ocorreu um erro ao processar sua mensagem. Tente novamente.',
-        timestamp: new Date(),
-        assistantId: assistant.id,
-        creditsCost: 0
+      // Em caso de erro, gera resposta de fallback
+      return this.generateFallbackResponse(userMessage, assistant, profile)
+    }
+  }
+
+  /**
+   * Gera resposta de fallback quando a API LLM não está disponível
+   */
+  private generateFallbackResponse(
+    userMessage: ChatMessage,
+    assistant: Assistant,
+    profile: LearningProfile
+  ): ChatMessage {
+    // Respostas contextuais baseadas no assistente
+    const fallbackResponses = {
+      'math-tutor': [
+        'Ótima pergunta sobre matemática! Para resolver esse problema, vamos começar pelos conceitos fundamentais. Você gostaria que eu explique passo a passo?',
+        'Matemática é como um quebra-cabeças - cada peça tem seu lugar. Vamos encontrar a solução juntos! Pode me dar mais detalhes sobre sua dúvida?',
+        'Excelente! Adoraria ajudar você com matemática. Baseado no seu perfil de aprendizagem, vou adaptar minha explicação ao seu estilo. Pode reformular sua pergunta?'
+      ],
+      'writing-assistant': [
+        'Que interessante explorar a escrita! Como mentora literária, posso ajudar você a desenvolver suas ideias. Qual aspecto da redação você gostaria de trabalhar?',
+        'A escrita é uma arte que floresce com prática. Vamos trabalhar juntas para aprimorar seu texto! Pode compartilhar o que você tem em mente?',
+        'Adorei sua iniciativa! Vamos criar algo incrível juntos. Qual é o tipo de texto que você quer desenvolver?'
+      ],
+      'programming-coach': [
+        'Programação é resolver problemas de forma criativa! Vamos debuggar essa questão juntos. Pode me mostrar seu código ou descrever o desafio?',
+        'Ótimo! Como dev experiente, posso te ajudar com qualquer dúvida de programação. Qual linguagem ou conceito você quer explorar?',
+        'Excelente pergunta de programação! Vamos encontrar a solução mais eficiente. Pode me dar mais contexto sobre o problema?'
+      ],
+      'science-mentor': [
+        'Que curiosidade científica interessante! A ciência está cheia de descobertas fascinantes. Vamos investigar isso juntos! Sobre qual área você quer saber mais?',
+        'Adoro estimular o pensamento científico! Vamos explorar esse fenômeno através do método científico. Qual é sua hipótese inicial?',
+        'Excelente! A ciência nos ajuda a entender o mundo. Vamos fazer uma investigação detalhada sobre sua pergunta!'
+      ],
+      'language-specialist': [
+        'Que bom praticar idiomas! Aprender línguas abre portas para novas culturas. Em qual idioma você gostaria de focar hoje?',
+        'Excelente! Dominar idiomas é uma habilidade valiosa. Vamos praticar juntos! Qual aspecto da língua você quer trabalhar?',
+        'Ótima iniciativa linguística! Vamos mergulhar na prática de idiomas. Qual é sua meta de aprendizado hoje?'
+      ]
+    }
+
+    const responses = fallbackResponses[assistant.id as keyof typeof fallbackResponses] || [
+      'Obrigado por sua pergunta! Estou aqui para ajudar você a aprender. Pode reformular sua dúvida para eu entender melhor?',
+      'Que interessante! Vamos trabalhar juntos nesse tópico. Pode me dar mais detalhes sobre o que você gostaria de aprender?',
+      'Excelente pergunta! Estou preparado para te ajudar. Pode elaborar um pouco mais sobre sua dúvida?'
+    ]
+
+    const randomResponse = responses[Math.floor(Math.random() * responses.length)]
+
+    return {
+      id: `assistant-${Date.now()}`,
+      role: 'assistant',
+      content: `${randomResponse}\n\n⚠️ *Nota: API de IA indisponível. Resposta simulada para demonstração.*`,
+      timestamp: new Date(),
+      assistantId: assistant.id,
+      creditsCost: assistant.creditCost,
+      metadata: {
+        confidence: 0.7,
+        adaptationLevel: 0.5,
+        learningStyle: profile.preferredStyle
       }
     }
   }
@@ -497,27 +556,118 @@ Sua resposta:`
     const profile = await this.getLearningProfile(userId)
     const assistant = assistantId ? this.getAssistant(assistantId) : AVAILABLE_ASSISTANTS[0]
 
-    const prompt = spark.llmPrompt`Gere um ${contentType} sobre "${topic}" para um aluno com:
-    - Estilo de aprendizagem: ${profile.preferredStyle}
-    - Nível: ${profile.difficulty}
-    - Interesses: ${profile.interests.join(', ')}
-    
-    O conteúdo deve ser:
-    - Adaptado ao estilo de aprendizagem
-    - Adequado ao nível de dificuldade
-    - Envolvente e educativo
-    - Em português brasileiro
-    
-    ${assistant ? `Assuma a personalidade de ${assistant.name}: ${assistant.personality}` : ''}
-    
-    Forneça o conteúdo:`
-
     try {
-      return await spark.llm(prompt, 'gpt-4o')
+      // Verifica se a API Spark está disponível
+      if (typeof window !== 'undefined' && window.spark && window.spark.llm) {
+        const prompt = window.spark.llmPrompt`Gere um ${contentType} sobre "${topic}" para um aluno com:
+        - Estilo de aprendizagem: ${profile.preferredStyle}
+        - Nível: ${profile.difficulty}
+        - Interesses: ${profile.interests.join(', ')}
+        
+        O conteúdo deve ser:
+        - Adaptado ao estilo de aprendizagem
+        - Adequado ao nível de dificuldade
+        - Envolvente e educativo
+        - Em português brasileiro
+        
+        ${assistant ? `Assuma a personalidade de ${assistant.name}: ${assistant.personality}` : ''}
+        
+        Forneça o conteúdo:`
+
+        return await window.spark.llm(prompt, 'gpt-4o')
+      } else {
+        // Fallback: gera conteúdo simulado
+        return this.generateFallbackContent(topic, contentType, assistant, profile)
+      }
     } catch (error) {
       console.error('Erro ao gerar conteúdo:', error)
-      return 'Erro ao gerar conteúdo. Tente novamente.'
+      return this.generateFallbackContent(topic, contentType, assistant, profile)
     }
+  }
+
+  /**
+   * Gera conteúdo de fallback quando a API LLM não está disponível
+   */
+  private generateFallbackContent(
+    topic: string,
+    contentType: 'lesson' | 'exercise' | 'summary' | 'quiz',
+    assistant: Assistant | undefined,
+    profile: LearningProfile
+  ): string {
+    const contentTemplates = {
+      lesson: `# Lição: ${topic}
+
+## Introdução
+Bem-vindo à sua lição personalizada sobre ${topic}! Como seu estilo de aprendizagem é ${profile.preferredStyle}, vou adaptar o conteúdo para você.
+
+## Conceitos Principais
+1. **Fundamentos básicos**
+2. **Aplicações práticas** 
+3. **Exercícios recomendados**
+
+## Para Praticar
+- Revise os conceitos apresentados
+- Faça exercícios relacionados
+- Aplique o conhecimento em situações reais
+
+⚠️ *Conteúdo simulado - API de IA indisponível*`,
+
+      exercise: `# Exercício: ${topic}
+
+## Instruções
+Complete os exercícios abaixo sobre ${topic}. Lembre-se de aplicar os conceitos que você aprendeu.
+
+## Questões
+1. **Questão 1:** Explique o conceito principal de ${topic}
+2. **Questão 2:** Dê um exemplo prático de aplicação
+3. **Questão 3:** Qual a importância de entender ${topic}?
+
+## Dicas
+- Tome seu tempo para pensar
+- Use exemplos do seu dia a dia
+- Se precisar de ajuda, pergunte!
+
+⚠️ *Exercício simulado - API de IA indisponível*`,
+
+      summary: `# Resumo: ${topic}
+
+## Pontos Principais
+- Conceito fundamental de ${topic}
+- Aplicações e importância
+- Relacionamento com outros tópicos
+
+## Conclusão
+${topic} é um conceito importante que se relaciona com diversos aspectos do aprendizado. Continue praticando para dominar o assunto!
+
+⚠️ *Resumo simulado - API de IA indisponível*`,
+
+      quiz: `# Quiz: ${topic}
+
+## Questão 1
+O que é ${topic}?
+a) Opção A
+b) Opção B  
+c) Opção C
+d) Opção D
+
+## Questão 2
+Qual a principal aplicação de ${topic}?
+a) Opção A
+b) Opção B
+c) Opção C
+d) Opção D
+
+## Questão 3
+Como ${topic} se relaciona com outros conceitos?
+a) Opção A
+b) Opção B
+c) Opção C
+d) Opção D
+
+⚠️ *Quiz simulado - API de IA indisponível*`
+    }
+
+    return contentTemplates[contentType]
   }
 
   /**
