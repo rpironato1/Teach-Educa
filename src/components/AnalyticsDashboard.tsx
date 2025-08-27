@@ -1,5 +1,5 @@
-import React, { useState, useMemo } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import React, { useState } from 'react'
+import { motion } from 'framer-motion'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Button } from '@/components/ui/button'
@@ -27,11 +27,7 @@ import {
   Medal,
   Award,
   Users,
-  BookOpen,
-  CheckCircle,
-  Zap,
-  Bell,
-  Refresh
+  BookOpen
 } from '@phosphor-icons/react'
 
 interface AnalyticsDashboardProps {
@@ -76,7 +72,6 @@ export default function AnalyticsDashboard({ className = '' }: AnalyticsDashboar
   }
 
   const unlockedAchievements = analyticsData.achievements.filter(a => a.isUnlocked)
-  const unreadNotifications = notifications.filter(n => !n.read)
 
   const levelProgress = (analyticsData.totalPoints % 1000) / 10 // Assuming 1000 points per level
 

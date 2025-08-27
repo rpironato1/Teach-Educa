@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { useAnalytics } from '@/contexts/AnalyticsContext'
-import { Bell, X, Trophy, Fire, BookOpen, Target, Star, Clock } from '@phosphor-icons/react'
+import { Bell, X, Trophy, Fire, Target, Star, Clock } from '@phosphor-icons/react'
 import { Notification } from '@/types/analytics'
 
 interface NotificationCenterProps {

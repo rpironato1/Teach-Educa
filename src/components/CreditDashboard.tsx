@@ -5,7 +5,6 @@ import {
   CreditCard, 
   TrendUp, 
   TrendDown, 
-  Calendar,
   Receipt,
   AlertTriangle,
   CheckCircle

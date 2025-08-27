@@ -178,6 +178,7 @@ export default function RegistrationForm({ data, onUpdate, onNext }: Registratio
                 onChange={(e) => onUpdate({ fullName: e.target.value })}
                 className={`pl-10 focus-enhanced ${errors.fullName ? 'border-destructive' : ''}`}
                 placeholder="Seu nome completo"
+                autoComplete="name"
               />
             </div>
             {errors.fullName && (
@@ -197,6 +198,7 @@ export default function RegistrationForm({ data, onUpdate, onNext }: Registratio
                 onChange={(e) => onUpdate({ email: e.target.value })}
                 className={`pl-10 focus-enhanced ${errors.email ? 'border-destructive' : ''}`}
                 placeholder="seu@email.com"
+                autoComplete="email"
               />
             </div>
             {errors.email && (
@@ -217,6 +219,7 @@ export default function RegistrationForm({ data, onUpdate, onNext }: Registratio
                 className={`pl-10 focus-enhanced ${errors.cpf ? 'border-destructive' : ''}`}
                 placeholder="000.000.000-00"
                 maxLength={14}
+                autoComplete="off"
               />
             </div>
             {errors.cpf && (
@@ -237,6 +240,7 @@ export default function RegistrationForm({ data, onUpdate, onNext }: Registratio
                 className={`pl-10 focus-enhanced ${errors.phone ? 'border-destructive' : ''}`}
                 placeholder="(11) 99999-9999"
                 maxLength={15}
+                autoComplete="tel"
               />
             </div>
             {errors.phone && (
@@ -255,6 +259,7 @@ export default function RegistrationForm({ data, onUpdate, onNext }: Registratio
                 onChange={(e) => onUpdate({ password: e.target.value })}
                 className={`pr-10 focus-enhanced ${errors.password ? 'border-destructive' : ''}`}
                 placeholder="Mínimo 8 caracteres"
+                autoComplete="new-password"
               />
               <Button
                 type="button"

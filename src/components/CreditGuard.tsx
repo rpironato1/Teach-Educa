@@ -24,7 +24,7 @@ const CreditGuard: React.FC<CreditGuardProps> = ({
   onUpgrade,
   fallback
 }) => {
-  const { balance, checkCreditSufficiency, consumeCredits } = useCredit()
+  const { balance, checkCreditSufficiency } = useCredit()
   
   const totalCredits = balance.current + balance.monthly + balance.bonus
   const hasEnoughCredits = checkCreditSufficiency(creditsRequired)

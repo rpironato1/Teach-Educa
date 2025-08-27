@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { 
-  X, 
   CreditCard, 
   Shield, 
   CheckCircle, 
   AlertTriangle,
   Copy,
   QrCode,
-  CurrencyDollar,
   Building
 } from '@phosphor-icons/react'
 import { Button } from '@/components/ui/button'
@@ -181,7 +179,7 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ isOpen, onClose, selectedPlan
 
       setStep('success')
       toast.success('Pagamento processado com sucesso!')
-    } catch (error) {
+    } catch {
       setStep('error')
       toast.error('Erro ao processar pagamento. Tente novamente.')
     } finally {

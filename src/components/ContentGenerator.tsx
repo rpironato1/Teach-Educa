@@ -22,7 +22,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Textarea } from '@/components/ui/textarea'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Separator } from '@/components/ui/separator'
@@ -155,7 +154,7 @@ export default function ContentGenerator({
       
       // Remove indicador após 2 segundos
       setTimeout(() => setCopiedContentId(null), 2000)
-    } catch (error) {
+    } catch {
       toast.error('Erro ao copiar conteúdo')
     }
   }

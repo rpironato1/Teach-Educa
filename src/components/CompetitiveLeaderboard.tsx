@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { 
   Trophy, 
   Medal, 
@@ -11,7 +11,6 @@ import {
   Users,
   Calendar,
   Target,
-  Lightning,
   Award,
   Timer,
   Ranking
@@ -19,10 +18,8 @@ import {
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { Progress } from '@/components/ui/progress'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { LeaderboardEntry } from '@/types/analytics'
 import { useAnalytics } from '@/contexts/AnalyticsContext'
 import { useAuth } from '@/contexts/AuthContext'
 
@@ -84,7 +81,7 @@ export default function CompetitiveLeaderboard({ className = '' }: CompetitiveLe
       case 1:
         return <Crown className="h-6 w-6 text-yellow-500" weight="fill" />
       case 2:
-        return <Medal className="h-6 w-6 text-gray-400" weight="fill" />
+        return <Medal className="h-6 w-6 text-gray-600" weight="fill" />
       case 3:
         return <Award className="h-6 w-6 text-amber-600" weight="fill" />
       default:

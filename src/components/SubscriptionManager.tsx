@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { 
   X, 
   CreditCard, 
@@ -39,7 +39,6 @@ const SubscriptionManager: React.FC<SubscriptionManagerProps> = ({
     balance, 
     currentPlan, 
     transactions,
-    upgradeSubscription,
     downgradeSubscription,
     cancelSubscription,
     getRemainingCreditsPercentage
@@ -69,7 +68,7 @@ const SubscriptionManager: React.FC<SubscriptionManagerProps> = ({
         await downgradeSubscription(planId)
         toast.success(`Plano alterado para ${newPlan.name}`)
       }
-    } catch (error) {
+    } catch (_error) {
       toast.error('Erro ao alterar plano')
     } finally {
       setIsChangingPlan(false)
@@ -82,7 +81,7 @@ const SubscriptionManager: React.FC<SubscriptionManagerProps> = ({
       await cancelSubscription()
       toast.success('Assinatura cancelada com sucesso')
       onClose()
-    } catch (error) {
+    } catch (_error) {
       toast.error('Erro ao cancelar assinatura')
     }
   }

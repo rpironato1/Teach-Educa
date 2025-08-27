@@ -23,8 +23,6 @@ interface WeeklyGoal {
 }
 
 export default function WeeklyGoalsWidget({ className = '' }: WeeklyGoalsWidgetProps) {
-  const { analyticsData } = useAnalytics()
-
   // Mock weekly goals for demonstration
   const weeklyGoals: WeeklyGoal[] = [
     {

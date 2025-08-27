@@ -16,7 +16,7 @@ export default function LeaderboardWidget({ leaderboard, className = '' }: Leade
       case 1:
         return <Trophy className="h-5 w-5 text-yellow-500" weight="fill" />
       case 2:
-        return <Medal className="h-5 w-5 text-gray-400" weight="fill" />
+        return <Medal className="h-5 w-5 text-gray-600" weight="fill" />
       case 3:
         return <Award className="h-5 w-5 text-amber-600" weight="fill" />
       default:

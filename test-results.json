@@ -1,0 +1,18 @@
+{
+  "lint": {
+    "passed": false,
+    "errors": 174,
+    "warnings": 96
+  },
+  "build": {
+    "passed": true,
+    "bundleSize": 1681355
+  },
+  "lighthouse": {
+    "passed": true,
+    "performance": 62,
+    "accessibility": 88
+  },
+  "total": 4,
+  "passed": 3
+}

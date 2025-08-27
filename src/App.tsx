@@ -1,16 +1,11 @@
 import { useState, useEffect, Suspense, lazy } from 'react'
 import { motion } from 'framer-motion'
 import { 
-  GraduationCap, 
   Brain, 
-  ChartLine, 
-  Users, 
   CheckCircle, 
-  Star,
   Menu,
   X,
   ArrowRight,
-  Lightbulb,
   Target,
   Zap,
   SignOut,
@@ -26,11 +21,11 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import LoadingSpinner from '@/components/LoadingSpinner'
 import ErrorBoundary from '@/components/ErrorBoundary'
 import { AuthProvider, useAuth } from '@/contexts/AuthContext'
-import { CreditProvider, useCredit } from '@/contexts/CreditContext'
+import { CreditProvider } from '@/contexts/CreditContext'
 import { AnalyticsProvider } from '@/contexts/AnalyticsContext'
 import { useRouter } from '@/hooks/useRouter'
 import { useLazyPreload } from '@/hooks/useLazyPreload'
-import { useLazySectionLoad } from '@/hooks/useIntersectionObserver'
+// import { useLazySectionLoad } from '@/hooks/useIntersectionObserver'
 import { useSecureRedirect } from '@/hooks/useSecureRedirect'
 import { toast } from 'sonner'
 
@@ -43,10 +38,10 @@ const AdminDashboard = lazy(() => import('@/components/AdminDashboard'))
 const DemoInfoModal = lazy(() => import('@/components/DemoInfoModal'))
 const PaymentFlow = lazy(() => import('@/components/PaymentFlow'))
 
-// Lazy loading for sections
-const MethodologySection = lazy(() => import('@/components/MethodologySection'))
-const PricingSection = lazy(() => import('@/components/PricingSection'))
-const FAQSection = lazy(() => import('@/components/FAQSection'))
+// Lazy loading for sections (commented out as not currently used)
+// const MethodologySection = lazy(() => import('@/components/MethodologySection'))
+// const PricingSection = lazy(() => import('@/components/PricingSection'))
+// const FAQSection = lazy(() => import('@/components/FAQSection'))
 
 // Loading component for lazy loaded components
 const LazyLoadingFallback = ({ message }: { message?: string }) => (
@@ -56,7 +51,7 @@ const LazyLoadingFallback = ({ message }: { message?: string }) => (
 function AppContent() {
   const { user, isAuthenticated, logout, isLoading } = useAuth()
   const { currentRoute, navigate } = useRouter()
-  const { guardRoute, redirectToAppropriateRoute } = useSecureRedirect()
+  const { guardRoute } = useSecureRedirect()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [showDemoInfo, setShowDemoInfo] = useState(false)
   const [showPaymentFlow, setShowPaymentFlow] = useState(false)
@@ -70,17 +65,24 @@ function AppContent() {
     preloadAdminDashboard 
   } = useLazyPreload()
 
-  // Lazy loading for sections
-  const methodologySection = useLazySectionLoad()
-  const pricingSection = useLazySectionLoad()
-  const faqSection = useLazySectionLoad()
+  // Lazy loading for sections (commented out as not currently used)
+  // const methodologySection = useLazySectionLoad()
+  // const pricingSection = useLazySectionLoad()
+  // const faqSection = useLazySectionLoad()
 
   const handleLogout = async () => {
     try {
+      // Prevent multiple logout calls
+      if (isLoading) return
+      
       await logout()
-      navigate('home')
-      toast.success('Logout realizado com sucesso!')
-    } catch (error) {
+      
+      // Small delay to ensure auth state is fully updated before navigation
+      setTimeout(() => {
+        navigate('home')
+        toast.success('Logout realizado com sucesso!')
+      }, 100)
+    } catch {
       toast.error('Erro ao fazer logout')
     }
   }
@@ -118,23 +120,28 @@ function AppContent() {
 
   // Automatic navigation based on authentication and user role with security
   useEffect(() => {
-    if (isAuthenticated && user && currentRoute === 'auth') {
-      // User just logged in, redirect to appropriate dashboard with security validation
-      const targetRoute = user.role === 'admin' ? 'admin-dashboard' : 'dashboard'
+    // Only proceed if we have valid auth state and are on the auth route
+    if (!isLoading && isAuthenticated && user?.id && currentRoute === 'auth') {
+      // Use timeout to prevent re-render loops during auth state transitions
+      const redirectTimer = setTimeout(() => {
+        const targetRoute = user.role === 'admin' ? 'admin-dashboard' : 'dashboard'
+        
+        // Security audit log
+        console.log('Secure redirect:', {
+          userId: user.id,
+          role: user.role,
+          targetRoute,
+          timestamp: new Date().toISOString(),
+          sessionId: user.sessionId
+        })
+        
+        navigate(targetRoute)
+        toast.success(`Login realizado com sucesso! Bem-vindo, ${user.fullName}`)
+      }, 50) // Small delay to prevent re-render loops
       
-      // Security audit log
-      console.log('Secure redirect:', {
-        userId: user.id,
-        role: user.role,
-        targetRoute,
-        timestamp: new Date().toISOString(),
-        sessionId: user.sessionId
-      })
-      
-      navigate(targetRoute)
-      toast.success(`Login realizado com sucesso! Bem-vindo, ${user.fullName}`)
+      return () => clearTimeout(redirectTimer)
     }
-  }, [isAuthenticated, user, currentRoute, navigate])
+  }, [isAuthenticated, user?.id, user?.role, user?.fullName, user?.sessionId, currentRoute, navigate, isLoading])
 
   // Show loading state while checking authentication
   if (isLoading) {
