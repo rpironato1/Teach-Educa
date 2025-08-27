@@ -6,12 +6,12 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react'
 import { motion } from 'framer-motion'
 import {
-  Send,
-  Sparkles,
+  PaperPlane,
+  Sparkle,
   User,
   Clock,
-  TrendingUp,
-  Zap,
+  TrendUp,
+  Lightning,
   Brain
 } from '@phosphor-icons/react'
 import { Button } from '@/components/ui/button'
@@ -296,12 +296,12 @@ export default function AIChatInterface({
                               <span>Confiança: {Math.round((message.metadata.confidence || 0) * 100)}%</span>
                             </div>
                             <div className="flex items-center space-x-1">
-                              <Sparkles className="h-3 w-3" />
+                              <Sparkle className="h-3 w-3" />
                               <span>Adaptação: {Math.round((message.metadata.adaptationLevel || 0) * 100)}%</span>
                             </div>
                             {message.creditsCost > 0 && (
                               <div className="flex items-center space-x-1">
-                                <Zap className="h-3 w-3" />
+                                <Lightning className="h-3 w-3" />
                                 <span>{message.creditsCost} créditos</span>
                               </div>
                             )}
@@ -351,7 +351,7 @@ export default function AIChatInterface({
           <Card>
             <CardHeader className="pb-3">
               <CardTitle className="text-sm flex items-center space-x-2">
-                <TrendingUp className="h-4 w-4" />
+                <TrendUp className="h-4 w-4" />
                 <span>Análise de Progresso</span>
               </CardTitle>
             </CardHeader>
@@ -417,7 +417,7 @@ export default function AIChatInterface({
             {isLoading ? (
               <div className="w-4 h-4 border-2 border-primary-foreground/20 rounded-full border-t-primary-foreground animate-spin" />
             ) : (
-              <Send className="h-4 w-4" />
+              <PaperPlane className="h-4 w-4" />
             )}
           </Button>
         </div>
