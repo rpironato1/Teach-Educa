@@ -1,4 +1,4 @@
-import { test, expect } from './fixtures';
+import { test, expect } from '../fixtures';
 
 test.describe('Complete E2E User Journey', () => {
   test('should complete full user journey from signup to study session', async ({ page, cleanStorage }) => {

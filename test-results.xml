@@ -1,0 +1,182 @@
+<testsuites id="" name="" tests="10" failures="5" skipped="1" errors="0" time="34.232352">
+<testsuite name="performance\lighthouse.spec.ts" timestamp="2025-08-27T19:22:39.261Z" hostname="chromium" tests="10" failures="5" skipped="1" time="56.385" errors="0">
+<testcase name="Performance Tests › should meet Lighthouse performance thresholds" classname="performance\lighthouse.spec.ts" time="3.18">
+<properties>
+<property name="skip" value="Lighthouse audit failed">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Performance Tests › should load main resources quickly" classname="performance\lighthouse.spec.ts" time="2.36">
+</testcase>
+<testcase name="Performance Tests › should have efficient JavaScript execution" classname="performance\lighthouse.spec.ts" time="2.52">
+</testcase>
+<testcase name="Performance Tests › should have optimized images" classname="performance\lighthouse.spec.ts" time="2.378">
+</testcase>
+<testcase name="Performance Tests › should have minimal layout shifts" classname="performance\lighthouse.spec.ts" time="4.749">
+</testcase>
+<testcase name="Performance Tests › should handle concurrent requests efficiently" classname="performance\lighthouse.spec.ts" time="30.12">
+<failure message="lighthouse.spec.ts:200:3 should handle concurrent requests efficiently" type="FAILURE">
+<![CDATA[  [chromium] › performance\lighthouse.spec.ts:200:3 › Performance Tests › should handle concurrent requests efficiently 
+
+    Test timeout of 30000ms exceeded.
+
+    Error: expect(received).toBeLessThan(expected)
+
+    Expected: < 2000
+    Received:   28258
+
+      227 |     
+      228 |     // Concurrent operations should complete quickly
+    > 229 |     expect(totalTime).toBeLessThan(2000);
+          |                       ^
+      230 |   });
+      231 |
+      232 |   test('should have efficient localStorage operations', async ({ page }) => {
+        at C:\Projetos Copilot\Teach-Educa\tests\performance\lighthouse.spec.ts:229:23
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\test-results\performance-lighthouse-Per-8755f-urrent-requests-efficiently-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\test-results\performance-lighthouse-Per-8755f-urrent-requests-efficiently-chromium\error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|test-results\performance-lighthouse-Per-8755f-urrent-requests-efficiently-chromium\test-failed-1.png]]
+
+[[ATTACHMENT|test-results\performance-lighthouse-Per-8755f-urrent-requests-efficiently-chromium\error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Performance Tests › should have efficient localStorage operations" classname="performance\lighthouse.spec.ts" time="2.451">
+<failure message="lighthouse.spec.ts:232:3 should have efficient localStorage operations" type="FAILURE">
+<![CDATA[  [chromium] › performance\lighthouse.spec.ts:232:3 › Performance Tests › should have efficient localStorage operations 
+
+    Error: expect(received).toBeLessThan(expected)
+
+    Expected: < 100
+    Received:   227
+
+      265 |     
+      266 |     // localStorage operations should be fast
+    > 267 |     expect(operationTime).toBeLessThan(100);
+          |                           ^
+      268 |   });
+      269 |
+      270 |   test('should handle large datasets efficiently', async ({ page }) => {
+        at C:\Projetos Copilot\Teach-Educa\tests\performance\lighthouse.spec.ts:267:27
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\test-results\performance-lighthouse-Per-8c5c9-ent-localStorage-operations-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\test-results\performance-lighthouse-Per-8c5c9-ent-localStorage-operations-chromium\error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|test-results\performance-lighthouse-Per-8c5c9-ent-localStorage-operations-chromium\test-failed-1.png]]
+
+[[ATTACHMENT|test-results\performance-lighthouse-Per-8c5c9-ent-localStorage-operations-chromium\error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Performance Tests › should handle large datasets efficiently" classname="performance\lighthouse.spec.ts" time="2.62">
+<failure message="lighthouse.spec.ts:270:3 should handle large datasets efficiently" type="FAILURE">
+<![CDATA[  [chromium] › performance\lighthouse.spec.ts:270:3 › Performance Tests › should handle large datasets efficiently 
+
+    Error: page.evaluate: QuotaExceededError: Failed to execute 'setItem' on 'Storage': Setting the value of 'large-test-dataset' exceeded the quota.
+        at eval (eval at evaluate (:291:30), <anonymous>:22:20)
+        at UtilityScript.evaluate (<anonymous>:293:16)
+        at UtilityScript.<anonymous> (<anonymous>:1:44)
+        at eval (eval at evaluate (:291:30), <anonymous>:22:20)
+        at UtilityScript.evaluate (<anonymous>:293:16)
+        at UtilityScript.<anonymous> (<anonymous>:1:44)
+        at C:\Projetos Copilot\Teach-Educa\tests\performance\lighthouse.spec.ts:272:16
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\test-results\performance-lighthouse-Per-03931--large-datasets-efficiently-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\test-results\performance-lighthouse-Per-03931--large-datasets-efficiently-chromium\error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|test-results\performance-lighthouse-Per-03931--large-datasets-efficiently-chromium\test-failed-1.png]]
+
+[[ATTACHMENT|test-results\performance-lighthouse-Per-03931--large-datasets-efficiently-chromium\error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Performance Tests › should have optimized CSS delivery" classname="performance\lighthouse.spec.ts" time="2.315">
+<failure message="lighthouse.spec.ts:324:3 should have optimized CSS delivery" type="FAILURE">
+<![CDATA[  [chromium] › performance\lighthouse.spec.ts:324:3 › Performance Tests › should have optimized CSS delivery 
+
+    Error: expect(received).toBeLessThan(expected)
+
+    Expected: < 50
+    Received:   90.17857142857143
+
+      368 |     
+      369 |     // Less than 50% unused CSS is acceptable
+    > 370 |     expect(unusedSelectors.unusedPercentage).toBeLessThan(50);
+          |                                              ^
+      371 |   });
+      372 |
+      373 |   test('should have minimal bundle size impact', async ({ page }) => {
+        at C:\Projetos Copilot\Teach-Educa\tests\performance\lighthouse.spec.ts:370:46
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\test-results\performance-lighthouse-Per-e2721-have-optimized-CSS-delivery-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\test-results\performance-lighthouse-Per-e2721-have-optimized-CSS-delivery-chromium\error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|test-results\performance-lighthouse-Per-e2721-have-optimized-CSS-delivery-chromium\test-failed-1.png]]
+
+[[ATTACHMENT|test-results\performance-lighthouse-Per-e2721-have-optimized-CSS-delivery-chromium\error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Performance Tests › should have minimal bundle size impact" classname="performance\lighthouse.spec.ts" time="3.692">
+<failure message="lighthouse.spec.ts:373:3 should have minimal bundle size impact" type="FAILURE">
+<![CDATA[  [chromium] › performance\lighthouse.spec.ts:373:3 › Performance Tests › should have minimal bundle size impact 
+
+    Error: expect(received).toBeLessThan(expected)
+
+    Expected: < 2097152
+    Received:   8952441
+
+      397 |     
+      398 |     // Bundle size should be reasonable (less than 2MB)
+    > 399 |     expect(totalJSSize).toBeLessThan(2 * 1024 * 1024);
+          |                         ^
+      400 |     
+      401 |     console.log(`Total JavaScript size: ${totalJSSize} bytes`);
+      402 |     console.log(`JavaScript requests: ${jsRequests.length}`);
+        at C:\Projetos Copilot\Teach-Educa\tests\performance\lighthouse.spec.ts:399:25
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\test-results\performance-lighthouse-Per-84be1--minimal-bundle-size-impact-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\test-results\performance-lighthouse-Per-84be1--minimal-bundle-size-impact-chromium\error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|test-results\performance-lighthouse-Per-84be1--minimal-bundle-size-impact-chromium\test-failed-1.png]]
+
+[[ATTACHMENT|test-results\performance-lighthouse-Per-84be1--minimal-bundle-size-impact-chromium\error-context.md]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+</testsuites>

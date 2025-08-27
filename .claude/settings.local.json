@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__serena__activate_project",
+      "mcp__serena__list_dir",
+      "mcp__memory__create_entities",
+      "mcp__sequential-Thinking__sequentialthinking",
+      "mcp__serena__list_memories"
+    ]
+  },
+  "outputStyle": "turnbold-playwright-human-simulator"
+}

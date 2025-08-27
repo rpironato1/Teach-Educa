@@ -1,18 +1,628 @@
 {
-  "lint": {
-    "passed": false,
-    "errors": 174,
-    "warnings": 96
+  "config": {
+    "configFile": "C:\\Projetos Copilot\\Teach-Educa\\playwright.config.ts",
+    "rootDir": "C:/Projetos Copilot/Teach-Educa/tests",
+    "forbidOnly": false,
+    "fullyParallel": true,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 10
+    },
+    "preserveOutput": "always",
+    "reporter": [
+      [
+        "html",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "test-results.json"
+        }
+      ],
+      [
+        "junit",
+        {
+          "outputFile": "test-results.xml"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "quiet": false,
+    "projects": [
+      {
+        "outputDir": "C:/Projetos Copilot/Teach-Educa/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 10
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "C:/Projetos Copilot/Teach-Educa/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "shard": null,
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.55.0",
+    "workers": 12,
+    "webServer": {
+      "command": "npm run dev",
+      "url": "http://localhost:5000",
+      "reuseExistingServer": true,
+      "timeout": 120000
+    }
   },
-  "build": {
-    "passed": true,
-    "bundleSize": 1681355
-  },
-  "lighthouse": {
-    "passed": true,
-    "performance": 62,
-    "accessibility": 88
-  },
-  "total": 4,
-  "passed": 3
+  "suites": [
+    {
+      "title": "performance\\lighthouse.spec.ts",
+      "file": "performance/lighthouse.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Performance Tests",
+          "file": "performance/lighthouse.spec.ts",
+          "line": 6,
+          "column": 6,
+          "specs": [
+            {
+              "title": "should meet Lighthouse performance thresholds",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "Lighthouse audit failed",
+                      "location": {
+                        "file": "C:\\Projetos Copilot\\Teach-Educa\\tests\\performance\\lighthouse.spec.ts",
+                        "line": 78,
+                        "column": 12
+                      }
+                    }
+                  ],
+                  "expectedStatus": "skipped",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "skipped",
+                      "duration": 3180,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [
+                        {
+                          "text": "Lighthouse audit failed: TypeError: Failed to fetch browser webSocket URL from http://127.0.0.1:9222/json/version: fetch failed\n\u001b[90m    at node:internal/deps/undici/undici:13510:13\u001b[39m\n\u001b[90m    at processTicksAndRejections (node:internal/process/task_queues:105:5)\u001b[39m\n    at getWSEndpoint \u001b[90m(file:///C:/Projetos%20Copilot/Teach-Educa/\u001b[39mnode_modules/\u001b[4mpuppeteer-core\u001b[24m/lib/esm/puppeteer/common/BrowserConnector.js:67:24\u001b[90m)\u001b[39m\n    at getConnectionTransport \u001b[90m(file:///C:/Projetos%20Copilot/Teach-Educa/\u001b[39mnode_modules/\u001b[4mpuppeteer-core\u001b[24m/lib/esm/puppeteer/common/BrowserConnector.js:54:31\u001b[90m)\u001b[39m\n    at _connectToBrowser \u001b[90m(file:///C:/Projetos%20Copilot/Teach-Educa/\u001b[39mnode_modules/\u001b[4mpuppeteer-core\u001b[24m/lib/esm/puppeteer/common/BrowserConnector.js:24:50\u001b[90m)\u001b[39m\n    at gatherFn \u001b[90m(file:///C:/Projetos%20Copilot/Teach-Educa/\u001b[39mnode_modules/\u001b[4mlighthouse\u001b[24m/core/gather/navigation-runner.js:283:19\u001b[90m)\u001b[39m\n    at Function.gather \u001b[90m(file:///C:/Projetos%20Copilot/Teach-Educa/\u001b[39mnode_modules/\u001b[4mlighthouse\u001b[24m/core/runner.js:211:25\u001b[90m)\u001b[39m\n    at navigationGather \u001b[90m(file:///C:/Projetos%20Copilot/Teach-Educa/\u001b[39mnode_modules/\u001b[4mlighthouse\u001b[24m/core/gather/navigation-runner.js:306:21\u001b[90m)\u001b[39m\n    at navigation \u001b[90m(file:///C:/Projetos%20Copilot/Teach-Educa/\u001b[39mnode_modules/\u001b[4mlighthouse\u001b[24m/core/index.js:58:24\u001b[90m)\u001b[39m\n    at \u001b[90mfile:///C:/Projetos%20Copilot/Teach-Educa/\u001b[39mtests/performance/lighthouse.spec.ts:31:28\n    at \u001b[90mC:\\Projetos Copilot\\Teach-Educa\\\u001b[39mnode_modules\\\u001b[4mplaywright\u001b[24m\\lib\\worker\\workerMain.js:309:9\n    at \u001b[90mC:\\Projetos Copilot\\Teach-Educa\\\u001b[39mnode_modules\\\u001b[4mplaywright\u001b[24m\\lib\\worker\\testInfo.js:326:11\n    at TimeoutManager.withRunnable \u001b[90m(C:\\Projetos Copilot\\Teach-Educa\\\u001b[39mnode_modules\\\u001b[4mplaywright\u001b[24m\\lib\\worker\\timeoutManager.js:67:14\u001b[90m)\u001b[39m\n    at TestInfoImpl._runWithTimeout \u001b[90m(C:\\Projetos Copilot\\Teach-Educa\\\u001b[39mnode_modules\\\u001b[4mplaywright\u001b[24m\\lib\\worker\\testInfo.js:324:7\u001b[90m)\u001b[39m\n    at \u001b[90mC:\\Projetos Copilot\\Teach-Educa\\\u001b[39mnode_modules\\\u001b[4mplaywright\u001b[24m\\lib\\worker\\workerMain.js:307:7\n    at WorkerMain._runTest \u001b[90m(C:\\Projetos Copilot\\Teach-Educa\\\u001b[39mnode_modules\\\u001b[4mplaywright\u001b[24m\\lib\\worker\\workerMain.js:282:5\u001b[90m)\u001b[39m\n    at WorkerMain.runTestGroup \u001b[90m(C:\\Projetos Copilot\\Teach-Educa\\\u001b[39mnode_modules\\\u001b[4mplaywright\u001b[24m\\lib\\worker\\workerMain.js:194:11\u001b[90m)\u001b[39m\n    at process.<anonymous> \u001b[90m(C:\\Projetos Copilot\\Teach-Educa\\\u001b[39mnode_modules\\\u001b[4mplaywright\u001b[24m\\lib\\common\\process.js:65:22\u001b[90m)\u001b[39m {\n  [cause]: Error: connect ECONNREFUSED 127.0.0.1:9222\n  \u001b[90m    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1636:16)\u001b[39m\n  \u001b[90m    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17)\u001b[39m {\n    errno: \u001b[33m-4078\u001b[39m,\n    code: \u001b[32m'ECONNREFUSED'\u001b[39m,\n    syscall: \u001b[32m'connect'\u001b[39m,\n    address: \u001b[32m'127.0.0.1'\u001b[39m,\n    port: \u001b[33m9222\u001b[39m\n  }\n}\n"
+                        }
+                      ],
+                      "retry": 0,
+                      "startTime": "2025-08-27T19:22:41.735Z",
+                      "annotations": [
+                        {
+                          "type": "skip",
+                          "description": "Lighthouse audit failed",
+                          "location": {
+                            "file": "C:\\Projetos Copilot\\Teach-Educa\\tests\\performance\\lighthouse.spec.ts",
+                            "line": 78,
+                            "column": 12
+                          }
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "3ecc87596d44590ff5b1-64a767fa531e7a72d84a",
+              "file": "performance/lighthouse.spec.ts",
+              "line": 11,
+              "column": 3
+            },
+            {
+              "title": "should load main resources quickly",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 2360,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-27T19:22:41.885Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "3ecc87596d44590ff5b1-a84e0d56dccb4d2fd1ad",
+              "file": "performance/lighthouse.spec.ts",
+              "line": 82,
+              "column": 3
+            },
+            {
+              "title": "should have efficient JavaScript execution",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 2520,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-27T19:22:41.735Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "3ecc87596d44590ff5b1-055540c9da39d38848d0",
+              "file": "performance/lighthouse.spec.ts",
+              "line": 94,
+              "column": 3
+            },
+            {
+              "title": "should have optimized images",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 2378,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-27T19:22:41.865Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "3ecc87596d44590ff5b1-b4f8353990ff50dc05d7",
+              "file": "performance/lighthouse.spec.ts",
+              "line": 129,
+              "column": 3
+            },
+            {
+              "title": "should have minimal layout shifts",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 4,
+                      "status": "passed",
+                      "duration": 4749,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-27T19:22:41.799Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "3ecc87596d44590ff5b1-ef767225cd3733beb9c5",
+              "file": "performance/lighthouse.spec.ts",
+              "line": 169,
+              "column": 3
+            },
+            {
+              "title": "should handle concurrent requests efficiently",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 5,
+                      "status": "timedOut",
+                      "duration": 30120,
+                      "error": {
+                        "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
+                        "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                      },
+                      "errors": [
+                        {
+                          "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                        },
+                        {
+                          "location": {
+                            "file": "C:\\Projetos Copilot\\Teach-Educa\\tests\\performance\\lighthouse.spec.ts",
+                            "column": 23,
+                            "line": 229
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: < \u001b[32m2000\u001b[39m\nReceived:   \u001b[31m28258\u001b[39m\n\n  227 |     \n  228 |     // Concurrent operations should complete quickly\n> 229 |     expect(totalTime).toBeLessThan(2000);\n      |                       ^\n  230 |   });\n  231 |\n  232 |   test('should have efficient localStorage operations', async ({ page }) => {\n    at C:\\Projetos Copilot\\Teach-Educa\\tests\\performance\\lighthouse.spec.ts:229:23"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-27T19:22:41.859Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Projetos Copilot\\Teach-Educa\\test-results\\performance-lighthouse-Per-8755f-urrent-requests-efficiently-chromium\\test-failed-1.png"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "C:\\Projetos Copilot\\Teach-Educa\\test-results\\performance-lighthouse-Per-8755f-urrent-requests-efficiently-chromium\\error-context.md"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "3ecc87596d44590ff5b1-6d2a40047ba20a2bc997",
+              "file": "performance/lighthouse.spec.ts",
+              "line": 200,
+              "column": 3
+            },
+            {
+              "title": "should have efficient localStorage operations",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 6,
+                      "parallelIndex": 6,
+                      "status": "failed",
+                      "duration": 2451,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: < \u001b[32m100\u001b[39m\nReceived:   \u001b[31m227\u001b[39m",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: < \u001b[32m100\u001b[39m\nReceived:   \u001b[31m227\u001b[39m\n    at C:\\Projetos Copilot\\Teach-Educa\\tests\\performance\\lighthouse.spec.ts:267:27",
+                        "location": {
+                          "file": "C:\\Projetos Copilot\\Teach-Educa\\tests\\performance\\lighthouse.spec.ts",
+                          "column": 27,
+                          "line": 267
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 265 |\u001b[39m     \n \u001b[90m 266 |\u001b[39m     \u001b[90m// localStorage operations should be fast\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 267 |\u001b[39m     expect(operationTime)\u001b[33m.\u001b[39mtoBeLessThan(\u001b[35m100\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 268 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 269 |\u001b[39m\n \u001b[90m 270 |\u001b[39m   test(\u001b[32m'should handle large datasets efficiently'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "C:\\Projetos Copilot\\Teach-Educa\\tests\\performance\\lighthouse.spec.ts",
+                            "column": 27,
+                            "line": 267
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: < \u001b[32m100\u001b[39m\nReceived:   \u001b[31m227\u001b[39m\n\n  265 |     \n  266 |     // localStorage operations should be fast\n> 267 |     expect(operationTime).toBeLessThan(100);\n      |                           ^\n  268 |   });\n  269 |\n  270 |   test('should handle large datasets efficiently', async ({ page }) => {\n    at C:\\Projetos Copilot\\Teach-Educa\\tests\\performance\\lighthouse.spec.ts:267:27"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-27T19:22:41.888Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Projetos Copilot\\Teach-Educa\\test-results\\performance-lighthouse-Per-8c5c9-ent-localStorage-operations-chromium\\test-failed-1.png"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "C:\\Projetos Copilot\\Teach-Educa\\test-results\\performance-lighthouse-Per-8c5c9-ent-localStorage-operations-chromium\\error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "C:\\Projetos Copilot\\Teach-Educa\\tests\\performance\\lighthouse.spec.ts",
+                        "column": 27,
+                        "line": 267
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "3ecc87596d44590ff5b1-c1f8c8524e97cc5f876e",
+              "file": "performance/lighthouse.spec.ts",
+              "line": 232,
+              "column": 3
+            },
+            {
+              "title": "should handle large datasets efficiently",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 7,
+                      "parallelIndex": 7,
+                      "status": "failed",
+                      "duration": 2620,
+                      "error": {
+                        "message": "Error: page.evaluate: QuotaExceededError: Failed to execute 'setItem' on 'Storage': Setting the value of 'large-test-dataset' exceeded the quota.\n    at eval (eval at evaluate (:291:30), <anonymous>:22:20)\n    at UtilityScript.evaluate (<anonymous>:293:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)",
+                        "stack": "Error: page.evaluate: QuotaExceededError: Failed to execute 'setItem' on 'Storage': Setting the value of 'large-test-dataset' exceeded the quota.\n    at eval (eval at evaluate (:291:30), <anonymous>:22:20)\n    at UtilityScript.evaluate (<anonymous>:293:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)\n    at eval (eval at evaluate (:291:30), <anonymous>:22:20)\n    at UtilityScript.evaluate (<anonymous>:293:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)\n    at C:\\Projetos Copilot\\Teach-Educa\\tests\\performance\\lighthouse.spec.ts:272:16",
+                        "location": {
+                          "file": "eval at evaluate (:291:30), <anonymous>",
+                          "column": 20,
+                          "line": 22
+                        }
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "eval at evaluate (:291:30), <anonymous>",
+                            "column": 20,
+                            "line": 22
+                          },
+                          "message": "Error: page.evaluate: QuotaExceededError: Failed to execute 'setItem' on 'Storage': Setting the value of 'large-test-dataset' exceeded the quota.\n    at eval (eval at evaluate (:291:30), <anonymous>:22:20)\n    at UtilityScript.evaluate (<anonymous>:293:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)\n    at eval (eval at evaluate (:291:30), <anonymous>:22:20)\n    at UtilityScript.evaluate (<anonymous>:293:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)\n    at C:\\Projetos Copilot\\Teach-Educa\\tests\\performance\\lighthouse.spec.ts:272:16"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-27T19:22:41.772Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Projetos Copilot\\Teach-Educa\\test-results\\performance-lighthouse-Per-03931--large-datasets-efficiently-chromium\\test-failed-1.png"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "C:\\Projetos Copilot\\Teach-Educa\\test-results\\performance-lighthouse-Per-03931--large-datasets-efficiently-chromium\\error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "eval at evaluate (:291:30), <anonymous>",
+                        "column": 20,
+                        "line": 22
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "3ecc87596d44590ff5b1-22fba9a33ff4a6ed6c4f",
+              "file": "performance/lighthouse.spec.ts",
+              "line": 270,
+              "column": 3
+            },
+            {
+              "title": "should have optimized CSS delivery",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 8,
+                      "parallelIndex": 8,
+                      "status": "failed",
+                      "duration": 2315,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: < \u001b[32m50\u001b[39m\nReceived:   \u001b[31m90.17857142857143\u001b[39m",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: < \u001b[32m50\u001b[39m\nReceived:   \u001b[31m90.17857142857143\u001b[39m\n    at C:\\Projetos Copilot\\Teach-Educa\\tests\\performance\\lighthouse.spec.ts:370:46",
+                        "location": {
+                          "file": "C:\\Projetos Copilot\\Teach-Educa\\tests\\performance\\lighthouse.spec.ts",
+                          "column": 46,
+                          "line": 370
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 368 |\u001b[39m     \n \u001b[90m 369 |\u001b[39m     \u001b[90m// Less than 50% unused CSS is acceptable\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 370 |\u001b[39m     expect(unusedSelectors\u001b[33m.\u001b[39munusedPercentage)\u001b[33m.\u001b[39mtoBeLessThan(\u001b[35m50\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                              \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 371 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 372 |\u001b[39m\n \u001b[90m 373 |\u001b[39m   test(\u001b[32m'should have minimal bundle size impact'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "C:\\Projetos Copilot\\Teach-Educa\\tests\\performance\\lighthouse.spec.ts",
+                            "column": 46,
+                            "line": 370
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: < \u001b[32m50\u001b[39m\nReceived:   \u001b[31m90.17857142857143\u001b[39m\n\n  368 |     \n  369 |     // Less than 50% unused CSS is acceptable\n> 370 |     expect(unusedSelectors.unusedPercentage).toBeLessThan(50);\n      |                                              ^\n  371 |   });\n  372 |\n  373 |   test('should have minimal bundle size impact', async ({ page }) => {\n    at C:\\Projetos Copilot\\Teach-Educa\\tests\\performance\\lighthouse.spec.ts:370:46"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-27T19:22:41.892Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Projetos Copilot\\Teach-Educa\\test-results\\performance-lighthouse-Per-e2721-have-optimized-CSS-delivery-chromium\\test-failed-1.png"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "C:\\Projetos Copilot\\Teach-Educa\\test-results\\performance-lighthouse-Per-e2721-have-optimized-CSS-delivery-chromium\\error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "C:\\Projetos Copilot\\Teach-Educa\\tests\\performance\\lighthouse.spec.ts",
+                        "column": 46,
+                        "line": 370
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "3ecc87596d44590ff5b1-89c47d5efaaa4dcbf271",
+              "file": "performance/lighthouse.spec.ts",
+              "line": 324,
+              "column": 3
+            },
+            {
+              "title": "should have minimal bundle size impact",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 9,
+                      "parallelIndex": 9,
+                      "status": "failed",
+                      "duration": 3692,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: < \u001b[32m2097152\u001b[39m\nReceived:   \u001b[31m8952441\u001b[39m",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: < \u001b[32m2097152\u001b[39m\nReceived:   \u001b[31m8952441\u001b[39m\n    at C:\\Projetos Copilot\\Teach-Educa\\tests\\performance\\lighthouse.spec.ts:399:25",
+                        "location": {
+                          "file": "C:\\Projetos Copilot\\Teach-Educa\\tests\\performance\\lighthouse.spec.ts",
+                          "column": 25,
+                          "line": 399
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 397 |\u001b[39m     \n \u001b[90m 398 |\u001b[39m     \u001b[90m// Bundle size should be reasonable (less than 2MB)\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 399 |\u001b[39m     expect(totalJSSize)\u001b[33m.\u001b[39mtoBeLessThan(\u001b[35m2\u001b[39m \u001b[33m*\u001b[39m \u001b[35m1024\u001b[39m \u001b[33m*\u001b[39m \u001b[35m1024\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                         \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 400 |\u001b[39m     \n \u001b[90m 401 |\u001b[39m     console\u001b[33m.\u001b[39mlog(\u001b[32m`Total JavaScript size: ${totalJSSize} bytes`\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 402 |\u001b[39m     console\u001b[33m.\u001b[39mlog(\u001b[32m`JavaScript requests: ${jsRequests.length}`\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "C:\\Projetos Copilot\\Teach-Educa\\tests\\performance\\lighthouse.spec.ts",
+                            "column": 25,
+                            "line": 399
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: < \u001b[32m2097152\u001b[39m\nReceived:   \u001b[31m8952441\u001b[39m\n\n  397 |     \n  398 |     // Bundle size should be reasonable (less than 2MB)\n> 399 |     expect(totalJSSize).toBeLessThan(2 * 1024 * 1024);\n      |                         ^\n  400 |     \n  401 |     console.log(`Total JavaScript size: ${totalJSSize} bytes`);\n  402 |     console.log(`JavaScript requests: ${jsRequests.length}`);\n    at C:\\Projetos Copilot\\Teach-Educa\\tests\\performance\\lighthouse.spec.ts:399:25"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-27T19:22:41.904Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Projetos Copilot\\Teach-Educa\\test-results\\performance-lighthouse-Per-84be1--minimal-bundle-size-impact-chromium\\test-failed-1.png"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "C:\\Projetos Copilot\\Teach-Educa\\test-results\\performance-lighthouse-Per-84be1--minimal-bundle-size-impact-chromium\\error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "C:\\Projetos Copilot\\Teach-Educa\\tests\\performance\\lighthouse.spec.ts",
+                        "column": 25,
+                        "line": 399
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "3ecc87596d44590ff5b1-70c48bd4789b482c488a",
+              "file": "performance/lighthouse.spec.ts",
+              "line": 373,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2025-08-27T19:22:38.204Z",
+    "duration": 34232.352,
+    "expected": 4,
+    "skipped": 1,
+    "unexpected": 5,
+    "flaky": 0
+  }
 }
