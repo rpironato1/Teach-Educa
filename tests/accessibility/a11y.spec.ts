@@ -59,15 +59,17 @@ test.describe('Accessibility Tests', () => {
   });
 
   test('should have sufficient color contrast', async ({ page }) => {
-    // Inject accessibility testing library
+    await page.goto('/');
+    
+    // Inject accessibility testing library from local installation
     await page.addScriptTag({
-      url: 'https://unpkg.com/axe-core@4.6.2/axe.min.js'
+      path: '/home/runner/work/Teach-Educa/Teach-Educa/node_modules/axe-core/axe.min.js'
     });
 
     // Run color contrast checks
     const results = await page.evaluate(() => {
       return new Promise((resolve) => {
-        // @ts-ignore
+        // @ts-expect-error - axe is added via script injection
         window.axe.run({
           rules: {
             'color-contrast': { enabled: true }
@@ -108,6 +110,8 @@ test.describe('Accessibility Tests', () => {
   });
 
   test('should support screen readers with ARIA attributes', async ({ page }) => {
+    await page.goto('/');
+    
     // Check for proper ARIA attributes
     const elementsWithAria = await page.locator('[aria-label], [aria-labelledby], [aria-describedby], [role]').all();
     
@@ -234,6 +238,8 @@ test.describe('Accessibility Tests', () => {
       reducedMotion: 'reduce'
     });
     
+    await page.goto('/');
+    
     // Check if animations are reduced or disabled
     const animatedElements = await page.locator('[class*="animate"], [style*="animation"], [style*="transition"]').all();
     
@@ -327,15 +333,17 @@ test.describe('Accessibility Tests', () => {
   });
 
   test('should pass axe-core accessibility audit', async ({ page }) => {
-    // Inject axe-core
+    await page.goto('/');
+    
+    // Inject axe-core from local installation
     await page.addScriptTag({
-      url: 'https://unpkg.com/axe-core@4.6.2/axe.min.js'
+      path: '/home/runner/work/Teach-Educa/Teach-Educa/node_modules/axe-core/axe.min.js'
     });
 
     // Run full accessibility audit
     const results = await page.evaluate(() => {
       return new Promise((resolve) => {
-        // @ts-ignore
+        // @ts-expect-error - axe is added via script injection
         window.axe.run((err: any, results: any) => {
           resolve(results);
         });

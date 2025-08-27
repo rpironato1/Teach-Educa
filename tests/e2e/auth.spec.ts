@@ -57,9 +57,8 @@ test.describe('Authentication Flow', () => {
     // Check if we're redirected to dashboard OR if there's a success indication
     const currentUrl = page.url();
     const isDashboard = currentUrl.includes('dashboard');
-    const hasSuccessToast = await page.locator('text=/sucesso|login realizado/i').count() > 0;
     
-    // If not redirected, check if we're still authenticated by going to home and seeing if login button is gone
+    // Check if we're redirected to dashboard OR if there's a success indication
     if (!isDashboard) {
       await page.goto('/');
       await page.waitForTimeout(1000);
