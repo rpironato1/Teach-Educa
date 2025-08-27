@@ -1,12 +1,10 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { motion } from 'framer-motion'
 import { 
   TrendingUp, 
   TrendingDown,
   ChartLine,
   BarChart,
-  PieChart,
-  Calendar,
   Clock,
   Target,
   Brain,
@@ -18,7 +16,6 @@ import {
   X
 } from '@phosphor-icons/react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
@@ -276,7 +273,7 @@ export default function ProgressAnalytics({ className = '' }: ProgressAnalyticsP
               </CardHeader>
               <CardContent>
                 <div className="space-y-3">
-                  {progressData.slice(-7).map((day, index) => {
+                  {progressData.slice(-7).map((day) => {
                     const date = new Date(day.date)
                     const isToday = date.toDateString() === new Date().toDateString()
                     
@@ -322,7 +319,7 @@ export default function ProgressAnalytics({ className = '' }: ProgressAnalyticsP
               </CardHeader>
               <CardContent>
                 <div className="space-y-3">
-                  {progressData.slice(-7).map((day, index) => {
+                  {progressData.slice(-7).map((day) => {
                     const date = new Date(day.date)
                     const isToday = date.toDateString() === new Date().toDateString()
                     

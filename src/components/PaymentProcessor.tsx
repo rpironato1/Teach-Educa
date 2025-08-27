@@ -1,6 +1,5 @@
 "use client";
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
 import {
   CreditCard,
   Bank,
@@ -71,7 +70,7 @@ export default function PaymentProcessor({ plan, onSuccess, onCancel }: PaymentP
   const [isProcessing, setIsProcessing] = useState(false);
   const [showPixQR, setShowPixQR] = useState(false);
   const [showBoletoDetails, setShowBoletoDetails] = useState(false);
-  const [currentPaymentId, setCurrentPaymentId] = useState<string | null>(null);
+  const [_currentPaymentId, setCurrentPaymentId] = useState<string | null>(null);
   const [pixCode, setPixCode] = useState<string>('');
   
   // Credit card form state
