@@ -25,22 +25,13 @@ import {
   UserCheck,
   CreditCard,
   Gear,
-  Target,
-  Trophy
+  Target
 } from '@phosphor-icons/react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { 
-  Table, 
-  TableBody, 
-  TableCell, 
-  TableHead, 
-  TableHeader, 
-  TableRow 
-} from '@/components/ui/table'
 import { Separator } from '@/components/ui/separator'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { useAuth } from '@/contexts/AuthContext'
@@ -61,18 +52,6 @@ interface SystemMetrics {
   creditConsumption: number
   systemHealth: 'healthy' | 'warning' | 'critical'
 }
-
-interface UserSummary {
-  id: string
-  name: string
-  email: string
-  plan: string
-  credits: number
-  lastLogin: string
-  status: 'active' | 'inactive' | 'suspended'
-  revenue: number
-}
-
 export default function AdminDashboard({ onBackToHome }: AdminDashboardProps) {
   const { user, logout } = useAuth()
   const [activeTab, setActiveTab] = useState('overview')

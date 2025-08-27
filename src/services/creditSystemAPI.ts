@@ -107,9 +107,9 @@ class CreditSystemAPI {
    */
   async consumeCredits(
     amount: number, 
-    description: string, 
-    actionType: string,
-    metadata?: Record<string, any>
+    _description: string, 
+    _actionType: string,
+    _metadata?: Record<string, unknown>
   ): Promise<{ success: boolean; remainingCredits: number; error?: string }> {
     await this.delay(300);
     
@@ -137,13 +137,13 @@ class CreditSystemAPI {
   async processPayment(
     planType: 'inicial' | 'intermediario' | 'profissional',
     paymentMethod: 'credit_card' | 'pix' | 'boleto',
-    paymentData: Record<string, any>
+    _paymentData: Record<string, unknown>
   ): Promise<PaymentResult> {
     await this.delay(2000); // Simulate payment processing time
     
     // Simulate different payment flows
     switch (paymentMethod) {
-      case 'credit_card':
+      case 'credit_card': {
         // Simulate credit card processing
         const success = Math.random() > 0.1; // 90% success rate
         return {
@@ -151,6 +151,7 @@ class CreditSystemAPI {
           transactionId: success ? `cc_${Date.now()}` : undefined,
           error: success ? undefined : 'Cartão recusado'
         };
+      }
         
       case 'pix':
         // PIX is usually instant
@@ -205,7 +206,7 @@ class CreditSystemAPI {
       
       if (stored) {
         const transactions = JSON.parse(stored);
-        return transactions.slice(0, limit).map((t: any) => ({
+        return transactions.slice(0, limit).map((t: Transaction) => ({
           id: t.id,
           type: t.type === 'debit' ? 'consumption' : 
                 t.type === 'credit' ? 'purchase' : 
@@ -266,7 +267,7 @@ class CreditSystemAPI {
   /**
    * Cancel subscription
    */
-  async cancelSubscription(cancelAtPeriodEnd = true): Promise<{ success: boolean; error?: string }> {
+  async cancelSubscription(_cancelAtPeriodEnd = true): Promise<{ success: boolean; error?: string }> {
     await this.delay(800);
     
     return {
@@ -288,7 +289,7 @@ class CreditSystemAPI {
   /**
    * Update payment method
    */
-  async updatePaymentMethod(paymentData: Record<string, any>): Promise<{ success: boolean; error?: string }> {
+  async updatePaymentMethod(_paymentData: Record<string, unknown>): Promise<{ success: boolean; error?: string }> {
     await this.delay(1000);
     
     return {
