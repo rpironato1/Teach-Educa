@@ -50,7 +50,7 @@ const CreditDashboard: React.FC<CreditDashboardProps> = ({ onUpgrade, onViewHist
     }
   }
 
-  const getStatusColor = (percentage: number) => {
+  const _getStatusColor = (percentage: number) => {
     if (percentage > 50) return 'bg-green-500'
     if (percentage > 20) return 'bg-yellow-500'
     return 'bg-red-500'
@@ -240,7 +240,7 @@ const CreditDashboard: React.FC<CreditDashboardProps> = ({ onUpgrade, onViewHist
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                {availablePlans.map((plan, index) => (
+                {availablePlans.map((plan, _index) => (
                   <div 
                     key={plan.id}
                     className={`p-4 border rounded-lg ${
