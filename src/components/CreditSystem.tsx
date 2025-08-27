@@ -26,7 +26,6 @@ import { useKV } from '@github/spark/hooks';
 import { toast } from 'sonner';
 
 interface CreditSystemProps {
-  onUpgrade?: () => void;
   showFullInterface?: boolean;
 }
 
@@ -67,7 +66,7 @@ const PLANS = {
   profissional: { credits: 1000, price: 179, name: 'Profissional' }
 };
 
-export default function CreditSystem({ onUpgrade, showFullInterface = true }: CreditSystemProps) {
+export default function CreditSystem({ showFullInterface = true }: CreditSystemProps) {
   const [subscription, setSubscription] = useKV<Subscription>('user-subscription', {
     plan: 'inicial',
     credits: 85,

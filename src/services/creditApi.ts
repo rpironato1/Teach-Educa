@@ -1,4 +1,3 @@
-import { CreditContext } from '@/contexts/CreditContext'
 
 /**
  * Mock API service for credit operations
@@ -36,7 +35,7 @@ class CreditApiService {
   /**
    * Get current credit balance
    */
-  async getBalance(userId: string): Promise<ApiResponse> {
+  async getBalance(__userId: string): Promise<ApiResponse> {
     // Simulate API call
     await this.delay(500)
     
@@ -54,7 +53,7 @@ class CreditApiService {
   /**
    * Consume credits for a specific action
    */
-  async consumeCredits(userId: string, amount: number, description: string): Promise<ApiResponse> {
+  async consumeCredits(__userId: string, _amount: number, _description: string): Promise<ApiResponse> {
     await this.delay(300)
     
     // Simulate insufficient credits
@@ -78,7 +77,7 @@ class CreditApiService {
   /**
    * Create payment intent for credit purchase
    */
-  async createPaymentIntent(planId: string, userId: string): Promise<ApiResponse<PaymentIntent>> {
+  async createPaymentIntent(planId: string, __userId: string): Promise<ApiResponse<PaymentIntent>> {
     await this.delay(800)
     
     const plans = {
@@ -111,7 +110,7 @@ class CreditApiService {
   /**
    * Confirm payment and process subscription
    */
-  async confirmPayment(paymentIntentId: string, paymentMethodId: string): Promise<ApiResponse> {
+  async confirmPayment(paymentIntentId: string, _paymentMethodId: string): Promise<ApiResponse> {
     await this.delay(2000)
     
     // Simulate payment failure
@@ -136,7 +135,7 @@ class CreditApiService {
   /**
    * Get subscription details
    */
-  async getSubscription(userId: string): Promise<ApiResponse<SubscriptionData>> {
+  async getSubscription(__userId: string): Promise<ApiResponse<SubscriptionData>> {
     await this.delay(400)
     
     return {
@@ -205,7 +204,7 @@ class CreditApiService {
   /**
    * Get transaction history
    */
-  async getTransactionHistory(userId: string, limit = 50): Promise<ApiResponse> {
+  async getTransactionHistory(_userId: string, limit = 50): Promise<ApiResponse> {
     await this.delay(600)
     
     const transactions = []
@@ -235,7 +234,7 @@ class CreditApiService {
   /**
    * Validate credit usage for specific feature
    */
-  async validateCreditUsage(userId: string, feature: string, creditsRequired: number): Promise<ApiResponse> {
+  async validateCreditUsage(_userId: string, feature: string, creditsRequired: number): Promise<ApiResponse> {
     await this.delay(200)
     
     const balance = Math.floor(Math.random() * 1000)
@@ -254,7 +253,7 @@ class CreditApiService {
   /**
    * Apply promotional credits or bonus
    */
-  async applyPromotion(userId: string, promoCode: string): Promise<ApiResponse> {
+  async applyPromotion(_userId: string, promoCode: string): Promise<ApiResponse> {
     await this.delay(800)
     
     const validCodes = ['WELCOME50', 'BONUS25', 'FRIEND10']
@@ -285,7 +284,7 @@ class CreditApiService {
   /**
    * Get usage analytics
    */
-  async getUsageAnalytics(userId: string, period = '30d'): Promise<ApiResponse> {
+  async getUsageAnalytics(_userId: string, period = '30d'): Promise<ApiResponse> {
     await this.delay(700)
     
     return {
