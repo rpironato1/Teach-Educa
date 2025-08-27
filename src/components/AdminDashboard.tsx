@@ -5,8 +5,7 @@
  * with Supabase-compatible localStorage for easy migration
  */
 
-import React, { useState, useEffect } from 'react'
-import { motion } from 'framer-motion'
+import React, { useState } from 'react'
 import {
   ArrowLeft,
   Users,
@@ -18,23 +17,15 @@ import {
   Activity,
   TrendUp,
   Calendar,
-  Warning,
-  CheckCircle,
   Clock,
-  Eye,
   Download,
-  Upload,
   Shield,
   Bell,
   BarChart,
-  PieChart,
   UserCheck,
   CreditCard,
   Gear,
-  Robot,
-  BookOpen,
   Target,
-  Fire,
   Trophy
 } from '@phosphor-icons/react'
 import { Button } from '@/components/ui/button'

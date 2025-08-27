@@ -1,17 +1,10 @@
-import React, { useState, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import React, { useState } from 'react'
+import { motion } from 'framer-motion'
 import { 
   Trophy, 
-  Medal, 
   Star, 
-  Crown, 
   Target, 
-  Fire,
-  Clock,
-  BookOpen,
   Users,
-  Zap,
-  Lightbulb,
   CheckCircle,
   Lock,
   Gift
@@ -23,14 +16,13 @@ import { Progress } from '@/components/ui/progress'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Achievement } from '@/types/analytics'
 import { useAnalytics } from '@/contexts/AnalyticsContext'
-import { toast } from 'sonner'
 
 interface AchievementSystemProps {
   className?: string
 }
 
 export default function AchievementSystem({ className = '' }: AchievementSystemProps) {
-  const { analyticsData, unlockAchievement } = useAnalytics()
+  const { analyticsData } = useAnalytics()
   const [selectedCategory, setSelectedCategory] = useState<string>('all')
   const [selectedRarity, setSelectedRarity] = useState<string>('all')
 
@@ -91,25 +83,6 @@ export default function AchievementSystem({ className = '' }: AchievementSystemP
       case 'social': return <Users className="h-4 w-4" />
       case 'special': return <Gift className="h-4 w-4" />
       default: return <Trophy className="h-4 w-4" />
-    }
-  }
-
-  const getRarityColor = (rarity: string) => {
-    switch (rarity) {
-      case 'common': return 'border-gray-300 bg-gray-50'
-      case 'rare': return 'border-blue-300 bg-blue-50'
-      case 'epic': return 'border-purple-300 bg-purple-50'
-      case 'legendary': return 'border-yellow-300 bg-yellow-50'
-      default: return 'border-border bg-background'
-    }
-  }
-
-  const getRarityGlow = (rarity: string) => {
-    switch (rarity) {
-      case 'rare': return 'shadow-blue-200/50'
-      case 'epic': return 'shadow-purple-200/50'
-      case 'legendary': return 'shadow-yellow-200/50'
-      default: return ''
     }
   }
 

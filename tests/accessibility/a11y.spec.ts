@@ -80,7 +80,7 @@ test.describe('Accessibility Tests', () => {
       });
     });
 
-    // @ts-ignore
+    // @ts-expect-error - axe-core types
     expect(results.violations).toHaveLength(0);
   });
 
@@ -350,7 +350,7 @@ test.describe('Accessibility Tests', () => {
       });
     });
 
-    // @ts-ignore
+    // @ts-expect-error - axe-core types
     const violations = results.violations;
     
     // Log violations for debugging
@@ -359,7 +359,7 @@ test.describe('Accessibility Tests', () => {
     }
     
     // Allow minor violations but fail on critical ones
-    // @ts-ignore
+    // @ts-expect-error - axe-core types
     const criticalViolations = violations.filter((v: any) => 
       ['critical', 'serious'].includes(v.impact)
     );

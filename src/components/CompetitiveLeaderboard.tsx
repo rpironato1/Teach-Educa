@@ -84,7 +84,7 @@ export default function CompetitiveLeaderboard({ className = '' }: CompetitiveLe
       case 1:
         return <Crown className="h-6 w-6 text-yellow-500" weight="fill" />
       case 2:
-        return <Medal className="h-6 w-6 text-gray-400" weight="fill" />
+        return <Medal className="h-6 w-6 text-gray-600" weight="fill" />
       case 3:
         return <Award className="h-6 w-6 text-amber-600" weight="fill" />
       default:

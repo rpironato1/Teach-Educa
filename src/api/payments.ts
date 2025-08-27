@@ -249,7 +249,7 @@ export const handlePaymentWebhook = async (data: any): Promise<void> => {
 /**
  * Generate PIX code for payment
  */
-function generatePixCode(amount: number, customerData: any): string {
+function generatePixCode(amount: number, _customerData: any): string {
   // This is a simplified PIX code generation
   // In a real implementation, you would use a proper PIX library
   const payload = {

@@ -3,28 +3,22 @@
  * Interface principal para interação com assistentes de IA
  */
 
-import React, { useState, useEffect, useRef } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import React, { useState, useEffect, useRef, useCallback } from 'react'
+import { motion } from 'framer-motion'
 import {
-  Bot,
   Send,
   Sparkles,
   User,
   Clock,
   TrendingUp,
-  MessageCircle,
-  FileText,
   Zap,
-  Brain,
-  Coffee,
-  Bookmark
+  Brain
 } from '@phosphor-icons/react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Textarea } from '@/components/ui/textarea'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import { Separator } from '@/components/ui/separator'
 import { aiService, type Assistant, type ChatMessage, type ProgressAnalysis } from '@/services/aiService'
 import { useAuth } from '@/contexts/AuthContext'
 import { useCredit } from '@/contexts/CreditContext'
@@ -36,8 +30,7 @@ interface AIChatInterfaceProps {
 }
 
 export default function AIChatInterface({
-  selectedAssistant,
-  onAssistantChange
+  selectedAssistant
 }: AIChatInterfaceProps) {
   const { user } = useAuth()
   const { consumeCredits, checkCreditSufficiency, getCreditCost } = useCredit()
@@ -65,13 +58,7 @@ export default function AIChatInterface({
   }, [messages])
 
   // Inicia conversa se não houver histórico
-  useEffect(() => {
-    if (user && messages.length === 0) {
-      initializeConversation()
-    }
-  }, [user, selectedAssistant])
-
-  const initializeConversation = async () => {
+  const initializeConversation = useCallback(async () => {
     if (!user) return
 
     try {
@@ -86,7 +73,13 @@ export default function AIChatInterface({
       console.error('Erro ao inicializar conversa:', error)
       toast.error('Erro ao conectar com o assistente')
     }
-  }
+  }, [user, selectedAssistant])
+
+  useEffect(() => {
+    if (user && messages.length === 0) {
+      initializeConversation()
+    }
+  }, [user, messages.length, initializeConversation])
 
   const sendMessage = async () => {
     if (!inputMessage.trim() || !user || isLoading) return

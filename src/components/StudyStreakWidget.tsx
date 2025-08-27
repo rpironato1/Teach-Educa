@@ -61,7 +61,7 @@ export default function StudyStreakWidget({ className = '' }: StudyStreakWidgetP
     if (days >= 90) return { level: 'Épico', color: 'text-purple-500', bgColor: 'bg-purple-50 border-purple-200' }
     if (days >= 30) return { level: 'Avançado', color: 'text-blue-500', bgColor: 'bg-blue-50 border-blue-200' }
     if (days >= 7) return { level: 'Iniciante', color: 'text-green-500', bgColor: 'bg-green-50 border-green-200' }
-    return { level: 'Começando', color: 'text-gray-500', bgColor: 'bg-gray-50 border-gray-200' }
+    return { level: 'Começando', color: 'text-gray-700', bgColor: 'bg-gray-50 border-gray-200' }
   }
 
   const streakLevel = getStreakLevel(streak.currentStreak)
