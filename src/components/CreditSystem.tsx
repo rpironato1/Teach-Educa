@@ -19,14 +19,13 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+
 import { Separator } from '@/components/ui/separator';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { useKV } from '@github/spark/hooks';
 import { toast } from 'sonner';
 
 interface CreditSystemProps {
-  onUpgrade?: () => void;
   showFullInterface?: boolean;
 }
 
@@ -67,7 +66,7 @@ const PLANS = {
   profissional: { credits: 1000, price: 179, name: 'Profissional' }
 };
 
-export default function CreditSystem({ onUpgrade, showFullInterface = true }: CreditSystemProps) {
+export default function CreditSystem({ showFullInterface = true }: CreditSystemProps) {
   const [subscription, setSubscription] = useKV<Subscription>('user-subscription', {
     plan: 'inicial',
     credits: 85,

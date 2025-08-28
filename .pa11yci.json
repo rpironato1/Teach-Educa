@@ -1,0 +1,23 @@
+{
+  "sitemap": "http://localhost:5000/sitemap.xml",
+  "urls": [
+    "http://localhost:5000"
+  ],
+  "defaults": {
+    "timeout": 30000,
+    "wait": 500,
+    "chromeLaunchConfig": {
+      "executablePath": "/opt/google/chrome/chrome",
+      "args": [
+        "--no-sandbox",
+        "--disable-dev-shm-usage",
+        "--disable-setuid-sandbox"
+      ]
+    },
+    "standard": "WCAG2AA",
+    "level": "error",
+    "ignore": [
+      "color-contrast"
+    ]
+  }
+}

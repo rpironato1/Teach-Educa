@@ -28,10 +28,10 @@ interface CompetitiveLeaderboardProps {
 }
 
 export default function CompetitiveLeaderboard({ className = '' }: CompetitiveLeaderboardProps) {
-  const { leaderboard, analyticsData, loadLeaderboard } = useAnalytics()
+  const { leaderboard, analyticsData: _analyticsData, loadLeaderboard } = useAnalytics()
   const { user } = useAuth()
   const [selectedPeriod, setSelectedPeriod] = useState<'daily' | 'weekly' | 'monthly' | 'alltime'>('weekly')
-  const [showDetails, setShowDetails] = useState(false)
+  const [_showDetails, _setShowDetails] = useState(false)
 
   // Mock competition data
   const [activeCompetitions] = useState([

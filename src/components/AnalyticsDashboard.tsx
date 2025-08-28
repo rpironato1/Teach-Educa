@@ -23,7 +23,6 @@ import {
   Target,
   Star,
   TrendingUp,
-  Calendar,
   Medal,
   Award,
   Users,
@@ -38,7 +37,6 @@ export default function AnalyticsDashboard({ className = '' }: AnalyticsDashboar
   const { 
     analyticsData, 
     leaderboard, 
-    notifications,
     isLoading, 
     error,
     refreshData 

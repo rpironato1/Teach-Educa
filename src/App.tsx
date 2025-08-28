@@ -303,7 +303,7 @@ function AppContent() {
   return (
     <div className="min-h-screen bg-background">
       {/* Navigation */}
-      <nav className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
+      <nav className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-border" role="navigation" aria-label="Main navigation">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <motion.div 
@@ -311,7 +311,7 @@ function AppContent() {
               animate={{ opacity: 1, x: 0 }}
               className="flex items-center space-x-2"
             >
-              <Brain className="h-8 w-8 text-primary" weight="duotone" />
+              <Brain className="h-8 w-8 text-primary" weight="duotone" aria-hidden="true" />
               <span className="text-2xl font-bold text-foreground">TeacH</span>
             </motion.div>
 
@@ -374,6 +374,9 @@ function AppContent() {
                 size="sm"
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                 className="focus-enhanced"
+                aria-label={mobileMenuOpen ? "Fechar menu" : "Abrir menu"}
+                aria-expanded={mobileMenuOpen}
+                aria-controls="mobile-navigation"
               >
                 {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
               </Button>
@@ -383,6 +386,7 @@ function AppContent() {
           {/* Mobile Navigation */}
           {mobileMenuOpen && (
             <motion.div 
+              id="mobile-navigation"
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               className="md:hidden pb-4"
@@ -455,6 +459,7 @@ function AppContent() {
       </nav>
 
       {/* Hero Section */}
+      <main>
       <section id="inicio" className="gradient-hero py-20 lg:py-32">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
@@ -685,14 +690,15 @@ function AppContent() {
           </motion.div>
         </div>
       </section>
+      </main>
 
       {/* Footer */}
-      <footer className="bg-muted/30 border-t border-border">
+      <footer className="bg-muted/30 border-t border-border" role="contentinfo" aria-label="Site footer">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="grid md:grid-cols-4 gap-8">
             <div className="space-y-4">
               <div className="flex items-center space-x-2">
-                <Brain className="h-8 w-8 text-primary" weight="duotone" />
+                <Brain className="h-8 w-8 text-primary" weight="duotone" aria-hidden="true" />
                 <span className="text-2xl font-bold text-foreground">TeacH</span>
               </div>
               <p className="text-muted-foreground text-sm leading-relaxed">
@@ -750,20 +756,22 @@ function AppContent() {
       {/* SplashCursor overlay with neuroadaptive colors matching the platform theme */}
       <ErrorBoundary fallback={null}>
         <Suspense fallback={null}>
-          <SplashCursor 
-            SIM_RESOLUTION={64}
-            DYE_RESOLUTION={512}
-            DENSITY_DISSIPATION={1.2}
-            VELOCITY_DISSIPATION={0.8}
-            PRESSURE={0.3}
-            CURL={8}
-            SPLAT_RADIUS={0.25}
-            SPLAT_FORCE={2000}
-            SHADING={true}
-            COLOR_UPDATE_SPEED={8}
-            TRANSPARENT={true}
-            BACK_COLOR={{ r: 0, g: 0, b: 0 }}
-          />
+          <div role="presentation" aria-hidden="true">
+            <SplashCursor 
+              SIM_RESOLUTION={64}
+              DYE_RESOLUTION={512}
+              DENSITY_DISSIPATION={1.2}
+              VELOCITY_DISSIPATION={0.8}
+              PRESSURE={0.3}
+              CURL={8}
+              SPLAT_RADIUS={0.25}
+              SPLAT_FORCE={2000}
+              SHADING={true}
+              COLOR_UPDATE_SPEED={8}
+              TRANSPARENT={true}
+              BACK_COLOR={{ r: 0, g: 0, b: 0 }}
+            />
+          </div>
         </Suspense>
       </ErrorBoundary>
 

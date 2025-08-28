@@ -40,12 +40,12 @@
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
+  --primary: oklch(0.15 0 0); /* Even darker for better contrast - was 0.18 */
+  --primary-foreground: oklch(1 0 0); /* Pure white for maximum contrast - was 0.985 */
+  --secondary: oklch(0.92 0 0); /* Even lighter background for better contrast - was 0.95 */
+  --secondary-foreground: oklch(0.12 0 0); /* Even darker text for better contrast - was 0.15 */
   --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
+  --muted-foreground: oklch(0.45 0 0); /* Darker for better contrast - was 0.556 */
   --accent: oklch(0.97 0 0);
   --accent-foreground: oklch(0.205 0 0);
   --destructive: oklch(0.577 0.245 27.325);
@@ -59,8 +59,8 @@
   --chart-5: oklch(0.769 0.188 70.08);
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.18 0 0); /* Match primary color */
+  --sidebar-primary-foreground: oklch(1 0 0); /* Match primary foreground */
   --sidebar-accent: oklch(0.97 0 0);
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
@@ -183,5 +183,68 @@
 
   body {
     @apply bg-background text-foreground;
+  }
+  
+  /* Force better contrast for accessibility */
+  .bg-primary {
+    background-color: #1d4ed8 !important; /* Force dark blue for 4.5:1 contrast */
+  }
+  
+  .bg-primary:hover,
+  .hover\:bg-primary\/90:hover {
+    background-color: #1e40af !important; /* Force even darker blue on hover */
+  }
+  
+  .text-primary-foreground {
+    color: #ffffff !important; /* Force pure white */
+  }
+  
+  .bg-secondary {
+    background-color: #e5e7eb !important; /* Force light gray */
+  }
+  
+  .text-secondary-foreground {
+    color: #111827 !important; /* Force dark gray */
+  }
+  
+  .hover\:bg-secondary\/90:hover {
+    background-color: #d1d5db !important; /* Darker gray on hover */
+  }
+  
+  /* Fix outline button contrast */
+  button[variant="outline"] {
+    color: #111827 !important;
+    border-color: #374151 !important;
+  }
+  
+  .hover\:bg-accent:hover {
+    background-color: #f3f4f6 !important;
+    color: #111827 !important;
+  }
+
+  /* Fix more contrast issues specifically for pricing buttons */
+  .bg-primary {
+    background-color: #1d4ed8 !important; /* High contrast blue */
+  }
+  
+  .text-primary-foreground {
+    color: #ffffff !important; /* Pure white text */
+  }
+
+  /* Ensure all buttons have proper contrast */
+  button:not([disabled]) {
+    color: inherit !important;
+  }
+
+  /* Fix for specific pricing section buttons */
+  [data-slot="button"] {
+    color: inherit !important;
+    font-weight: 500 !important;
+  }
+
+  /* Force high contrast for all actionable elements */
+  .bg-secondary {
+    background-color: #e5e7eb !important;
+    color: #111827 !important;
   }
 }
