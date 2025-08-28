@@ -44,11 +44,21 @@ test.describe('Lighthouse Accessibility Score Check', () => {
     console.log(`🎯 Approximate accessibility score: ${score}/100`);
     
     if (violations.length > 0) {
-      console.log(`\n🔍 Remaining violations:`);
+      console.log(`\n🔍 Detailed violations:`);
       violations.forEach((violation: any, index: number) => {
-        console.log(`  ${index + 1}. ${violation.id} (${violation.impact})`);
+        console.log(`\n  ${index + 1}. ${violation.id} (${violation.impact})`);
         console.log(`     ${violation.description}`);
         console.log(`     Affected elements: ${violation.nodes.length}`);
+        
+        // Show specific elements
+        violation.nodes.forEach((node: any, nodeIndex: number) => {
+          console.log(`     Element ${nodeIndex + 1}:`);
+          console.log(`       Target: ${node.target.join(', ')}`);
+          console.log(`       HTML: ${node.html.substring(0, 150)}...`);
+          if (node.failureSummary) {
+            console.log(`       Issue: ${node.failureSummary.substring(0, 200)}...`);
+          }
+        });
       });
     }
     

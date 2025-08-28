@@ -752,20 +752,22 @@ function AppContent() {
       {/* SplashCursor overlay with neuroadaptive colors matching the platform theme */}
       <ErrorBoundary fallback={null}>
         <Suspense fallback={null}>
-          <SplashCursor 
-            SIM_RESOLUTION={64}
-            DYE_RESOLUTION={512}
-            DENSITY_DISSIPATION={1.2}
-            VELOCITY_DISSIPATION={0.8}
-            PRESSURE={0.3}
-            CURL={8}
-            SPLAT_RADIUS={0.25}
-            SPLAT_FORCE={2000}
-            SHADING={true}
-            COLOR_UPDATE_SPEED={8}
-            TRANSPARENT={true}
-            BACK_COLOR={{ r: 0, g: 0, b: 0 }}
-          />
+          <div role="presentation" aria-hidden="true">
+            <SplashCursor 
+              SIM_RESOLUTION={64}
+              DYE_RESOLUTION={512}
+              DENSITY_DISSIPATION={1.2}
+              VELOCITY_DISSIPATION={0.8}
+              PRESSURE={0.3}
+              CURL={8}
+              SPLAT_RADIUS={0.25}
+              SPLAT_FORCE={2000}
+              SHADING={true}
+              COLOR_UPDATE_SPEED={8}
+              TRANSPARENT={true}
+              BACK_COLOR={{ r: 0, g: 0, b: 0 }}
+            />
+          </div>
         </Suspense>
       </ErrorBoundary>
 
