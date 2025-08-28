@@ -39,6 +39,8 @@
         "check:lint": "eslint . && prettier --check .",
         "check:types": "tsc --noEmit",
         "check:test": "vitest --coverage",
+        "test:unit": "vitest --coverage --run",
+        "test:unit:watch": "vitest --coverage",
         "check:e2e": "playwright test",
         "check:security": "npm audit",
         "check:a11y": "pa11y-ci",
