@@ -1,36 +1,55 @@
 import { test, expect } from '@playwright/test';
 
-test.describe('Supabase localStorage Integration', () => {
+test.describe('Enhanced Supabase localStorage Integration', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/');
-    await page.evaluate(() => localStorage.clear());
+    await page.evaluate(() => {
+      localStorage.clear();
+      sessionStorage.clear();
+    });
   });
 
   test('should store user data in Supabase-compatible format', async ({ page }) => {
-    // Mock login to trigger data storage
+    // Mock comprehensive user data storage
     await page.evaluate(() => {
       const userData = {
         id: 'user-123',
         email: 'test@example.com',
-        name: 'Test User',
+        full_name: 'Test User',
+        cpf: '123.456.789-00',
+        phone: '(11) 99999-9999',
+        role: 'user',
+        subscription_plan: 'intermediario',
+        credits_balance: 500,
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
-        subscription_plan: 'pro',
-        sessionId: 'session-123'
+        last_login_at: new Date().toISOString(),
+        metadata: {
+          sessionId: 'session-123',
+          login_count: 5,
+          premium_features_enabled: true
+        }
       };
-      localStorage.setItem('teacheduca_user', JSON.stringify(userData));
+      localStorage.setItem('supabase_users_user-123', JSON.stringify([userData]));
     });
 
-    // Verify data structure
+    // Verify comprehensive data structure
     const storedUser = await page.evaluate(() => {
-      const user = localStorage.getItem('teacheduca_user');
-      return user ? JSON.parse(user) : null;
+      const users = localStorage.getItem('supabase_users_user-123');
+      return users ? JSON.parse(users)[0] : null;
     });
 
     expect(storedUser).toHaveProperty('id');
+    expect(storedUser).toHaveProperty('email');
+    expect(storedUser).toHaveProperty('full_name');
+    expect(storedUser).toHaveProperty('subscription_plan');
+    expect(storedUser).toHaveProperty('credits_balance');
     expect(storedUser).toHaveProperty('created_at');
     expect(storedUser).toHaveProperty('updated_at');
+    expect(storedUser).toHaveProperty('last_login_at');
     expect(storedUser.email).toBe('test@example.com');
+    expect(storedUser.subscription_plan).toBe('intermediario');
+    expect(storedUser.credits_balance).toBe(500);
   });
 
   test('should store conversations with proper schema', async ({ page }) => {
@@ -38,23 +57,25 @@ test.describe('Supabase localStorage Integration', () => {
       const conversationData = {
         id: 'conv-123',
         user_id: 'user-123',
-        assistant_id: 'assistant-math',
+        assistant_id: 'math-tutor',
         title: 'Mathematics Study Session',
         message_count: 5,
         total_credits_used: 15,
         status: 'active',
         created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString()
+        updated_at: new Date().toISOString(),
+        metadata: {
+          subject: 'Matemática',
+          difficulty: 'intermediate',
+          last_topic: 'Equações quadráticas'
+        }
       };
       
-      // Store in conversations table format
-      const conversations = JSON.parse(localStorage.getItem('teacheduca_conversations') || '[]');
-      conversations.push(conversationData);
-      localStorage.setItem('teacheduca_conversations', JSON.stringify(conversations));
+      localStorage.setItem('supabase_conversations_user-123', JSON.stringify([conversationData]));
     });
 
     const storedConversations = await page.evaluate(() => {
-      const convs = localStorage.getItem('teacheduca_conversations');
+      const convs = localStorage.getItem('supabase_conversations_user-123');
       return convs ? JSON.parse(convs) : [];
     });
 
@@ -62,7 +83,9 @@ test.describe('Supabase localStorage Integration', () => {
     expect(storedConversations[0]).toHaveProperty('user_id');
     expect(storedConversations[0]).toHaveProperty('assistant_id');
     expect(storedConversations[0]).toHaveProperty('message_count');
+    expect(storedConversations[0]).toHaveProperty('total_credits_used');
     expect(storedConversations[0].status).toBe('active');
+    expect(storedConversations[0].assistant_id).toBe('math-tutor');
   });
 
   test('should store messages with proper relationships', async ({ page }) => {

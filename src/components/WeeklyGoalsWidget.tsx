@@ -3,7 +3,7 @@ import { motion } from 'framer-motion'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
-import { useAnalytics } from '@/contexts/AnalyticsContext'
+// import { useAnalytics } from '@/contexts/AnalyticsContext' - unused
 import { Target, Calendar, CheckCircle, Clock, TrendingUp } from '@phosphor-icons/react'
 
 interface WeeklyGoalsWidgetProps {
