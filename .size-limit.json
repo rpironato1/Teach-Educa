@@ -1,0 +1,14 @@
+[
+  {
+    "path": "dist/assets/*.js",
+    "limit": "2 MB"
+  },
+  {
+    "path": "dist/assets/*.css",
+    "limit": "100 KB"
+  },
+  {
+    "path": "dist/index.html",
+    "limit": "50 KB"
+  }
+]

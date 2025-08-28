@@ -374,6 +374,9 @@ function AppContent() {
                 size="sm"
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                 className="focus-enhanced"
+                aria-label={mobileMenuOpen ? "Fechar menu" : "Abrir menu"}
+                aria-expanded={mobileMenuOpen}
+                aria-controls="mobile-navigation"
               >
                 {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
               </Button>
@@ -383,6 +386,7 @@ function AppContent() {
           {/* Mobile Navigation */}
           {mobileMenuOpen && (
             <motion.div 
+              id="mobile-navigation"
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               className="md:hidden pb-4"

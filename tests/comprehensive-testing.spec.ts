@@ -25,11 +25,11 @@ const INTERACTIVE_ELEMENTS = [
 ];
 
 test.describe('Comprehensive Accessibility and Functionality Testing', () => {
-  let testResults: any[] = [];
-  let screenshots: any[] = [];
-  let accessibilityIssues: any[] = [];
-  let missingAssets: any[] = [];
-  let brokenFunctions: any[] = [];
+  const testResults: any[] = [];
+  const screenshots: any[] = [];
+  const accessibilityIssues: any[] = [];
+  const missingAssets: any[] = [];
+  const brokenFunctions: any[] = [];
 
   test.beforeEach(async ({ page }) => {
     // Enable dev tools

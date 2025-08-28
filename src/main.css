@@ -221,4 +221,30 @@
     background-color: #f3f4f6 !important;
     color: #111827 !important;
   }
+
+  /* Fix more contrast issues specifically for pricing buttons */
+  .bg-primary {
+    background-color: #1d4ed8 !important; /* High contrast blue */
+  }
+  
+  .text-primary-foreground {
+    color: #ffffff !important; /* Pure white text */
+  }
+
+  /* Ensure all buttons have proper contrast */
+  button:not([disabled]) {
+    color: inherit !important;
+  }
+
+  /* Fix for specific pricing section buttons */
+  [data-slot="button"] {
+    color: inherit !important;
+    font-weight: 500 !important;
+  }
+
+  /* Force high contrast for all actionable elements */
+  .bg-secondary {
+    background-color: #e5e7eb !important;
+    color: #111827 !important;
+  }
 }
