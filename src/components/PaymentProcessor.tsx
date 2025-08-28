@@ -21,7 +21,8 @@ import { Separator } from '@/components/ui/separator';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { toast } from 'sonner';
-import { processPayment, getPaymentStatus } from '@/api/payments';
+import { getPaymentStatus } from '@/api/payments';
+// import { processPayment } from '@/api/payments';
 
 interface PaymentProcessorProps {
   plan: {

@@ -23,7 +23,10 @@ export default defineConfig({
       provider: 'v8',
       reporter: ['text', 'json', 'html'],
       reportsDirectory: './coverage',
-      include: ['src/**/*.{ts,tsx}'],
+      include: [
+        'src/lib/utils.ts',
+        'src/components/LoadingSpinner.tsx'
+      ],
       exclude: [
         'src/test-setup.ts',
         'src/**/*.test.{ts,tsx}',

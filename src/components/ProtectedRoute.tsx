@@ -18,7 +18,8 @@ export default function ProtectedRoute({
   redirectTo
 }: ProtectedRouteProps) {
   const { isAuthenticated, user, isLoading } = useAuth()
-  const { guardRoute, redirectToAppropriateRoute, logSecurityEvent } = useSecureRedirect()
+  const { redirectToAppropriateRoute, logSecurityEvent } = useSecureRedirect()
+  // const guardRoute = unused
 
   useEffect(() => {
     if (isLoading) return

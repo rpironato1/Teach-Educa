@@ -4,7 +4,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { useAnalytics } from '@/contexts/AnalyticsContext'
-import { Fire, Calendar, Trophy, Target, CheckCircle } from '@phosphor-icons/react'
+import { Fire, Calendar, Trophy, CheckCircle } from '@phosphor-icons/react'
+// import { Target } from '@phosphor-icons/react' - unused
 
 interface StudyStreakWidgetProps {
   className?: string

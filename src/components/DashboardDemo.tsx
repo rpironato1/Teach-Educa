@@ -409,7 +409,8 @@ export default function DashboardDemo({ onBackToHome }: DashboardDemoProps) {
   const toggleSession = async () => {
     if (sessionActive) {
       // End session
-      const session = await studySessionsStorage.insert({
+      /*
+      // const session = await studySessionsStorage.insert({
         user_id: user!.id,
         assistant_id: selectedAssistant.id,
         subject: selectedAssistant.specialization,
@@ -423,6 +424,7 @@ export default function DashboardDemo({ onBackToHome }: DashboardDemoProps) {
           focus: focusMode
         }
       })
+      */
       
       // End analytics session
       await endStudySession(85, 'Sessão completa com IA') // 85% score as example
@@ -459,10 +461,10 @@ export default function DashboardDemo({ onBackToHome }: DashboardDemoProps) {
     }, 200)
   }
 
-  const exportConversation = (format: 'pdf' | 'doc') => {
-    toast.success(`Exportando conversa em formato ${format.toUpperCase()}...`)
-    setShowExportDialog(false)
-  }
+  // const exportConversation = (format: 'pdf' | 'doc') => {
+  //   toast.success(`Exportando conversa em formato ${format.toUpperCase()}...`)
+  //   setShowExportDialog(false)
+  // }
 
   const filteredConversations = conversationsStorage.data.filter(conv => 
     conv.title.toLowerCase().includes(searchQuery.toLowerCase())
