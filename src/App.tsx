@@ -303,7 +303,7 @@ function AppContent() {
   return (
     <div className="min-h-screen bg-background">
       {/* Navigation */}
-      <nav className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
+      <nav className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-border" role="navigation" aria-label="Main navigation">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <motion.div 
@@ -311,7 +311,7 @@ function AppContent() {
               animate={{ opacity: 1, x: 0 }}
               className="flex items-center space-x-2"
             >
-              <Brain className="h-8 w-8 text-primary" weight="duotone" />
+              <Brain className="h-8 w-8 text-primary" weight="duotone" aria-hidden="true" />
               <span className="text-2xl font-bold text-foreground">TeacH</span>
             </motion.div>
 
@@ -455,6 +455,7 @@ function AppContent() {
       </nav>
 
       {/* Hero Section */}
+      <main>
       <section id="inicio" className="gradient-hero py-20 lg:py-32">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
@@ -685,14 +686,15 @@ function AppContent() {
           </motion.div>
         </div>
       </section>
+      </main>
 
       {/* Footer */}
-      <footer className="bg-muted/30 border-t border-border">
+      <footer className="bg-muted/30 border-t border-border" role="contentinfo" aria-label="Site footer">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="grid md:grid-cols-4 gap-8">
             <div className="space-y-4">
               <div className="flex items-center space-x-2">
-                <Brain className="h-8 w-8 text-primary" weight="duotone" />
+                <Brain className="h-8 w-8 text-primary" weight="duotone" aria-hidden="true" />
                 <span className="text-2xl font-bold text-foreground">TeacH</span>
               </div>
               <p className="text-muted-foreground text-sm leading-relaxed">

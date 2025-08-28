@@ -26,7 +26,11 @@
         "validate": "npm run lint && npm run build && npm run test:e2e",
         "health-check": "npm run validate && npm run test:performance",
         "generate-report": "tsx scripts/generate-test-report.ts",
-        "test:full-report": "npm run generate-report"
+        "test:full-report": "npm run generate-report",
+        "test:comprehensive": "tsx scripts/run-comprehensive-tests.ts",
+        "test:accessibility-only": "playwright test tests/comprehensive-testing.spec.ts --headed",
+        "test:lighthouse-only": "playwright test tests/lighthouse-ci.spec.ts --headed",
+        "test:assets-only": "playwright test tests/asset-functionality-mapping.spec.ts --headed"
     },
     "dependencies": {
         "@github/spark": "^0.39.0",
@@ -104,6 +108,7 @@
         "@vitejs/plugin-react": "^4.3.4",
         "@vitejs/plugin-react-swc": "^3.10.1",
         "axe-core": "^4.8.3",
+        "axe-playwright": "^2.1.0",
         "eslint": "^9.28.0",
         "eslint-plugin-react-hooks": "^5.2.0",
         "eslint-plugin-react-refresh": "^0.4.19",
