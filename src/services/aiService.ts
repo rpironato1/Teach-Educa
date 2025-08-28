@@ -3,6 +3,9 @@
  * Módulo 6: Múltiplos assistentes especializados com IA neuroadaptativa
  */
 
+// Counter for unique message IDs
+let messageIdCounter = 0
+
 export interface Assistant {
   id: string
   name: string
@@ -274,7 +277,7 @@ class AIService {
         const metadata = this.analyzeResponse(response, profile)
 
         return {
-          id: `assistant-${Date.now()}`,
+          id: `assistant-${Date.now()}-${++messageIdCounter}`,
           role: 'assistant',
           content: response,
           timestamp: new Date(),
@@ -340,7 +343,7 @@ class AIService {
     const randomResponse = responses[Math.floor(Math.random() * responses.length)]
 
     return {
-      id: `assistant-${Date.now()}`,
+      id: `assistant-${Date.now()}-${++messageIdCounter}`,
       role: 'assistant',
       content: `${randomResponse}\n\n⚠️ *Nota: API de IA indisponível. Resposta simulada para demonstração.*`,
       timestamp: new Date(),

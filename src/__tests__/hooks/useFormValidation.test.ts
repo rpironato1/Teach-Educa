@@ -58,7 +58,7 @@ describe('useFormValidation', () => {
       
       act(() => {
         result.current.updateField('password', '123')
-        result.current.touchField('password')
+        result.current.touchField('password', '123')
       })
       
       expect(result.current.errors.password).toBe('password deve ter pelo menos 6 caracteres')
@@ -72,7 +72,7 @@ describe('useFormValidation', () => {
       
       act(() => {
         result.current.updateField('username', 'verylongusername')
-        result.current.touchField('username')
+        result.current.touchField('username', 'verylongusername')
       })
       
       expect(result.current.errors.username).toBe('username deve ter no máximo 10 caracteres')
@@ -91,7 +91,7 @@ describe('useFormValidation', () => {
       
       act(() => {
         result.current.updateField('email', 'invalid-email')
-        result.current.touchField('email')
+        result.current.touchField('email', 'invalid-email')
       })
       
       expect(result.current.errors.email).toBe('Email inválido')
@@ -115,7 +115,7 @@ describe('useFormValidation', () => {
       
       act(() => {
         result.current.updateField('age', '15')
-        result.current.touchField('age')
+        result.current.touchField('age', '15')
       })
       
       expect(result.current.errors.age).toBe('Deve ser maior de idade')
@@ -151,7 +151,7 @@ describe('useFormValidation', () => {
       // Make some changes
       act(() => {
         result.current.updateField('email', 'test@example.com')
-        result.current.touchField('email')
+        result.current.touchField('email', 'test@example.com')
       })
       
       // Reset
@@ -285,7 +285,7 @@ describe('useFormValidation', () => {
       
       act(() => {
         result.current.updateField('count', 3)
-        result.current.touchField('count')
+        result.current.touchField('count', 3)
       })
       
       expect(result.current.errors.count).toBe('Must be at least 5')
@@ -302,7 +302,7 @@ describe('commonValidations', () => {
       
       act(() => {
         hook.result.current.updateField('email', 'test@example.com')
-        hook.result.current.touchField('email')
+        hook.result.current.touchField('email', 'test@example.com')
       })
       
       expect(hook.result.current.errors.email).toBeUndefined()
@@ -315,7 +315,7 @@ describe('commonValidations', () => {
       
       act(() => {
         hook.result.current.updateField('email', 'invalid-email')
-        hook.result.current.touchField('email')
+        hook.result.current.touchField('email', 'invalid-email')
       })
       
       expect(hook.result.current.errors.email).toBe('Email inválido')
@@ -330,7 +330,7 @@ describe('commonValidations', () => {
       
       act(() => {
         hook.result.current.updateField('password', '123')
-        hook.result.current.touchField('password')
+        hook.result.current.touchField('password', '123')
       })
       
       expect(hook.result.current.errors.password).toBe('password deve ter pelo menos 6 caracteres')
@@ -343,7 +343,7 @@ describe('commonValidations', () => {
       
       act(() => {
         hook.result.current.updateField('password', 'password123')
-        hook.result.current.touchField('password')
+        hook.result.current.touchField('password', 'password123')
       })
       
       expect(hook.result.current.errors.password).toBeUndefined()
@@ -358,7 +358,7 @@ describe('commonValidations', () => {
       
       act(() => {
         hook.result.current.updateField('password', 'password')
-        hook.result.current.touchField('password')
+        hook.result.current.touchField('password', 'password')
       })
       
       expect(hook.result.current.errors.password).toBe('Senha deve conter ao menos: 1 maiúscula, 1 minúscula e 1 número')
@@ -371,7 +371,7 @@ describe('commonValidations', () => {
       
       act(() => {
         hook.result.current.updateField('password', 'Password123')
-        hook.result.current.touchField('password')
+        hook.result.current.touchField('password', 'Password123')
       })
       
       expect(hook.result.current.errors.password).toBeUndefined()
@@ -386,7 +386,7 @@ describe('commonValidations', () => {
       
       act(() => {
         hook.result.current.updateField('cpf', '123.456.789-01')
-        hook.result.current.touchField('cpf')
+        hook.result.current.touchField('cpf', '123.456.789-01')
       })
       
       // Note: This will fail the check digit validation
@@ -400,7 +400,7 @@ describe('commonValidations', () => {
       
       act(() => {
         hook.result.current.updateField('cpf', '12345678901')
-        hook.result.current.touchField('cpf')
+        hook.result.current.touchField('cpf', '12345678901')
       })
       
       expect(hook.result.current.errors.cpf).toBe('CPF inválido')
@@ -415,7 +415,7 @@ describe('commonValidations', () => {
       
       act(() => {
         hook.result.current.updateField('name', 'João')
-        hook.result.current.touchField('name')
+        hook.result.current.touchField('name', 'João')
       })
       
       expect(hook.result.current.errors.name).toBe('Digite seu nome completo')
@@ -428,7 +428,7 @@ describe('commonValidations', () => {
       
       act(() => {
         hook.result.current.updateField('name', 'João da Silva')
-        hook.result.current.touchField('name')
+        hook.result.current.touchField('name', 'João da Silva')
       })
       
       expect(hook.result.current.errors.name).toBeUndefined()
@@ -441,7 +441,7 @@ describe('commonValidations', () => {
       
       act(() => {
         hook.result.current.updateField('name', 'João123 Silva')
-        hook.result.current.touchField('name')
+        hook.result.current.touchField('name', 'João123 Silva')
       })
       
       expect(hook.result.current.errors.name).toBe('Nome deve conter apenas letras')

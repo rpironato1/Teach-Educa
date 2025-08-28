@@ -25,7 +25,11 @@ Object.defineProperty(window, 'localStorage', {
 describe('useSupabaseStorage', () => {
   beforeEach(() => {
     vi.clearAllMocks()
+    // Reset all mock implementations to their defaults
     localStorageMock.getItem.mockReturnValue(null)
+    localStorageMock.setItem.mockImplementation(() => {})
+    localStorageMock.removeItem.mockImplementation(() => {})
+    localStorageMock.clear.mockImplementation(() => {})
   })
 
   afterEach(() => {
@@ -450,6 +454,8 @@ describe('useSupabaseStorage', () => {
       expect(consoleSpy).toHaveBeenCalled()
       
       consoleSpy.mockRestore()
+      // Reset the mock implementation back to normal
+      localStorageMock.setItem.mockImplementation(() => {})
     })
   })
 })

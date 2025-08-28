@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { render, screen, fireEvent, waitFor } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { toast } from 'sonner'
 import LoginForm from '@/components/auth/LoginForm'
@@ -77,17 +77,44 @@ describe('LoginForm', () => {
 
     const submitButton = screen.getByRole('button', { name: /entrar/i })
     
-    // Submit without email
+    // Submit without email first to verify validation works
     await user.click(submitButton)
-    
     expect(screen.getByText(/email é obrigatório/i)).toBeInTheDocument()
 
-    // Invalid email format
+    // Now test invalid email with valid password
     const emailInput = screen.getByLabelText(/email/i)
+    const passwordInput = screen.getByLabelText(/senha/i)
+    
+    // Clear both fields
+    await user.clear(emailInput)
+    await user.clear(passwordInput)
+    
+    // Type invalid email and valid password
     await user.type(emailInput, 'invalid-email')
+    await user.type(passwordInput, 'validpassword123')
+    
+    // Verify the values are set correctly
+    expect(emailInput).toHaveValue('invalid-email')
+    expect(passwordInput).toHaveValue('validpassword123')
+    
+    // Submit form to trigger validation
     await user.click(submitButton)
     
-    expect(screen.getByText(/email inválido/i)).toBeInTheDocument()
+    // Debug: Check if login was called
+    console.log('Login mock calls:', mockLogin.mock.calls.length)
+    
+    // Wait for validation errors to appear
+    await waitFor(() => {
+      // Debug: Check what errors exist
+      const allText = document.body.textContent || ''
+      console.log('All text in body after waitFor:', allText.substring(0, 500))
+      
+      // The validation should catch the invalid email and display error
+      expect(screen.getByText(/email inválido/i)).toBeInTheDocument()
+    })
+    
+    // The login function should NOT be called because validation failed
+    expect(mockLogin).not.toHaveBeenCalled()
   })
 
   it('validates password field correctly', async () => {

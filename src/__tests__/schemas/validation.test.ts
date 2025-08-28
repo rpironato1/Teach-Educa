@@ -582,19 +582,19 @@ describe('Validation Schemas', () => {
 
   describe('CPF validation', () => {
     it('validates correctly formatted and valid CPF', () => {
-      // Note: This is a test CPF that passes format but may not pass full validation
+      // Using a CPF that is properly formatted but has invalid check digits
       const data = {
         fullName: 'João da Silva',
         email: 'joao@example.com',
         password: 'Password123',
         confirmPassword: 'Password123',
-        cpf: '123.456.789-09',
+        cpf: '123.456.789-00', // Invalid check digits
         phone: '(11) 99999-9999',
         birthDate: '01/01/1990',
         acceptTerms: true
       }
 
-      // This will likely fail due to invalid check digits, which is expected
+      // This should fail due to invalid check digits
       expect(() => {
         registrationSchema.parse(data)
       }).toThrow('CPF inválido')

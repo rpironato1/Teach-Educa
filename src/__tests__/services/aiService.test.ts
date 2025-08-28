@@ -467,8 +467,8 @@ describe('AIService', () => {
       const response2 = await aiService.sendMessage('user123', 'math-tutor', 'Message 2')
       
       expect(response1.id).not.toBe(response2.id)
-      expect(response1.id).toMatch(/^assistant-\d+$/)
-      expect(response2.id).toMatch(/^assistant-\d+$/)
+      expect(response1.id).toMatch(/^assistant-\d+-\d+$/)
+      expect(response2.id).toMatch(/^assistant-\d+-\d+$/)
     })
 
     it('includes timestamps', async () => {

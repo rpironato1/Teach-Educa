@@ -331,13 +331,18 @@ describe('AnalyticsService', () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          userId: 'user123',
-          subject: 'Matemática',
-          score: 85,
-          maxScore: 100,
-          timestamp: expect.any(Date)
-        }),
+        body: expect.stringContaining('"userId":"user123"'),
+      })
+      
+      // Additionally, verify the body contains the expected structure
+      const callArgs = mockFetch.mock.calls[0]
+      const body = JSON.parse(callArgs[1].body)
+      expect(body).toEqual({
+        userId: 'user123',
+        subject: 'Matemática',
+        score: 85,
+        maxScore: 100,
+        timestamp: expect.any(String)
       })
     })
 
