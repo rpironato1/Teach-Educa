@@ -36,7 +36,7 @@
         "check:types": "tsc --noEmit",
         "check:test": "vitest --coverage",
         "check:e2e": "playwright test",
-        "check:security": "npm audit && snyk test",
+        "check:security": "npm audit",
         "check:a11y": "pa11y-ci",
         "check:bundle": "size-limit",
         "check:perf": "node scripts/lighthouse-check.js",

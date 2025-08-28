@@ -29,8 +29,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Separator } from '@/components/ui/separator'
 // import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { Switch } from '@/components/ui/switch'
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
-import { Slider } from '@/components/ui/slider'
+// import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
+// import { Slider } from '@/components/ui/slider'
 import { useAuth } from '@/contexts/AuthContext'
 import { 
   useSupabaseStorage, 
@@ -38,14 +38,14 @@ import {
   SupabaseMessage, 
   SupabaseStudySession 
 } from '@/hooks/useSupabaseStorage'
-import CreditDashboard from '@/components/CreditDashboard'
+// import CreditDashboard from '@/components/CreditDashboard'
 import CreditWidget from '@/components/CreditWidget'
 import PaymentFlow from '@/components/PaymentFlow'
 import SubscriptionManager from '@/components/SubscriptionManager'
 import { useCredit } from '@/contexts/CreditContext'
 import { useAnalytics } from '@/contexts/AnalyticsContext'
 import AnalyticsWidget from '@/components/AnalyticsWidget'
-import AnalyticsDashboard from '@/components/AnalyticsDashboard'
+// import AnalyticsDashboard from '@/components/AnalyticsDashboard'
 import AnalyticsOverview from '@/components/AnalyticsOverview'
 import AchievementSystem from '@/components/AchievementSystem'
 import CompetitiveLeaderboard from '@/components/CompetitiveLeaderboard'
@@ -54,7 +54,8 @@ import { toast } from 'sonner'
 import AIChatInterface from '@/components/AIChatInterface'
 import AssistantSelector from '@/components/AssistantSelector'
 import ContentGenerator from '@/components/ContentGenerator'
-import { aiService, type Assistant, AVAILABLE_ASSISTANTS } from '@/services/aiService'
+// Commented out unused imports
+// import { aiService, type Assistant, AVAILABLE_ASSISTANTS } from '@/services/aiService'
 
 interface DashboardDemoProps {
   onBackToHome: () => void
@@ -90,10 +91,11 @@ interface Lesson {
 
 export default function DashboardDemo({ onBackToHome }: DashboardDemoProps) {
   const { user } = useAuth()
-  const { startStudySession, endStudySession, checkAchievements } = useAnalytics()
+  const { startStudySession, endStudySession } = useAnalytics()
+  // const [checkAchievements] = unused
   const [activeTab, setActiveTab] = useState('chat')
-  const [currentMessage, setCurrentMessage] = useState('')
-  const [isTyping, setIsTyping] = useState(false)
+  // const [currentMessage, setCurrentMessage] = useState('')
+  // const [isTyping, setIsTyping] = useState(false)
   const [selectedAssistant, setSelectedAssistant] = useState<Assistant>(AVAILABLE_ASSISTANTS[0])
   const [focusMode, setFocusMode] = useState(false)
   const [sessionTime, setSessionTime] = useState(0)
@@ -101,20 +103,17 @@ export default function DashboardDemo({ onBackToHome }: DashboardDemoProps) {
   const [speechEnabled, setSpeechEnabled] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
-  const [showExportDialog, setShowExportDialog] = useState(false)
-  const [copiedText, setCopiedText] = useState('')
-  const [uploadProgress, setUploadProgress] = useState(0)
-  const [isUploading, setIsUploading] = useState(false)
+  // const [showExportDialog, setShowExportDialog] = useState(false)
+  // const [copiedText, setCopiedText] = useState('')
+  // const [uploadProgress, setUploadProgress] = useState(0)
+  // const [isUploading, setIsUploading] = useState(false)
   
   // Credit system state
   const [showPaymentFlow, setShowPaymentFlow] = useState(false)
   const [showSubscriptionManager, setShowSubscriptionManager] = useState(false)
   const { 
-    consumeCredits, 
-    checkCreditSufficiency, 
-    getCreditCost, 
-    balance,
-    currentPlan 
+    consumeCredits
+    // checkCreditSufficiency
   } = useCredit()
   
   const messagesEndRef = useRef<HTMLDivElement>(null)
@@ -129,10 +128,10 @@ export default function DashboardDemo({ onBackToHome }: DashboardDemoProps) {
   // Current conversation state
   const [currentConversationId, setCurrentConversationId] = useState<string | null>(null)
   const [messages, setMessages] = useState<ChatMessage[]>([])
-  const [completedLessons, setCompletedLessons] = useState<string[]>(() => {
-    const saved = localStorage.getItem(`completed_lessons_${user?.id}`)
-    return saved ? JSON.parse(saved) : []
-  })
+  // const [completedLessons, setCompletedLessons] = useState<string[]>(() => {
+  //   const saved = localStorage.getItem(`completed_lessons_${user?.id}`)
+  //   return saved ? JSON.parse(saved) : []
+  // })
 
   // Load current conversation messages
   useEffect(() => {
@@ -227,92 +226,93 @@ export default function DashboardDemo({ onBackToHome }: DashboardDemoProps) {
     return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`
   }
 
-  const handleSendMessage = async () => {
-    if (!currentMessage.trim() || isTyping || !user) return
+  // const handleSendMessage = async () => {
+  //   if (!currentMessage.trim() || isTyping || !user) return
 
-    const assistant = AVAILABLE_ASSISTANTS.find(a => a.id === selectedAssistant.id)!
-    
-    // Check if user has enough credits before proceeding
-    if (!checkCreditSufficiency(assistant.creditsPerMessage)) {
-      toast.error('Créditos insuficientes para esta conversa')
-      setShowPaymentFlow(true)
-      return
-    }
+  //   const assistant = AVAILABLE_ASSISTANTS.find(a => a.id === selectedAssistant.id)!
+  //   
+  //   // Check if user has enough credits before proceeding
+  //   if (!checkCreditSufficiency(assistant.creditsPerMessage)) {
+  //     toast.error('Créditos insuficientes para esta conversa')
+  //     setShowPaymentFlow(true)
+  //     return
+  //   }
 
-    // Create or get current conversation
-    let conversationId = currentConversationId
-    if (!conversationId) {
-      const newConversation = await conversationsStorage.insert({
-        user_id: user.id,
-        assistant_id: selectedAssistant.id,
-        title: currentMessage.substring(0, 50) + '...',
-        message_count: 0,
-        total_credits_used: 0,
-        status: 'active' as const
-      })
-      conversationId = newConversation.id
-      setCurrentConversationId(conversationId)
-    }
+  //   // Create or get current conversation
+  //   let conversationId = currentConversationId
+  //   if (!conversationId) {
+  //     const newConversation = await conversationsStorage.insert({
+  //       user_id: user.id,
+  //       assistant_id: selectedAssistant.id,
+  //       title: currentMessage.substring(0, 50) + '...',
+  //       message_count: 0,
+  //       total_credits_used: 0,
+  //       status: 'active' as const
+  //     })
+  //     conversationId = newConversation.id
+  //     setCurrentConversationId(conversationId)
+  //   }
 
-    // Start analytics session if not already active
-    if (!sessionActive) {
-      setSessionActive(true)
-      await startStudySession(assistant.specialization, currentMessage.substring(0, 50))
-    }
+  //   // Start analytics session if not already active
+  //   if (!sessionActive) {
+  //     setSessionActive(true)
+  //     await startStudySession(assistant.specialization, currentMessage.substring(0, 50))
+  //   }
 
-    // Save user message
-    const userMessage = await messagesStorage.insert({
-      conversation_id: conversationId,
-      role: 'user' as const,
-      content: currentMessage,
-      credits_used: 0,
-      metadata: {
-        assistant_id: selectedAssistant.id
-      }
-    })
+  //   // Save user message
+  //   const userMessage = await messagesStorage.insert({
+  //     conversation_id: conversationId,
+  //     role: 'user' as const,
+  //     content: currentMessage,
+  //     credits_used: 0,
+  //     metadata: {
+  //       assistant_id: selectedAssistant.id
+  //     }
+  //   })
 
-    setCurrentMessage('')
-    setIsTyping(true)
+  //   setCurrentMessage('')
+  //   setIsTyping(true)
 
-    // Simulate AI response
-    setTimeout(async () => {
-      const assistantResponse = await messagesStorage.insert({
-        conversation_id: conversationId,
-        role: 'assistant' as const,
-        content: generateAIResponse(currentMessage, assistant),
-        credits_used: assistant.creditsPerMessage,
-        metadata: {
-          assistant_id: selectedAssistant.id,
-          blocks: generateContentBlocks(currentMessage)
-        }
-      })
+  //   // Simulate AI response
+  //   setTimeout(async () => {
+  //     const assistantResponse = await messagesStorage.insert({
+  //       conversation_id: conversationId,
+  //       role: 'assistant' as const,
+  //       content: generateAIResponse(currentMessage, assistant),
+  //       credits_used: assistant.creditsPerMessage,
+  //       metadata: {
+  //         assistant_id: selectedAssistant.id,
+  //         blocks: generateContentBlocks(currentMessage)
+  //       }
+  //     })
 
-      // Update conversation
-      await conversationsStorage.update(conversationId, {
-        message_count: messages.length + 2,
-        total_credits_used: assistant.creditsPerMessage
-      })
+  //     // Update conversation
+  //     await conversationsStorage.update(conversationId, {
+  //       message_count: messages.length + 2,
+  //       total_credits_used: assistant.creditsPerMessage
+  //     })
       
-      // Consume credits using our new system
-      const success = await consumeCredits(
-        assistant.creditsPerMessage, 
-        `Conversa com ${assistant.name}`
-      )
+  //     // Consume credits using our new system
+  //     const success = await consumeCredits(
+  //       assistant.creditsPerMessage, 
+  //       `Conversa com ${assistant.name}`
+  //     )
       
-      setIsTyping(false)
+  //     setIsTyping(false)
 
-      if (speechEnabled) {
-        speakText(assistantResponse.content)
-      }
+  //     if (speechEnabled) {
+  //       speakText(assistantResponse.content)
+  //     }
 
-      if (success) {
-        toast.success(`Resposta gerada! (-${assistant.creditsPerMessage} créditos)`)
-        // Check for achievements after each interaction
-        await checkAchievements()
-      }
-    }, 2000)
-  }
+  //     if (success) {
+  //       toast.success(`Resposta gerada! (-${assistant.creditsPerMessage} créditos)`)
+  //       // Check for achievements after each interaction
+  //       await checkAchievements()
+  //     }
+  //   }, 2000)
+  // }
 
+  /*
   const generateAIResponse = (question: string, assistant: Assistant) => {
     const responses = {
       'maria': [
@@ -340,7 +340,9 @@ export default function DashboardDemo({ onBackToHome }: DashboardDemoProps) {
     const assistantResponses = responses[assistant.id as keyof typeof responses] || responses.maria
     return assistantResponses[Math.floor(Math.random() * assistantResponses.length)]
   }
+  */
 
+  /*
   const generateContentBlocks = (question: string): ContentBlock[] => {
     if (question.toLowerCase().includes('fórmula') || question.toLowerCase().includes('equação')) {
       return [
@@ -384,6 +386,7 @@ export default function DashboardDemo({ onBackToHome }: DashboardDemoProps) {
     toast.success('Texto copiado!')
     setTimeout(() => setCopiedText(''), 2000)
   }
+  */
 
   const startNewConversation = () => {
     setCurrentConversationId(null)
