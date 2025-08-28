@@ -34,6 +34,8 @@
         "check:all": "npm-run-all -p check:*",
         "check:basic": "npm-run-all -p check:security check:bundle check:test check:types",
         "check:comprehensive": "node scripts/check-with-fallback.cjs",
+        "check:core": "npm-run-all -s check:security check:bundle check:test",
+        "check:enhanced": "node scripts/check-all-enhanced.cjs",
         "check:lint": "eslint . && prettier --check .",
         "check:types": "tsc --noEmit",
         "check:test": "vitest --coverage",
