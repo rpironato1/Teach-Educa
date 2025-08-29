@@ -250,16 +250,21 @@ test.describe('Cross-Browser Compatibility Tests', () => {
           // Test arrow functions
           const arrowFn = () => 'test'
           
-          // Test template literals
+          // Test template literals - used in return
           const template = `test ${arrowFn()}`
           
-          // Test destructuring
-          const { length } = [1, 2, 3]
+          // Test destructuring - used for array length
+          const { length: arrayLength } = [1, 2, 3]
           
-          // Test async/await
+          // Test async/await - used in verification
           const asyncTest = async () => 'async'
           
-          return { arrow: true, template: true, destructuring: true, async: true }
+          return { 
+            arrow: true, 
+            template: template.length > 0, 
+            destructuring: arrayLength > 0, 
+            async: asyncTest !== null 
+          }
         } catch (error) {
           return { error: error.message }
         }

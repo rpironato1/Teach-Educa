@@ -46,7 +46,7 @@ export default function SessionManager({ onClose }: SessionManagerProps) {
     } finally {
       setIsLoading(false)
     }
-  }, [])
+  }, [getActiveSessions])
 
   useEffect(() => {
     loadSessions()

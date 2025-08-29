@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useReducer, useCallback, useEffect, useState } from 'react'
+import React, { createContext, useContext, useReducer, useCallback, useEffect, useState, useMemo } from 'react'
 import { useAuth } from './AuthContext'
 import { useCreditContext } from './CreditContext'
 import { 
@@ -164,7 +164,7 @@ export function AnalyticsProvider({ children }: AnalyticsProviderProps) {
   const notificationStorage = useSupabaseStorage<SupabaseNotification>('notifications', user?.id)
 
   // Default achievements data stored in localStorage
-  const defaultAchievements = [
+  const defaultAchievements = useMemo(() => [
     {
       id: 'first-session',
       title: 'Primeira Lição',
@@ -209,7 +209,7 @@ export function AnalyticsProvider({ children }: AnalyticsProviderProps) {
       rarity: 'legendary',
       isUnlocked: false
     }
-  ]
+  ], [])
 
   // Initialize analytics data with Supabase storage
   const loadAnalytics = useCallback(async () => {
@@ -415,7 +415,7 @@ export function AnalyticsProvider({ children }: AnalyticsProviderProps) {
     await checkAchievements()
     
     toast.success(`Sessão concluída! ${duration} minutos estudados.`)
-  }, [state.currentSession, user, studySessionStorage, analyticsStorage, loadAnalytics])
+  }, [state.currentSession, user, studySessionStorage, analyticsStorage, loadAnalytics, checkAchievements, updateStreak])
 
   // Check and unlock achievements with Supabase storage
   const checkAchievements = useCallback(async () => {
@@ -448,14 +448,14 @@ export function AnalyticsProvider({ children }: AnalyticsProviderProps) {
         await unlockAchievement(achievement.id)
       }
     }
-  }, [analyticsStorage.data, studySessionStorage.data])
+  }, [analyticsStorage.data, studySessionStorage.data, unlockAchievement])
 
   // Unlock specific achievement with Supabase storage
   const unlockAchievement = useCallback(async (achievementId: string) => {
     const currentAnalytics = analyticsStorage.data[0]
     if (!currentAnalytics) return
     
-    const achievement = currentAnalytics.data.achievements?.find((a: any) => a.id === achievementId)
+    const achievement = currentAnalytics.data.achievements?.find((a: Achievement) => a.id === achievementId)
     if (!achievement || achievement.isUnlocked) return
     
     // Create achievement record in Supabase
@@ -499,7 +499,7 @@ export function AnalyticsProvider({ children }: AnalyticsProviderProps) {
     }})
     
     // Update analytics data
-    const updatedAchievements = currentAnalytics.data.achievements.map((a: any) =>
+    const updatedAchievements = currentAnalytics.data.achievements.map((a: Achievement) =>
       a.id === achievementId ? { ...a, isUnlocked: true, unlockedAt: new Date() } : a
     )
     

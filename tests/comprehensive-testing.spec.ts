@@ -72,7 +72,7 @@ test.describe('Comprehensive Accessibility and Functionality Testing', () => {
           const errors = [];
           // Check for console errors
           if (window.console && window.console.error) {
-            errors.push(...(window as any).consoleErrors || []);
+            errors.push(...(window as { consoleErrors?: string[] }).consoleErrors || []);
           }
           return errors;
         });

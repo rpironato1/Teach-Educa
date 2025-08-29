@@ -263,7 +263,7 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ isOpen, onClose, selectedPlan
             >
               <div>
                 <h3 className="text-lg font-semibold mb-4">Escolha a forma de pagamento</h3>
-                <RadioGroup value={paymentMethod} onValueChange={(value: any) => setPaymentMethod(value)}>
+                <RadioGroup value={paymentMethod} onValueChange={(value: string) => setPaymentMethod(value)}>
                   <div className="space-y-3">
                     <div className="flex items-center space-x-2 p-3 border rounded-lg">
                       <RadioGroupItem value="credit-card" id="credit-card" />

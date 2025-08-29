@@ -137,7 +137,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
 
     initAuth()
-  }, [])
+  }, [authData.sessionActive, authData.token, logout, validateSession])
 
   // Set up automatic token refresh and session monitoring
   useEffect(() => {
@@ -165,7 +165,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       clearInterval(sessionCheckInterval)
       clearInterval(refreshCheckInterval)
     }
-  }, [authData.token, authData.sessionActive, authData.tokenExpiresAt])
+  }, [authData.token, authData.sessionActive, authData.tokenExpiresAt, forceLogout, refreshToken, validateSession])
 
   const login = async (email: string, password: string, rememberMe = false): Promise<{ success: boolean; error?: string; requiresMFA?: boolean }> => {
     setIsLoading(true)

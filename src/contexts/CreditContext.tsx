@@ -159,7 +159,7 @@ export const CreditProvider: React.FC<CreditProviderProps> = ({ children }) => {
     } else {
       resetCreditData()
     }
-  }, [isAuthenticated, user])
+  }, [isAuthenticated, user, initializeCreditData])
 
   const initializeCreditData = async () => {
     setIsLoading(true)

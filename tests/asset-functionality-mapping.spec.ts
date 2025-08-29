@@ -2,8 +2,38 @@ import { test, expect } from '@playwright/test';
 import * as fs from 'fs';
 import * as path from 'path';
 
+interface AssetIssue {
+  type: string
+  issue: string
+  src?: string
+  timestamp: string
+}
+
+interface InaccessibleFunction {
+  tagName: string
+  textContent: string | null
+  issues: string[]
+  x: number
+  y: number
+}
+
+interface Recommendation {
+  category: string
+  priority: string
+  description: string
+  actions: string[]
+}
+
+interface TestFindings {
+  missingAssets: AssetIssue[]
+  brokenPages: string[]
+  inaccessibleFunctions: InaccessibleFunction[]
+  performanceIssues: string[]
+  screenshots: string[]
+}
+
 test.describe('Asset and Functionality Mapping Tests', () => {
-  const findings: any = {
+  const findings: TestFindings = {
     missingAssets: [],
     brokenPages: [],
     inaccessibleFunctions: [],
@@ -240,7 +270,7 @@ test.describe('Asset and Functionality Mapping Tests', () => {
         
         // Check for JavaScript errors
         const jsErrors = await page.evaluate(() => {
-          return (window as any).__jsErrors || [];
+          return (window as { __jsErrors?: Error[] }).__jsErrors || [];
         });
         
         // Check if page has content
@@ -533,7 +563,7 @@ function getAssetType(url: string): string {
   return 'other';
 }
 
-function generateRecommendations(findings: any): unknown[] {
+function generateRecommendations(findings: TestFindings): Recommendation[] {
   const recommendations = [];
   
   if (findings.missingAssets.length > 0) {
@@ -581,7 +611,7 @@ function generateRecommendations(findings: any): unknown[] {
   return recommendations;
 }
 
-function generateMarkdownReport(report: any): string {
+function generateMarkdownReport(report: { timestamp: string; summary: { missingAssets: number; brokenPages: number; inaccessibleFunctions: number; performanceIssues: number; screenshots: number }; findings: TestFindings; recommendations: Recommendation[] }): string {
   let markdown = `# Comprehensive Asset and Functionality Test Report\n\n`;
   markdown += `**Generated:** ${report.timestamp}\n\n`;
   
@@ -594,7 +624,7 @@ function generateMarkdownReport(report: any): string {
   
   if (report.findings.missingAssets.length > 0) {
     markdown += `## Missing Assets\n\n`;
-    report.findings.missingAssets.forEach((asset: any, index: number) => {
+    report.findings.missingAssets.forEach((asset: AssetIssue, index: number) => {
       markdown += `### Asset ${index + 1}\n`;
       markdown += `- **Type:** ${asset.type}\n`;
       markdown += `- **Issue:** ${asset.issue}\n`;
@@ -605,7 +635,7 @@ function generateMarkdownReport(report: any): string {
   
   if (report.findings.inaccessibleFunctions.length > 0) {
     markdown += `## Inaccessible Functions\n\n`;
-    report.findings.inaccessibleFunctions.forEach((func: any, index: number) => {
+    report.findings.inaccessibleFunctions.forEach((func: InaccessibleFunction, index: number) => {
       markdown += `### Function ${index + 1}\n`;
       markdown += `- **Element:** ${func.tagName}\n`;
       markdown += `- **Text:** ${func.textContent || 'No text'}\n`;
@@ -616,7 +646,7 @@ function generateMarkdownReport(report: any): string {
   
   if (report.recommendations.length > 0) {
     markdown += `## Recommendations\n\n`;
-    report.recommendations.forEach((rec: any) => {
+    report.recommendations.forEach((rec: Recommendation) => {
       markdown += `### ${rec.category} (${rec.priority} Priority)\n\n`;
       markdown += `${rec.description}\n\n`;
       markdown += `**Actions:**\n`;

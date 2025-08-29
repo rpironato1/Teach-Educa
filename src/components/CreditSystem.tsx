@@ -170,7 +170,7 @@ export default function CreditSystem({ showFullInterface = true }: CreditSystemP
     return () => {
       delete (window as Window & { consumeCredits?: typeof consumeCredits }).consumeCredits;
     };
-  }, [subscription.credits]);
+  }, [consumeCredits]);
 
   if (!showFullInterface) {
     // Compact view for dashboard sidebar
