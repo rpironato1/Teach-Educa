@@ -23,7 +23,7 @@ test.describe('Asset and Functionality Mapping Tests', () => {
     console.log('\n=== Starting Comprehensive Asset Mapping ===');
     
     // Track network failures
-    const networkFailures: any[] = [];
+    const networkFailures: unknown[] = [];
     page.on('response', response => {
       if (response.status() >= 400) {
         networkFailures.push({
@@ -139,7 +139,7 @@ test.describe('Asset and Functionality Mapping Tests', () => {
     console.log('Testing CSS background images...');
     const elementsWithBgImages = await page.evaluate(() => {
       const elements = Array.from(document.querySelectorAll('*'));
-      const bgImages: any[] = [];
+      const bgImages: unknown[] = [];
       
       elements.forEach((el, index) => {
         const style = window.getComputedStyle(el);
@@ -416,7 +416,7 @@ test.describe('Asset and Functionality Mapping Tests', () => {
     console.log('\n=== Testing Performance Impact ===');
     
     // Monitor network requests
-    const requests: any[] = [];
+    const requests: unknown[] = [];
     page.on('request', request => {
       requests.push({
         url: request.url(),
@@ -426,7 +426,7 @@ test.describe('Asset and Functionality Mapping Tests', () => {
       });
     });
     
-    const responses: any[] = [];
+    const responses: unknown[] = [];
     page.on('response', response => {
       responses.push({
         url: response.url(),
@@ -533,7 +533,7 @@ function getAssetType(url: string): string {
   return 'other';
 }
 
-function generateRecommendations(findings: any): any[] {
+function generateRecommendations(findings: any): unknown[] {
   const recommendations = [];
   
   if (findings.missingAssets.length > 0) {

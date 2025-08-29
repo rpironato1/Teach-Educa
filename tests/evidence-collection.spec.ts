@@ -111,7 +111,7 @@ test.describe('Quick Accessibility and Evidence Collection', () => {
     // Test color contrast specifically
     console.log('Testing color contrast...');
     const contrastIssues = await page.evaluate(() => {
-      const issues: any[] = [];
+      const issues: unknown[] = [];
       const elements = document.querySelectorAll('*');
       
       elements.forEach((el, index) => {
@@ -155,7 +155,7 @@ test.describe('Quick Accessibility and Evidence Collection', () => {
     console.log('\n🔍 Detecting Missing Assets');
     
     // Track network failures
-    const networkFailures: any[] = [];
+    const networkFailures: unknown[] = [];
     page.on('response', response => {
       if (response.status() >= 400) {
         networkFailures.push({
@@ -172,7 +172,7 @@ test.describe('Quick Accessibility and Evidence Collection', () => {
     
     // Check images
     const images = await page.locator('img').all();
-    const brokenImages: any[] = [];
+    const brokenImages: unknown[] = [];
     
     for (let i = 0; i < images.length; i++) {
       const img = images[i];
@@ -239,7 +239,7 @@ test.describe('Quick Accessibility and Evidence Collection', () => {
     
     // Find all interactive elements
     const interactiveElements = await page.locator('button, a[href], input, select, textarea').all();
-    const functionalIssues: any[] = [];
+    const functionalIssues: unknown[] = [];
     
     console.log(`Testing ${interactiveElements.length} interactive elements`);
     
@@ -321,7 +321,7 @@ test.describe('Quick Accessibility and Evidence Collection', () => {
     
     // Test tab navigation
     const focusableElements = await page.locator('button:visible, a:visible, input:visible').all();
-    const navigationPath: any[] = [];
+    const navigationPath: unknown[] = [];
     
     console.log(`Testing tab navigation through ${focusableElements.length} focusable elements`);
     
@@ -394,7 +394,7 @@ test.describe('Quick Accessibility and Evidence Collection', () => {
   });
 });
 
-function generateRecommendations(evidence: any): any[] {
+function generateRecommendations(evidence: any): unknown[] {
   const recommendations = [];
   
   if (evidence.accessibilityIssues.length > 0) {

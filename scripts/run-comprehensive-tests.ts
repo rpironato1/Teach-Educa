@@ -62,7 +62,7 @@ function runTest(command: string, args: string[]): Promise<{ success: boolean, o
 }
 
 // Generate evidence report
-function generateEvidenceReport(testResults: any[]) {
+function generateEvidenceReport(testResults: unknown[]) {
   const evidenceReport = {
     timestamp: new Date().toISOString(),
     testSuite: 'Comprehensive Accessibility and MCP Playwright Tests',
@@ -172,7 +172,7 @@ async function main() {
   
   ensureDirectories();
   
-  const testResults: any[] = [];
+  const testResults: unknown[] = [];
   
   // Test 1: Comprehensive Accessibility Testing
   console.log('\n📋 Phase 1: Comprehensive Accessibility Testing');

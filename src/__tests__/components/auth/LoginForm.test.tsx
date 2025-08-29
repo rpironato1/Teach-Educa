@@ -21,7 +21,7 @@ vi.mock('@/contexts/AuthContext', () => ({
 // Mock framer-motion
 vi.mock('framer-motion', () => ({
   motion: {
-    div: ({ children, ...props }: any) => <div {...props}>{children}</div>
+    div: ({ children, ...props }: Record<string, unknown>) => <div {...props}>{children}</div>
   }
 }))
 
@@ -32,7 +32,7 @@ describe('LoginForm', () => {
 
   beforeEach(() => {
     vi.clearAllMocks()
-    ;(useAuth as any).mockReturnValue({
+    ;(useAuth as vi.MockedFunction<typeof useAuth>).mockReturnValue({
       login: mockLogin,
       isLoading: false
     })

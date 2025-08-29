@@ -6,7 +6,6 @@ import {
   migrateToSupabaseFormat,
   exportSupabaseData,
   type SupabaseUser,
-  type SupabaseConversation,
   type SupabaseMessage
 } from '@/hooks/useSupabaseStorage'
 

@@ -33,10 +33,6 @@ const COVERAGE_THRESHOLDS = {
 // }
 
 class TestCoverageAnalyzer {
-  private projectRoot: string
-  private sourceDir: string
-  private testDir: string
-
   constructor() {
     this.projectRoot = process.cwd()
     this.sourceDir = resolve(this.projectRoot, 'src')

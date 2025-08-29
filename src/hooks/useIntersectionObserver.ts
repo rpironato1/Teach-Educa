@@ -52,7 +52,7 @@ export const useIntersectionObserver = ({
 }
 
 // Hook specifically for lazy loading sections
-export const useLazySectionLoad = (deps: any[] = []) => {
+export const useLazySectionLoad = (deps: unknown[] = []) => {
   const [shouldLoad, setShouldLoad] = useState(false)
   const { elementRef, isIntersecting } = useIntersectionObserver({
     threshold: 0.1,

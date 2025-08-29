@@ -13,7 +13,7 @@ test.describe('Lighthouse CI Accessibility Tests', () => {
     { path: '/#faq', name: 'Home - FAQ Section' }
   ];
 
-  const testResults: any[] = [];
+  const testResults: unknown[] = [];
 
   test.beforeAll(async () => {
     // Ensure test results directory exists

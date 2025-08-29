@@ -22,7 +22,7 @@ const mockAiService = aiService as {
 
 // Performance monitoring utilities
 const measurePerformance = (name: string, fn: () => Promise<void> | void) => {
-  return new Promise(async (resolve) => {
+  return new Promise((resolve) => {
     const start = performance.now()
     await fn()
     const end = performance.now()
@@ -448,7 +448,7 @@ describe('Performance Tests', () => {
     })
 
     it('should implement virtual scrolling for large lists', async () => {
-      const VirtualizedList = ({ items }: { items: any[] }) => {
+      const VirtualizedList = ({ items }: { items: unknown[] }) => {
         const [visibleRange, setVisibleRange] = React.useState({ start: 0, end: 50 })
 
         const handleScroll = (e: React.UIEvent) => {

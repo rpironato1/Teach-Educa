@@ -86,7 +86,7 @@ describe('Error Boundary and Resilience Tests', () => {
         return <div>Success after retry</div>
       }
 
-      const { rerender } = render(
+      render(
         <ErrorBoundary>
           <RetryableComponent />
         </ErrorBoundary>
@@ -105,10 +105,6 @@ describe('Error Boundary and Resilience Tests', () => {
     })
 
     it('should track error context and user actions', () => {
-      const errorInfo = {
-        componentStack: 'ErrorThrowingComponent'
-      }
-
       render(
         <ErrorBoundary userId="user-123" currentPage="/dashboard">
           <ErrorThrowingComponent shouldThrow={true} />
@@ -439,7 +435,7 @@ describe('Error Boundary and Resilience Tests', () => {
       const abortController = new AbortController()
       const abortSpy = vi.spyOn(abortController, 'abort')
 
-      global.fetch.mockImplementation((url, options) => {
+      global.fetch.mockImplementation(() => {
         // Simulate error that should trigger cleanup
         setTimeout(() => {
           throw new Error('Component unmounted')
@@ -467,7 +463,7 @@ describe('Error Boundary and Resilience Tests', () => {
 
       // Component with large data that should be cleaned up
       const LargeDataComponent = () => {
-        const largeArray = new Array(1000000).fill('data')
+        new Array(1000000).fill('data')
         return <div>Large data component</div>
       }
 

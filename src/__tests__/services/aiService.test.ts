@@ -12,7 +12,7 @@ import {
 // Mock window.spark
 const mockSpark = {
   llm: vi.fn(),
-  llmPrompt: vi.fn((strings: TemplateStringsArray, ...values: any[]) => {
+  llmPrompt: vi.fn((strings: TemplateStringsArray, ...values: unknown[]) => {
     return strings.reduce((result, string, i) => {
       return result + string + (values[i] || '')
     }, '')
@@ -99,7 +99,7 @@ describe('AIService', () => {
     })
 
     it('starts conversation with initial message', async () => {
-      mockSpark.llm.mockResolvedValueOnce('Hello! I\'m Prof. Magnus, ready to help with math!')
+      mockSpark.llm.mockResolvedValueOnce('Hello! I'm Prof. Magnus, ready to help with math!')
       
       const messages = await aiService.startConversation(
         'math-tutor', 
