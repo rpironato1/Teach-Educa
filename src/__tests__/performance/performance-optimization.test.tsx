@@ -2,9 +2,8 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { act } from '@testing-library/react'
+import React from 'react'
 import { AIChatInterface } from '@/components/AIChatInterface'
-import { DashboardDemo } from '@/components/DashboardDemo'
-import { AnalyticsDashboard } from '@/components/AnalyticsDashboard'
 import { aiService } from '@/services/aiService'
 
 // Mock AI Service with proper factory function
