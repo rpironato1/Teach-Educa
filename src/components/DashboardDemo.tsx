@@ -123,7 +123,7 @@ export default function DashboardDemo({ onBackToHome }: DashboardDemoProps) {
   // Supabase-compatible storage hooks
   const conversationsStorage = useSupabaseStorage<SupabaseConversation>('conversations', user?.id)
   const messagesStorage = useSupabaseStorage<SupabaseMessage>('messages', user?.id)
-  const studySessionsStorage = useSupabaseStorage<SupabaseStudySession>('study_sessions', user?.id)
+  const _studySessionsStorage = useSupabaseStorage<SupabaseStudySession>('study_sessions', user?.id)
 
   // Current conversation state
   const [currentConversationId, setCurrentConversationId] = useState<string | null>(null)

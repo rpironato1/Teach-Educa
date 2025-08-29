@@ -6,7 +6,7 @@ import {
   Bank, 
   QrCode, 
   Shield,
-  CheckCircle,
+  CheckCircle as _CheckCircle,
   Lock
 } from '@phosphor-icons/react'
 import { Button } from '@/components/ui/button'
@@ -144,7 +144,7 @@ export default function CheckoutForm({ registrationData, onNext, onBack }: Check
       
       toast.success('Pagamento processado com sucesso!')
       onNext()
-    } catch (error) {
+    } catch {
       toast.error('Erro no processamento. Tente novamente.')
     } finally {
       setIsLoading(false)

@@ -15,7 +15,7 @@ interface LoginFormProps {
   redirectUrl?: string
 }
 
-export default function LoginForm({ onForgotPassword, onSuccess, redirectUrl }: LoginFormProps) {
+export default function LoginForm({ onForgotPassword, onSuccess, redirectUrl: _redirectUrl }: LoginFormProps) {
   const { login, isLoading } = useAuth()
   const [formData, setFormData] = useState({
     email: '',

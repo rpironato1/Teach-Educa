@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { motion } from 'framer-motion'
 import { Brain, SpinnerGap, User, Crown } from '@phosphor-icons/react'
 import { useAuth } from '@/contexts/AuthContext'
@@ -18,6 +18,26 @@ export default function AuthLoader({ onComplete }: AuthLoaderProps) {
     'Preparando dashboard...',
     'Redirecionando...'
   ]
+
+  const handleRedirect = useCallback(() => {
+    if (!user) return
+
+    // Secure redirection based on user role and authentication status
+    const redirectPath = user.role === 'admin' ? '/admin-dashboard' : '/dashboard'
+    
+    // Store redirect info for security audit
+    const _redirectInfo = {
+      userId: user.id,
+      role: user.role,
+      timestamp: new Date().toISOString(),
+      targetPath: redirectPath,
+      sessionId: Date.now().toString()
+    }
+    
+    // For demo purposes, we complete the auth flow
+    // In production, this would handle proper routing
+    onComplete()
+  }, [user, onComplete])
 
   useEffect(() => {
     if (!isAuthenticated || !user) return
@@ -40,27 +60,7 @@ export default function AuthLoader({ onComplete }: AuthLoaderProps) {
     }, 800)
 
     return () => clearInterval(stepTimer)
-  }, [isAuthenticated, user])
-
-  const handleRedirect = () => {
-    if (!user) return
-
-    // Secure redirection based on user role and authentication status
-    const redirectPath = user.role === 'admin' ? '/admin-dashboard' : '/dashboard'
-    
-    // Store redirect info for security audit
-    const redirectInfo = {
-      userId: user.id,
-      role: user.role,
-      timestamp: new Date().toISOString(),
-      targetPath: redirectPath,
-      sessionId: Date.now().toString()
-    }
-    
-    // For demo purposes, we complete the auth flow
-    // In production, this would handle proper routing
-    onComplete()
-  }
+  }, [isAuthenticated, user, handleRedirect, loadingSteps.length])
 
   return (
     <div className="p-8 text-center space-y-8">

@@ -16,7 +16,7 @@ type ValidationErrors<T> = {
   [K in keyof T]?: string
 }
 
-export function useFormValidation<T extends Record<string, any>>(
+export function useFormValidation<T extends Record<string, unknown>>(
   initialData: T,
   rules: ValidationRules<T>
 ) {

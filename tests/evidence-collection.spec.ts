@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect as _expect } from '@playwright/test';
 import * as fs from 'fs';
 
 test.describe('Quick Accessibility and Evidence Collection', () => {

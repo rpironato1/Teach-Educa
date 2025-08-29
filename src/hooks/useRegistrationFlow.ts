@@ -9,7 +9,7 @@ export interface RegistrationState {
   cpf: string
   phone: string
   password: string
-  selectedPlan?: any
+  selectedPlan?: Record<string, unknown>
   acceptedTerms: boolean
   acceptedPrivacy: boolean
   marketingOptIn: boolean

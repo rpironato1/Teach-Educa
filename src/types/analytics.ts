@@ -101,5 +101,5 @@ export interface Notification {
   icon: string
   timestamp: Date
   read: boolean
-  data?: any
+  data?: unknown
 }

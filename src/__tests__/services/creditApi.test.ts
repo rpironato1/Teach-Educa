@@ -1,12 +1,12 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import { creditApi, type ApiResponse, type PaymentIntent, type SubscriptionData } from '@/services/creditApi'
+import { creditApi, type ApiResponse as _ApiResponse, type PaymentIntent as _PaymentIntent, type SubscriptionData as _SubscriptionData } from '@/services/creditApi'
 
 // Mock global setTimeout to speed up tests
 const originalSetTimeout = global.setTimeout
 beforeEach(() => {
   vi.spyOn(global, 'setTimeout').mockImplementation((fn, _delay) => {
     fn()
-    return 0 as any
+    return 0 as number
   })
 })
 

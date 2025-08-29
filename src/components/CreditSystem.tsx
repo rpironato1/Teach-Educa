@@ -166,9 +166,9 @@ export default function CreditSystem({ showFullInterface = true }: CreditSystemP
 
   // Expose consumeCredits function globally for use in other components
   useEffect(() => {
-    (window as any).consumeCredits = consumeCredits;
+    (window as Window & { consumeCredits: typeof consumeCredits }).consumeCredits = consumeCredits;
     return () => {
-      delete (window as any).consumeCredits;
+      delete (window as Window & { consumeCredits?: typeof consumeCredits }).consumeCredits;
     };
   }, [subscription.credits]);
 

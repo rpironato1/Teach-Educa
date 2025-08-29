@@ -317,7 +317,7 @@ describe('LoginForm', () => {
   })
 
   it('disables form elements when loading', () => {
-    ;(useAuth as any).mockReturnValue({
+    ;(useAuth as ReturnType<typeof vi.fn>).mockReturnValue({
       login: mockLogin,
       isLoading: true
     })
@@ -336,7 +336,7 @@ describe('LoginForm', () => {
   })
 
   it('shows loading state in submit button', () => {
-    ;(useAuth as any).mockReturnValue({
+    ;(useAuth as ReturnType<typeof vi.fn>).mockReturnValue({
       login: mockLogin,
       isLoading: true
     })

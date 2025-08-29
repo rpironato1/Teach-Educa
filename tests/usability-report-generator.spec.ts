@@ -348,7 +348,7 @@ test.describe('Comprehensive Usability Analysis', () => {
     });
     
     // Overall Usability Score
-    const totalFindings = findings.length;
+    const _totalFindings = findings.length;
     const positiveWeight = positiveFindings.length * 10;
     const issueWeight = issues.length * 5;
     const criticalWeight = criticalIssues.length * 15;
@@ -398,7 +398,7 @@ test.describe('Comprehensive Usability Analysis', () => {
     console.log('5. Conduct user testing with real students');
     
     // Save findings to a report file
-    const reportData = {
+    const _reportData = {
       timestamp: new Date().toISOString(),
       scores: {
         usability: usabilityScore,

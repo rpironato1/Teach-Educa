@@ -62,7 +62,7 @@ describe('AnalyticsService', () => {
 
       try {
         await analyticsService.getAnalytics('user123')
-      } catch (error) {
+      } catch {
         // Expected to throw
       }
 
@@ -398,7 +398,7 @@ describe('AnalyticsService', () => {
       for (const method of methods) {
         try {
           await method()
-        } catch (error) {
+        } catch {
           // Expected to throw
         }
       }

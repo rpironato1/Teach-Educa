@@ -73,7 +73,7 @@ async function generateTestReport(): Promise<void> {
     const lintOutput = execSync('npm run lint', { encoding: 'utf8', stdio: 'pipe' });
     results.lint = parseLintOutput(lintOutput);
   } catch (_error: Error | { stdout?: string; message?: string }) {
-    const errorMessage = 'stdout' in error ? error.stdout || error instanceof Error ? error.message : String(error) || '' : error instanceof Error ? error.message : String(error) || '';
+    const errorMessage = 'stdout' in _error ? _error.stdout || _error instanceof Error ? _error.message : String(_error) || '' : _error instanceof Error ? _error.message : String(_error) || '';
     results.lint = parseLintOutput(errorMessage);
   }
 
@@ -92,7 +92,7 @@ async function generateTestReport(): Promise<void> {
     }
   } catch (_error: unknown) {
     results.build.success = false;
-    const errorMessage = error instanceof Error ? error instanceof Error ? error.message : String(error) : 'Build failed';
+    const errorMessage = _error instanceof Error ? _error instanceof Error ? _error.message : String(_error) : 'Build failed';
     results.build.warnings.push(errorMessage);
   }
 
@@ -115,7 +115,7 @@ async function generateTestReport(): Promise<void> {
     results.categories.e2e = parsePlaywrightOutput(e2eOutput);
     results.categories.e2e.duration = Date.now() - e2eStart;
   } catch (_error: unknown) {
-    results.categories.e2e = parsePlaywrightOutput(error.stdout || '{}');
+    results.categories.e2e = parsePlaywrightOutput((_error as { stdout?: string }).stdout || '{}');
     console.warn('E2E tests had failures');
   }
 
@@ -130,7 +130,7 @@ async function generateTestReport(): Promise<void> {
     results.categories.integration = parsePlaywrightOutput(integrationOutput);
     results.categories.integration.duration = Date.now() - integrationStart;
   } catch (_error: unknown) {
-    results.categories.integration = parsePlaywrightOutput(error.stdout || '{}');
+    results.categories.integration = parsePlaywrightOutput((_error as { stdout?: string }).stdout || '{}');
     console.warn('Integration tests had failures');
   }
 
@@ -145,7 +145,7 @@ async function generateTestReport(): Promise<void> {
     results.categories.accessibility = parsePlaywrightOutput(a11yOutput);
     results.categories.accessibility.duration = Date.now() - a11yStart;
   } catch (_error: unknown) {
-    results.categories.accessibility = parsePlaywrightOutput(error.stdout || '{}');
+    results.categories.accessibility = parsePlaywrightOutput((_error as { stdout?: string }).stdout || '{}');
     console.warn('Accessibility tests had failures');
   }
 
@@ -160,7 +160,7 @@ async function generateTestReport(): Promise<void> {
     results.categories.performance = parsePlaywrightOutput(perfOutput);
     results.categories.performance.duration = Date.now() - perfStart;
   } catch (_error: unknown) {
-    results.categories.performance = parsePlaywrightOutput(error.stdout || '{}');
+    results.categories.performance = parsePlaywrightOutput((_error as { stdout?: string }).stdout || '{}');
     console.warn('Performance tests had failures');
   }
 

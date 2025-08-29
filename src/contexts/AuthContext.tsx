@@ -118,7 +118,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       // Simulate API call to validate session
       await new Promise(resolve => setTimeout(resolve, 300))
       return true
-    } catch (error) {
+    } catch {
       await logout()
       return false
     }
@@ -338,7 +338,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       // Mock successful response - always return success for security
       // (Don't reveal if email exists or not)
       return { success: true }
-    } catch (error) {
+    } catch {
       return { success: false, error: 'Erro ao processar solicitação. Tente novamente.' }
     }
   }
@@ -359,7 +359,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       
       // Mock successful response
       return { success: true }
-    } catch (error) {
+    } catch {
       return { success: false, error: 'Token inválido ou expirado. Solicite uma nova recuperação.' }
     }
   }
@@ -421,7 +421,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       }))
       
       return { success: true }
-    } catch (error) {
+    } catch {
       return { success: false, error: 'Erro ao atualizar perfil.' }
     }
   }

@@ -132,7 +132,7 @@ function generateEvidenceReport(testResults: unknown[]) {
 }
 
 // Generate markdown summary
-function generateMarkdownSummary(evidenceReport: any) {
+function generateMarkdownSummary(evidenceReport: Record<string, unknown>) {
   let markdown = `# Comprehensive Testing Evidence Report\n\n`;
   markdown += `**Generated:** ${evidenceReport.timestamp}\n\n`;
   
@@ -144,17 +144,17 @@ function generateMarkdownSummary(evidenceReport: any) {
   
   markdown += `## Evidence Collected\n\n`;
   markdown += `### Screenshots (${evidenceReport.evidence.screenshots.length})\n\n`;
-  evidenceReport.evidence.screenshots.forEach((screenshot: any) => {
+  evidenceReport.evidence.screenshots.forEach((screenshot: Record<string, unknown>) => {
     markdown += `- **${screenshot.filename}** (${(screenshot.size / 1024).toFixed(1)}KB)\n`;
   });
   
   markdown += `\n### Test Reports (${evidenceReport.evidence.reports.length})\n\n`;
-  evidenceReport.evidence.reports.forEach((report: any) => {
+  evidenceReport.evidence.reports.forEach((report: Record<string, unknown>) => {
     markdown += `- **${report.name}** (${(report.size / 1024).toFixed(1)}KB)\n`;
   });
   
   markdown += `\n## Test Results Details\n\n`;
-  evidenceReport.results.forEach((result: any, index: number) => {
+  evidenceReport.results.forEach((result: Record<string, unknown>, index: number) => {
     const status = result.success ? '✅ PASSED' : '❌ FAILED';
     markdown += `### Test ${index + 1}: ${result.name} ${status}\n\n`;
     if (!result.success) {

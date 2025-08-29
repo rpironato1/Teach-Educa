@@ -6,7 +6,7 @@ import {
   migrateToSupabaseFormat,
   exportSupabaseData,
   type SupabaseUser,
-  type SupabaseMessage
+  type SupabaseMessage as _SupabaseMessage
 } from '@/hooks/useSupabaseStorage'
 
 // Mock localStorage

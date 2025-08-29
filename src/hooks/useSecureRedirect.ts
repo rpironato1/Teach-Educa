@@ -16,7 +16,7 @@ export interface SecurityAuditLog {
   timestamp: string
   userAgent: string
   ip: string
-  details?: Record<string, any>
+  details?: Record<string, unknown>
 }
 
 export function useSecureRedirect() {
@@ -111,7 +111,7 @@ export function useSecureRedirect() {
 
     // Custom redirect URL
     if (redirectUrl) {
-      navigate(redirectUrl as any)
+      navigate(redirectUrl as string)
       logSecurityEvent({
         userId: user.id,
         action: 'redirect',
@@ -179,7 +179,7 @@ export function useSecureRedirect() {
   }, [isAuthenticated, user])
 
   // Secure route guard
-  const guardRoute = useCallback((targetRoute: string, options: RedirectOptions = {}): boolean => {
+  const guardRoute = useCallback((targetRoute: string, _options: RedirectOptions = {}): boolean => {
     if (!hasRoutePermission(targetRoute)) {
       logSecurityEvent({
         userId: user?.id || 'anonymous',

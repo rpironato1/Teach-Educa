@@ -38,7 +38,7 @@ test.describe('Accessibility Compliance Tests', () => {
 
   test('should support screen reader navigation', async ({ page }) => {
     // Check for proper heading hierarchy
-    const headings = await page.locator('h1, h2, h3, h4, h5, h6').allTextContents()
+    const _headings = await page.locator('h1, h2, h3, h4, h5, h6').allTextContents()
     
     // Should have h1 as main heading
     const h1Elements = await page.locator('h1').count()

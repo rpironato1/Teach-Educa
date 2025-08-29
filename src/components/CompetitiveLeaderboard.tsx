@@ -61,7 +61,7 @@ export default function CompetitiveLeaderboard({ className = '' }: CompetitiveLe
 
   useEffect(() => {
     loadLeaderboard()
-  }, [selectedPeriod])
+  }, [selectedPeriod, loadLeaderboard])
 
   const getCurrentUserRank = () => {
     const userEntry = leaderboard.find(entry => entry.userId === user?.id)
@@ -146,7 +146,7 @@ export default function CompetitiveLeaderboard({ className = '' }: CompetitiveLe
             key={period.key}
             variant={selectedPeriod === period.key ? "default" : "outline"}
             size="sm"
-            onClick={() => setSelectedPeriod(period.key as any)}
+            onClick={() => setSelectedPeriod(period.key as 'daily' | 'weekly' | 'monthly' | 'alltime')}
             className="flex items-center gap-1"
           >
             {period.icon}

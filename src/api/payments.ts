@@ -43,7 +43,7 @@ export interface PaymentStatus {
 }
 
 // Simulated payment storage
-const paymentsDatabase = new Map<string, any>()
+const paymentsDatabase = new Map<string, Record<string, unknown>>()
 
 // Simulated delay to mimic real API calls
 const simulateDelay = (ms: number = 1000) => 
@@ -226,7 +226,7 @@ export const cancelPayment = async (paymentId: string): Promise<{ success: boole
  * Webhook simulation for payment confirmations
  * POST /api/payments/webhook
  */
-export const handlePaymentWebhook = async (data: any): Promise<void> => {
+export const handlePaymentWebhook = async (data: Record<string, unknown>): Promise<void> => {
   console.log('[WEBHOOK] Recebido:', data)
   
   const paymentId = data.paymentId
@@ -249,7 +249,7 @@ export const handlePaymentWebhook = async (data: any): Promise<void> => {
 /**
  * Generate PIX code for payment
  */
-function generatePixCode(amount: number, _customerData: any): string {
+function generatePixCode(amount: number, _customerData: Record<string, unknown>): string {
   // This is a simplified PIX code generation
   // In a real implementation, you would use a proper PIX library
   const payload = {

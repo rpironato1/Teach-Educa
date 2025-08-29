@@ -3,10 +3,10 @@ import {
   aiService, 
   aiAPI, 
   AVAILABLE_ASSISTANTS,
-  type Assistant,
-  type ChatMessage,
-  type LearningProfile,
-  type ProgressAnalysis 
+  type Assistant as _Assistant,
+  type ChatMessage as _ChatMessage,
+  type LearningProfile as _LearningProfile,
+  type ProgressAnalysis as _ProgressAnalysis 
 } from '@/services/aiService'
 
 // Mock window.spark
@@ -99,7 +99,7 @@ describe('AIService', () => {
     })
 
     it('starts conversation with initial message', async () => {
-      mockSpark.llm.mockResolvedValueOnce('Hello! I'm Prof. Magnus, ready to help with math!')
+      mockSpark.llm.mockResolvedValueOnce('Hello! I\'m Prof. Magnus, ready to help with math!')
       
       const messages = await aiService.startConversation(
         'math-tutor', 

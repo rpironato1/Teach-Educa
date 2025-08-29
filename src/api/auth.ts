@@ -35,7 +35,7 @@ export interface SubscribeRequest {
   userId: string
   planId: string
   paymentMethod: 'credit_card' | 'pix' | 'boleto'
-  paymentData?: any
+  paymentData?: Record<string, unknown>
 }
 
 export interface SubscribeResponse {
@@ -50,7 +50,7 @@ const simulateDelay = (ms: number = 1000) =>
   new Promise(resolve => setTimeout(resolve, ms))
 
 // Simulated storage for demo purposes
-const userDatabase = new Map<string, any>()
+const userDatabase = new Map<string, Record<string, unknown>>()
 const verificationCodes = new Map<string, string>()
 
 /**

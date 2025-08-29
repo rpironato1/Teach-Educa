@@ -6,7 +6,7 @@ import {
   Achievement, 
   StudySession, 
   StudyStreak, 
-  LearningMetrics,
+  LearningMetrics as _LearningMetrics,
   SubjectProgress,
   WeeklyProgress,
   LeaderboardEntry,
@@ -151,7 +151,7 @@ interface AnalyticsProviderProps {
 export function AnalyticsProvider({ children }: AnalyticsProviderProps) {
   const [state, dispatch] = useReducer(analyticsReducer, initialState)
   const { user, isAuthenticated } = useAuth()
-  const { credits, consumeCredits } = useCreditContext()
+  const { credits: _credits, consumeCredits: _consumeCredits } = useCreditContext()
   
   // Achievement unlock modal state
   const [unlockedAchievement, setUnlockedAchievement] = useState<Achievement | null>(null)
@@ -422,7 +422,7 @@ export function AnalyticsProvider({ children }: AnalyticsProviderProps) {
     const currentAnalytics = analyticsStorage.data[0]
     if (!currentAnalytics) return
     
-    const sessions = studySessionStorage.data
+    const _sessions = studySessionStorage.data
     const totalTime = currentAnalytics.study_time_total
     const sessionsCount = currentAnalytics.sessions_completed
     
@@ -459,7 +459,7 @@ export function AnalyticsProvider({ children }: AnalyticsProviderProps) {
     if (!achievement || achievement.isUnlocked) return
     
     // Create achievement record in Supabase
-    const unlockedAchievement = await achievementStorage.insert({
+    const _unlockedAchievement = await achievementStorage.insert({
       user_id: user!.id,
       achievement_type: achievement.id,
       title: achievement.title,
@@ -598,11 +598,11 @@ export function AnalyticsProvider({ children }: AnalyticsProviderProps) {
   }, [analyticsStorage.data, user])
 
   // Other utility functions
-  const logStudyTime = useCallback(async (minutes: number) => {
+  const logStudyTime = useCallback(async (_minutes: number) => {
     // Implementation for logging study time
   }, [])
 
-  const updateSubjectProgress = useCallback(async (subject: string, progress: Partial<SubjectProgress>) => {
+  const updateSubjectProgress = useCallback(async (_subject: string, _progress: Partial<SubjectProgress>) => {
     // Implementation for updating subject progress
   }, [])
 
