@@ -12,23 +12,25 @@ const COVERAGE_THRESHOLDS = {
   lines: 85
 }
 
-interface CoverageReport {
-  total: {
-    statements: { total: number; covered: number; skipped: number; pct: number }
-    functions: { total: number; covered: number; skipped: number; pct: number }
-    branches: { total: number; covered: number; skipped: number; pct: number }
-    lines: { total: number; covered: number; skipped: number; pct: number }
-  }
-  files: { [key: string]: any }
-}
+// CoverageReport type definition
+// {
+//   total: {
+//     statements: { total: number; covered: number; skipped: number; pct: number }
+//     functions: { total: number; covered: number; skipped: number; pct: number }
+//     branches: { total: number; covered: number; skipped: number; pct: number }
+//     lines: { total: number; covered: number; skipped: number; pct: number }
+//   }
+//   files: { [key: string]: any }
+// }
 
-interface TestGap {
-  file: string
-  type: 'component' | 'hook' | 'service' | 'utility' | 'schema'
-  missing: string[]
-  priority: 'high' | 'medium' | 'low'
-  estimatedTests: number
-}
+// TestGap type definition
+// {
+//   file: string
+//   type: 'component' | 'hook' | 'service' | 'utility' | 'schema'
+//   missing: string[]
+//   priority: 'high' | 'medium' | 'low'
+//   estimatedTests: number
+// }
 
 class TestCoverageAnalyzer {
   private projectRoot: string

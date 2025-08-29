@@ -840,7 +840,7 @@ test.describe('Comprehensive Usability Testing', () => {
     console.log('\n⌨️  Testing keyboard navigation...');
     
     let tabCount = 0;
-    let focusableElements: string[] = [];
+    const focusableElements: string[] = [];
     
     for (let i = 0; i < 20; i++) {
       await page.keyboard.press('Tab');
