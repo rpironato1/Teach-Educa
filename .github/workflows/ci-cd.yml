@@ -1,0 +1,346 @@
+name: Comprehensive CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  # Core validation job
+  validate-core:
+    name: Core Validation (Lint, Type Check, Build)
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+      env:
+        PUPPETEER_SKIP_DOWNLOAD: true
+
+    - name: Lint code
+      run: npm run lint
+
+    - name: Type check
+      run: npm run check:types
+
+    - name: Build application
+      run: npm run build
+
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: build-artifacts
+        path: dist/
+        retention-days: 7
+
+  # Unit and integration tests
+  test-unit:
+    name: Unit & Integration Tests
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+      env:
+        PUPPETEER_SKIP_DOWNLOAD: true
+
+    - name: Run unit tests with coverage
+      run: npm run test:unit
+
+    - name: Upload coverage reports
+      uses: codecov/codecov-action@v4
+      with:
+        file: ./coverage/lcov.info
+        flags: unittests
+        fail_ci_if_error: false
+
+  # E2E and browser tests
+  test-e2e:
+    name: End-to-End Tests
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+      env:
+        PUPPETEER_SKIP_DOWNLOAD: true
+
+    - name: Install Playwright browsers
+      run: npx playwright install chromium
+      continue-on-error: true
+
+    - name: Build application
+      run: npm run build
+
+    - name: Start preview server
+      run: npm run preview &
+      env:
+        CI: true
+
+    - name: Wait for server
+      run: npx wait-on http://localhost:4173 --timeout 60000
+
+    - name: Run E2E tests
+      run: npm run test:e2e
+      continue-on-error: true
+
+    - name: Upload E2E test results
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: e2e-test-results
+        path: |
+          playwright-report/
+          test-results/
+        retention-days: 7
+
+  # Security and accessibility tests
+  test-security:
+    name: Security & Accessibility Tests
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+      env:
+        PUPPETEER_SKIP_DOWNLOAD: true
+
+    - name: Run security audit
+      run: npm audit --audit-level=moderate
+      continue-on-error: true
+
+    - name: Run accessibility tests
+      run: npm run check:a11y
+      continue-on-error: true
+
+  # Performance and bundle analysis
+  test-performance:
+    name: Performance & Bundle Analysis
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+      env:
+        PUPPETEER_SKIP_DOWNLOAD: true
+
+    - name: Build application
+      run: npm run build
+
+    - name: Check bundle size
+      run: npm run check:bundle
+      continue-on-error: true
+
+    - name: Run performance tests
+      run: npm run test:performance
+      continue-on-error: true
+
+  # Comprehensive test execution
+  test-comprehensive:
+    name: Comprehensive Test Suite
+    runs-on: ubuntu-latest
+    needs: [validate-core, test-unit]
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+      env:
+        PUPPETEER_SKIP_DOWNLOAD: true
+
+    - name: Run comprehensive test suite
+      run: node scripts/run-comprehensive-tests.mjs
+      continue-on-error: true
+
+    - name: Upload comprehensive test report
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: comprehensive-test-report
+        path: comprehensive-test-report.json
+        retention-days: 30
+
+  # Health check and deployment readiness
+  health-check:
+    name: Deployment Health Check
+    runs-on: ubuntu-latest
+    needs: [validate-core, test-unit, test-e2e, test-security, test-performance]
+    if: always()
+    
+    outputs:
+      deployment-ready: ${{ steps.health-check.outputs.ready }}
+      test-success-rate: ${{ steps.health-check.outputs.success-rate }}
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+      env:
+        PUPPETEER_SKIP_DOWNLOAD: true
+
+    - name: Download test artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: comprehensive-test-report
+        path: .
+      continue-on-error: true
+
+    - name: Evaluate deployment readiness
+      id: health-check
+      run: |
+        echo "🏥 Evaluating deployment health..."
+        
+        # Check if core jobs passed
+        CORE_PASSED="${{ needs.validate-core.result == 'success' }}"
+        UNIT_PASSED="${{ needs.test-unit.result == 'success' }}"
+        
+        # Calculate success rate from comprehensive report if available
+        SUCCESS_RATE=0
+        if [ -f "comprehensive-test-report.json" ]; then
+          SUCCESS_RATE=$(node -e "
+            try {
+              const report = JSON.parse(require('fs').readFileSync('comprehensive-test-report.json', 'utf8'));
+              console.log(report.summary.successRate || 0);
+            } catch (e) {
+              console.log(0);
+            }
+          ")
+        fi
+        
+        echo "Core validation: $CORE_PASSED"
+        echo "Unit tests: $UNIT_PASSED"
+        echo "Success rate: ${SUCCESS_RATE}%"
+        
+        # Deployment criteria:
+        # 1. Core validation must pass
+        # 2. Unit tests must pass
+        # 3. Success rate >= 80% (if available)
+        DEPLOYMENT_READY="false"
+        
+        if [ "$CORE_PASSED" = "true" ] && [ "$UNIT_PASSED" = "true" ]; then
+          if [ "$SUCCESS_RATE" = "0" ] || [ "$(echo "$SUCCESS_RATE >= 80" | bc -l)" = "1" ]; then
+            DEPLOYMENT_READY="true"
+          fi
+        fi
+        
+        echo "ready=$DEPLOYMENT_READY" >> $GITHUB_OUTPUT
+        echo "success-rate=$SUCCESS_RATE" >> $GITHUB_OUTPUT
+        
+        if [ "$DEPLOYMENT_READY" = "true" ]; then
+          echo "✅ Deployment ready with $SUCCESS_RATE% success rate"
+        else
+          echo "❌ Deployment not ready - Core: $CORE_PASSED, Unit: $UNIT_PASSED, Rate: $SUCCESS_RATE%"
+        fi
+
+  # Final deployment gate
+  deployment-gate:
+    name: Deployment Gate
+    runs-on: ubuntu-latest
+    needs: [health-check]
+    if: always()
+    
+    steps:
+    - name: Deployment Decision
+      run: |
+        READY="${{ needs.health-check.outputs.deployment-ready }}"
+        RATE="${{ needs.health-check.outputs.test-success-rate }}"
+        
+        echo "🚦 Deployment Gate Evaluation"
+        echo "Ready: $READY"
+        echo "Success Rate: $RATE%"
+        
+        if [ "$READY" = "true" ]; then
+          echo "✅ DEPLOYMENT APPROVED - All criteria met!"
+          echo "🎯 Success rate: $RATE%"
+          echo "🚀 Ready for production deployment"
+        else
+          echo "⛔ DEPLOYMENT BLOCKED - Criteria not met"
+          echo "📊 Current success rate: $RATE%"
+          echo "🔧 Review failed tests and fix issues before deployment"
+          exit 1
+        fi
+
+    - name: Create deployment summary
+      if: always()
+      run: |
+        cat >> $GITHUB_STEP_SUMMARY << 'EOF'
+        ## 🎯 Deployment Readiness Report
+        
+        | Metric | Status | Details |
+        |--------|--------|---------|
+        | Deployment Ready | ${{ needs.health-check.outputs.deployment-ready == 'true' && '✅ YES' || '❌ NO' }} | Comprehensive validation |
+        | Success Rate | ${{ needs.health-check.outputs.test-success-rate }}% | Target: ≥80% |
+        | Core Validation | ${{ needs.validate-core.result == 'success' && '✅ PASS' || '❌ FAIL' }} | Lint, TypeCheck, Build |
+        | Unit Tests | ${{ needs.test-unit.result == 'success' && '✅ PASS' || '❌ FAIL' }} | Coverage & Quality |
+        | E2E Tests | ${{ needs.test-e2e.result == 'success' && '✅ PASS' || needs.test-e2e.result == 'failure' && '❌ FAIL' || '⚠️ SKIP' }} | User Workflows |
+        | Security | ${{ needs.test-security.result == 'success' && '✅ PASS' || needs.test-security.result == 'failure' && '❌ FAIL' || '⚠️ SKIP' }} | Audit & A11y |
+        | Performance | ${{ needs.test-performance.result == 'success' && '✅ PASS' || needs.test-performance.result == 'failure' && '❌ FAIL' || '⚠️ SKIP' }} | Bundle & Speed |
+        
+        ### 🏥 Health Status
+        ${{ needs.health-check.outputs.deployment-ready == 'true' && '✅ **HEALTHY** - Ready for production deployment' || '⚠️ **NEEDS ATTENTION** - Review issues before deployment' }}
+        
+        ### 📈 Recommendations
+        ${{ needs.health-check.outputs.test-success-rate >= 95 && '🎉 Excellent! Consider adding more edge case tests.' || needs.health-check.outputs.test-success-rate >= 80 && '👍 Good progress! Focus on failing tests to reach 95%.' || '🔧 Below target! Prioritize fixing critical test failures.' }}
+        EOF

@@ -433,9 +433,24 @@ describe('Payment Integration Tests', () => {
   })
 
   describe('Payment Security Integration', () => {
+    const originalIsSecureContext = window.isSecureContext
+
+    afterEach(() => {
+      // Restore original secure context
+      Object.defineProperty(window, 'isSecureContext', { 
+        value: originalIsSecureContext,
+        configurable: true,
+        writable: true
+      })
+    })
+
     it('should handle secure payment processing', async () => {
       // Mock secure context
-      Object.defineProperty(window, 'isSecureContext', { value: true })
+      Object.defineProperty(window, 'isSecureContext', { 
+        value: true,
+        configurable: true,
+        writable: true
+      })
 
       render(<PaymentProcessor />)
 
@@ -446,7 +461,11 @@ describe('Payment Integration Tests', () => {
     })
 
     it('should prevent payment in insecure context', () => {
-      Object.defineProperty(window, 'isSecureContext', { value: false })
+      Object.defineProperty(window, 'isSecureContext', { 
+        value: false,
+        configurable: true,
+        writable: true
+      })
 
       render(<PaymentProcessor />)
 

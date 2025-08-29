@@ -5,6 +5,21 @@ import { act } from '@testing-library/react'
 import { AIChatInterface } from '@/components/AIChatInterface'
 import { DashboardDemo } from '@/components/DashboardDemo'
 import { AnalyticsDashboard } from '@/components/AnalyticsDashboard'
+import { aiService } from '@/services/aiService'
+
+// Mock AI Service with proper factory function
+vi.mock('@/services/aiService', () => ({
+  aiService: {
+    getConversationHistory: vi.fn(),
+    sendMessage: vi.fn()
+  }
+}))
+
+// Type the mocked service for better TypeScript support
+const mockAiService = aiService as {
+  getConversationHistory: ReturnType<typeof vi.fn>
+  sendMessage: ReturnType<typeof vi.fn>
+}
 
 // Performance monitoring utilities
 const measurePerformance = (name: string, fn: () => Promise<void> | void) => {
@@ -61,15 +76,7 @@ describe('Performance Tests', () => {
         assistantId: 'math_tutor'
       }))
 
-      const mockGetConversationHistory = vi.fn()
-        .mockResolvedValue(largeConversation)
-
-      vi.mock('@/services/aiService', () => ({
-        aiService: {
-          getConversationHistory: mockGetConversationHistory,
-          sendMessage: vi.fn()
-        }
-      }))
+      mockAiService.getConversationHistory.mockResolvedValue(largeConversation)
 
       const renderTime = await measurePerformance('Large conversation render', async () => {
         render(<AIChatInterface assistantId="math_tutor" />)
@@ -187,10 +194,9 @@ describe('Performance Tests', () => {
 
   describe('Rate Limiting and Throttling', () => {
     it('should implement request throttling for AI service', async () => {
-      const mockSendMessage = vi.fn()
       let requestCount = 0
 
-      mockSendMessage.mockImplementation(() => {
+      mockAiService.sendMessage.mockImplementation(() => {
         requestCount++
         return Promise.resolve({
           id: `response-${requestCount}`,
@@ -199,12 +205,6 @@ describe('Performance Tests', () => {
           timestamp: new Date().toISOString()
         })
       })
-
-      vi.mock('@/services/aiService', () => ({
-        aiService: {
-          sendMessage: mockSendMessage
-        }
-      }))
 
       render(<AIChatInterface assistantId="math_tutor" />)
 
@@ -221,7 +221,7 @@ describe('Performance Tests', () => {
       await Promise.all(rapidRequests)
 
       // Should throttle requests (not all 10 should go through immediately)
-      expect(mockSendMessage).toHaveBeenCalledTimes(3) // Max 3 per second
+      expect(mockAiService.sendMessage).toHaveBeenCalledTimes(3) // Max 3 per second
 
       // Verify rate limiting message
       expect(screen.getByText(/muitas mensagens/i)).toBeInTheDocument()

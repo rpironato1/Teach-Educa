@@ -1,10 +1,23 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
+import { describe, it, expect, vi, beforeEach, afterEach, beforeAll, afterAll } from 'vitest'
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { AIChatInterface } from '@/components/AIChatInterface'
 import { LoginForm } from '@/components/auth/LoginForm'
 import { PaymentProcessor } from '@/components/PaymentProcessor'
 import DOMPurify from 'dompurify'
+import { aiService } from '@/services/aiService'
+
+// Mock AI Service with proper factory function
+vi.mock('@/services/aiService', () => ({
+  aiService: {
+    sendMessage: vi.fn()
+  }
+}))
+
+// Type the mocked service for better TypeScript support
+const mockAiService = aiService as {
+  sendMessage: ReturnType<typeof vi.fn>
+}
 
 // Mock DOMPurify
 vi.mock('dompurify', () => ({
@@ -15,19 +28,19 @@ vi.mock('dompurify', () => ({
 
 // Mock CSP violations
 const mockCSPViolations = []
-const originalAddEventListener = window.addEventListener
+const originalAddEventListener = globalThis.addEventListener
 
 beforeAll(() => {
-  window.addEventListener = vi.fn((event, handler) => {
+  globalThis.addEventListener = vi.fn((event, handler) => {
     if (event === 'securitypolicyviolation') {
       mockCSPViolations.push(handler)
     }
-    return originalAddEventListener.call(window, event, handler)
+    return originalAddEventListener?.call(globalThis, event, handler)
   })
 })
 
 afterAll(() => {
-  window.addEventListener = originalAddEventListener
+  globalThis.addEventListener = originalAddEventListener
 })
 
 describe('Security Tests', () => {
@@ -40,18 +53,12 @@ describe('Security Tests', () => {
     it('should sanitize HTML input in chat messages', async () => {
       const user = userEvent.setup()
       
-      const mockSendMessage = vi.fn().mockResolvedValue({
+      mockAiService.sendMessage.mockResolvedValue({
         id: 'response-1',
         content: 'Safe response',
         role: 'assistant',
         timestamp: new Date().toISOString()
       })
-
-      vi.mock('@/services/aiService', () => ({
-        aiService: {
-          sendMessage: mockSendMessage
-        }
-      }))
 
       render(<AIChatInterface assistantId="math_tutor" />)
 
