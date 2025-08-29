@@ -104,6 +104,78 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const tokenExpiresAt = authData.tokenExpiresAt
   const sessionActive = authData.sessionActive
 
+  // Force logout function - defined early to prevent hoisting issues
+  const forceLogout = async (): Promise<void> => {
+    // Force logout without API call (for security issues)
+    setAuthData({
+      user: null,
+      token: null,
+      tokenExpiresAt: null,
+      sessionActive: false
+    })
+    
+    // Clear all stored data
+    localStorage.clear()
+    sessionStorage.clear()
+  }
+
+  // Logout function - defined early to prevent hoisting issues
+  const logout = async (): Promise<void> => {
+    setIsLoading(true)
+    
+    try {
+      // Simulate API call to invalidate token securely
+      await new Promise(resolve => setTimeout(resolve, 500))
+      
+      // Clear all auth data
+      setAuthData({
+        user: null,
+        token: null,
+        tokenExpiresAt: null,
+        sessionActive: false
+      })
+      
+      // Clear stored data
+      localStorage.removeItem('auth_token')
+      localStorage.removeItem('auth_user')
+      localStorage.removeItem('auth_expires')
+      sessionStorage.clear()
+      
+      toast.success('Logout realizado com sucesso')
+    } catch (error) {
+      console.error('Logout error:', error)
+      toast.error('Erro ao fazer logout')
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  // Refresh token function - defined early to prevent hoisting issues  
+  const refreshToken = async (): Promise<boolean> => {
+    if (!authData.token || !authData.sessionActive) return false
+
+    try {
+      // Simulate token refresh API call
+      await new Promise(resolve => setTimeout(resolve, 800))
+      
+      // Mock successful refresh - in real implementation, get new token from API
+      const newToken = authData.token.replace(/jwt_/, 'jwt_refreshed_')
+      const newExpiresAt = Date.now() + (8 * 60 * 60 * 1000) // 8 hours
+      
+      setAuthData(current => ({
+        ...current,
+        token: newToken,
+        tokenExpiresAt: newExpiresAt
+      }))
+      
+      return true
+    } catch (error) {
+      console.error('Token refresh failed:', error)
+      return false
+    }
+  }
+
+  // Refresh token function - defined early to prevent hoisting issues  
   // Enhanced session validation
   const validateSession = async (): Promise<boolean> => {
     if (!authData.token || !authData.tokenExpiresAt) return false
@@ -258,46 +330,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
     } finally {
       setIsLoading(false)
     }
-  }
-
-  const logout = async (): Promise<void> => {
-    setIsLoading(true)
-    
-    try {
-      // Simulate API call to invalidate token securely
-      await new Promise(resolve => setTimeout(resolve, 500))
-      
-      // Clear all auth data
-      setAuthData({
-        user: null,
-        token: null,
-        tokenExpiresAt: null,
-        sessionActive: false
-      })
-      
-      // Clear any cached data
-      localStorage.removeItem('temp-auth-data')
-      sessionStorage.clear()
-      
-    } catch (error) {
-      console.error('Logout error:', error)
-    } finally {
-      setIsLoading(false)
-    }
-  }
-
-  const forceLogout = async (): Promise<void> => {
-    // Force logout without API call (for security issues)
-    setAuthData({
-      user: null,
-      token: null,
-      tokenExpiresAt: null,
-      sessionActive: false
-    })
-    
-    // Clear all stored data
-    localStorage.clear()
-    sessionStorage.clear()
   }
 
   const refreshToken = async (): Promise<boolean> => {
