@@ -3,6 +3,9 @@
  * Módulo 6: Múltiplos assistentes especializados com IA neuroadaptativa
  */
 
+// Counter for unique message IDs
+let messageIdCounter = 0
+
 export interface Assistant {
   id: string
   name: string
@@ -274,7 +277,7 @@ class AIService {
         const metadata = this.analyzeResponse(response, profile)
 
         return {
-          id: `assistant-${Date.now()}`,
+          id: `assistant-${Date.now()}-${++messageIdCounter}`,
           role: 'assistant',
           content: response,
           timestamp: new Date(),
@@ -340,7 +343,7 @@ class AIService {
     const randomResponse = responses[Math.floor(Math.random() * responses.length)]
 
     return {
-      id: `assistant-${Date.now()}`,
+      id: `assistant-${Date.now()}-${++messageIdCounter}`,
       role: 'assistant',
       content: `${randomResponse}\n\n⚠️ *Nota: API de IA indisponível. Resposta simulada para demonstração.*`,
       timestamp: new Date(),
@@ -466,11 +469,21 @@ Sua resposta:`
    * Analisa resposta do assistente para extrair metadados
    */
   private analyzeResponse(response: string, profile: LearningProfile) {
+    // Verificar se response é válido
+    if (!response || typeof response !== 'string') {
+      return {
+        confidence: 0.1,
+        adaptationLevel: 0.1,
+        clarity: 0.1,
+        engagement: 0.1
+      }
+    }
+    
     // Análise simples de confiança baseada no comprimento e estrutura
     const confidence = Math.min(0.9, response.length / 1000)
     
     // Nível de adaptação baseado na personalização
-    const adaptationLevel = profile.adaptationHistory.length > 0 ? 0.8 : 0.5
+    const adaptationLevel = profile?.adaptationHistory?.length > 0 ? 0.8 : 0.5
 
     return {
       confidence,

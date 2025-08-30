@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import type { AxeResults, AxeResult, AxeResultNode } from 'axe-core';
 
 test.describe('Lighthouse Accessibility Score Check', () => {
   test('Check current accessibility score', async ({ page }) => {
@@ -22,7 +23,7 @@ test.describe('Lighthouse Accessibility Score Check', () => {
     const axeResults = await page.evaluate(() => {
       return new Promise((resolve) => {
         // @ts-expect-error - axe is added via script injection
-        window.axe.run((err: any, results: any) => {
+        window.axe.run((err: Error | null, results: AxeResults) => {
           resolve(results);
         });
       });
@@ -45,13 +46,13 @@ test.describe('Lighthouse Accessibility Score Check', () => {
     
     if (violations.length > 0) {
       console.log(`\n🔍 Detailed violations:`);
-      violations.forEach((violation: any, index: number) => {
+      violations.forEach((violation: AxeResult, index: number) => {
         console.log(`\n  ${index + 1}. ${violation.id} (${violation.impact})`);
         console.log(`     ${violation.description}`);
         console.log(`     Affected elements: ${violation.nodes.length}`);
         
         // Show specific elements
-        violation.nodes.forEach((node: any, nodeIndex: number) => {
+        violation.nodes.forEach((node: AxeResultNode, nodeIndex: number) => {
           console.log(`     Element ${nodeIndex + 1}:`);
           console.log(`       Target: ${node.target.join(', ')}`);
           console.log(`       HTML: ${node.html.substring(0, 150)}...`);

@@ -52,7 +52,7 @@ export const useIntersectionObserver = ({
 }
 
 // Hook specifically for lazy loading sections
-export const useLazySectionLoad = (deps: any[] = []) => {
+export const useLazySectionLoad = (deps: unknown[] = []) => {
   const [shouldLoad, setShouldLoad] = useState(false)
   const { elementRef, isIntersecting } = useIntersectionObserver({
     threshold: 0.1,
@@ -63,7 +63,8 @@ export const useLazySectionLoad = (deps: any[] = []) => {
     if (isIntersecting && !shouldLoad) {
       setShouldLoad(true)
     }
-  }, [isIntersecting, shouldLoad, ...deps])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isIntersecting, shouldLoad, deps])
 
   return {
     elementRef,

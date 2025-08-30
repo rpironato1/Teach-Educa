@@ -25,11 +25,11 @@ const INTERACTIVE_ELEMENTS = [
 ];
 
 test.describe('Comprehensive Accessibility and Functionality Testing', () => {
-  const testResults: any[] = [];
-  const screenshots: any[] = [];
-  const accessibilityIssues: any[] = [];
-  const missingAssets: any[] = [];
-  const brokenFunctions: any[] = [];
+  const testResults: unknown[] = [];
+  const screenshots: unknown[] = [];
+  const accessibilityIssues: unknown[] = [];
+  const missingAssets: unknown[] = [];
+  const brokenFunctions: unknown[] = [];
 
   test.beforeEach(async ({ page }) => {
     // Enable dev tools
@@ -72,7 +72,7 @@ test.describe('Comprehensive Accessibility and Functionality Testing', () => {
           const errors = [];
           // Check for console errors
           if (window.console && window.console.error) {
-            errors.push(...(window as any).consoleErrors || []);
+            errors.push(...(window as { consoleErrors?: string[] }).consoleErrors || []);
           }
           return errors;
         });
@@ -217,7 +217,7 @@ test.describe('Comprehensive Accessibility and Functionality Testing', () => {
   });
 
   test('Missing Assets and Icons Mapping', async ({ page }) => {
-    const missingAssetsFound: any[] = [];
+    const missingAssetsFound: unknown[] = [];
     
     // Listen for failed network requests
     page.on('response', response => {
@@ -297,7 +297,7 @@ test.describe('Comprehensive Accessibility and Functionality Testing', () => {
   });
 
   test('Pages Load Successfully Test', async ({ page }) => {
-    const pageLoadResults: any[] = [];
+    const pageLoadResults: unknown[] = [];
     
     for (const route of ROUTES_TO_TEST) {
       try {
@@ -351,7 +351,7 @@ test.describe('Comprehensive Accessibility and Functionality Testing', () => {
   test('Inaccessible Functions Mapping', async ({ page }) => {
     await page.goto('/');
     
-    const inaccessibleFunctions: any[] = [];
+    const inaccessibleFunctions: unknown[] = [];
     
     // Test all interactive elements for accessibility
     const interactiveElements = await page.locator(INTERACTIVE_ELEMENTS.join(', ')).all();

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { motion } from 'framer-motion'
+import { motion as _motion } from 'framer-motion'
 import { Eye, EyeSlash, User, Envelope, Phone, IdentificationCard } from '@phosphor-icons/react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'

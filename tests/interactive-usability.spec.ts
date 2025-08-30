@@ -255,7 +255,7 @@ test.describe('Interactive Usability Testing Session', () => {
         await item.click();
         console.log(`🔗 Explored: ${text?.trim()}`);
         await page.waitForTimeout(1000);
-      } catch (error) {
+      } catch {
         console.log(`⚠️  Could not click menu item ${i}`);
       }
     }
@@ -276,7 +276,7 @@ test.describe('Interactive Usability Testing Session', () => {
         detailedReportOptions: { html: true }
       });
       console.log('✅ Accessibility check passed');
-    } catch (error) {
+    } catch {
       console.log('⚠️  Accessibility issues detected (detailed in test output)');
     }
     

@@ -469,7 +469,7 @@ test.describe('OTP Validation Flow', () => {
     expect(auditTrail[2]?.failure_reason).toBeUndefined();
     
     // Verify each entry has required security fields
-    auditTrail.forEach((entry: any) => {
+    auditTrail.forEach((entry: Record<string, unknown>) => {
       expect(entry).toHaveProperty('attempted_at');
       expect(entry).toHaveProperty('ip_address');
       expect(entry).toHaveProperty('user_agent');

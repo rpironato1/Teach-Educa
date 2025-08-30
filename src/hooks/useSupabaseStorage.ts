@@ -27,7 +27,7 @@ export interface SupabaseUser {
   last_login_at: string
   subscription_plan: string
   credits_balance: number
-  metadata?: Record<string, any>
+  metadata?: Record<string, unknown>
 }
 
 export interface SupabaseConversation {
@@ -40,7 +40,7 @@ export interface SupabaseConversation {
   message_count: number
   total_credits_used: number
   status: 'active' | 'archived'
-  metadata?: Record<string, any>
+  metadata?: Record<string, unknown>
 }
 
 export interface SupabaseMessage {
@@ -50,7 +50,7 @@ export interface SupabaseMessage {
   content: string
   credits_used: number
   created_at: string
-  metadata?: Record<string, any>
+  metadata?: Record<string, unknown>
 }
 
 export interface SupabaseStudySession {
@@ -67,7 +67,7 @@ export interface SupabaseStudySession {
   notes?: string
   completed: boolean
   created_at: string
-  metadata?: Record<string, any>
+  metadata?: Record<string, unknown>
 }
 
 export interface SupabaseTransaction {
@@ -78,7 +78,7 @@ export interface SupabaseTransaction {
   description: string
   related_service?: string
   created_at: string
-  metadata?: Record<string, any>
+  metadata?: Record<string, unknown>
 }
 
 export interface SupabaseAnalytics {
@@ -93,7 +93,7 @@ export interface SupabaseAnalytics {
   concepts_mastered: number
   created_at: string
   updated_at: string
-  data: Record<string, any>
+  data: Record<string, unknown>
 }
 
 export interface SupabaseAchievement {
@@ -106,7 +106,7 @@ export interface SupabaseAchievement {
   points: number
   unlocked_at: string
   created_at: string
-  metadata?: Record<string, any>
+  metadata?: Record<string, unknown>
 }
 
 export interface SupabaseNotification {
@@ -118,7 +118,7 @@ export interface SupabaseNotification {
   icon?: string
   read: boolean
   created_at: string
-  data?: Record<string, any>
+  data?: Record<string, unknown>
 }
 
 // Database table type mapping
@@ -352,7 +352,7 @@ export function migrateToSupabaseFormat(userId: string) {
     const conversations = localStorage.getItem('kv-conversations')
     if (conversations) {
       const parsed = JSON.parse(conversations)
-      const supabaseConversations = parsed.map((conv: any) => ({
+      const supabaseConversations = parsed.map((conv: Record<string, unknown>) => ({
         id: conv.id,
         user_id: userId,
         assistant_id: conv.assistant || 'unknown',
@@ -384,7 +384,7 @@ export function exportSupabaseData(userId: string) {
     'transactions', 'analytics', 'achievements', 'notifications'
   ]
   
-  const exportData: Record<string, any[]> = {}
+  const exportData: Record<string, unknown[]> = {}
   
   tables.forEach(table => {
     const key = `supabase_${table}_${userId}`

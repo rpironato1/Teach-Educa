@@ -372,7 +372,7 @@ test.describe('Performance Tests', () => {
 
   test('should have minimal bundle size impact', async ({ page }) => {
     // Monitor network requests for JavaScript bundles
-    const jsRequests: any[] = [];
+    const jsRequests: unknown[] = [];
     
     page.on('response', response => {
       const url = response.url();

@@ -68,7 +68,7 @@ const SubscriptionManager: React.FC<SubscriptionManagerProps> = ({
         await downgradeSubscription(planId)
         toast.success(`Plano alterado para ${newPlan.name}`)
       }
-    } catch (_error) {
+    } catch {
       toast.error('Erro ao alterar plano')
     } finally {
       setIsChangingPlan(false)
@@ -81,7 +81,7 @@ const SubscriptionManager: React.FC<SubscriptionManagerProps> = ({
       await cancelSubscription()
       toast.success('Assinatura cancelada com sucesso')
       onClose()
-    } catch (_error) {
+    } catch {
       toast.error('Erro ao cancelar assinatura')
     }
   }

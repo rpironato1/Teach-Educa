@@ -4,8 +4,8 @@ declare const BASE_KV_SERVICE_URL: string
 
 // Spark LLM API types
 interface SparkLLM {
-  llm: (prompt: any, model: string) => Promise<string>
-  llmPrompt: (template: TemplateStringsArray, ...values: any[]) => any
+  llm: (prompt: string | object, model: string) => Promise<string>
+  llmPrompt: (template: TemplateStringsArray, ...values: unknown[]) => string | object
 }
 
 declare global {

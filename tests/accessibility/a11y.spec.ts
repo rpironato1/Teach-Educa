@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import type { AxeResults, AxeResult } from 'axe-core';
 
 test.describe('Accessibility Tests', () => {
   test.beforeEach(async ({ page }) => {
@@ -74,7 +75,7 @@ test.describe('Accessibility Tests', () => {
           rules: {
             'color-contrast': { enabled: true }
           }
-        }, (err: any, results: any) => {
+        }, (err: Error | null, results: AxeResults) => {
           resolve(results);
         });
       });
@@ -344,7 +345,7 @@ test.describe('Accessibility Tests', () => {
     const results = await page.evaluate(() => {
       return new Promise((resolve) => {
         // @ts-expect-error - axe is added via script injection
-        window.axe.run((err: any, results: any) => {
+        window.axe.run((err: Error | null, results: AxeResults) => {
           resolve(results);
         });
       });
@@ -360,7 +361,7 @@ test.describe('Accessibility Tests', () => {
     
     // Allow minor violations but fail on critical ones
     // @ts-expect-error - axe-core types
-    const criticalViolations = violations.filter((v: any) => 
+    const criticalViolations = violations.filter((v: AxeResult) => 
       ['critical', 'serious'].includes(v.impact)
     );
     

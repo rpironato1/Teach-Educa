@@ -1,7 +1,7 @@
 import { useEffect, useCallback } from 'react'
 
 // Preload function for lazy components
-export const preloadComponent = (importFn: () => Promise<any>) => {
+export const preloadComponent = (importFn: () => Promise<{ default: React.ComponentType<unknown> }>) => {
   const componentImport = importFn()
   return componentImport
 }

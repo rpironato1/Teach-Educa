@@ -104,6 +104,78 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const tokenExpiresAt = authData.tokenExpiresAt
   const sessionActive = authData.sessionActive
 
+  // Force logout function - defined early to prevent hoisting issues
+  const forceLogout = async (): Promise<void> => {
+    // Force logout without API call (for security issues)
+    setAuthData({
+      user: null,
+      token: null,
+      tokenExpiresAt: null,
+      sessionActive: false
+    })
+    
+    // Clear all stored data
+    localStorage.clear()
+    sessionStorage.clear()
+  }
+
+  // Logout function - defined early to prevent hoisting issues
+  const logout = async (): Promise<void> => {
+    setIsLoading(true)
+    
+    try {
+      // Simulate API call to invalidate token securely
+      await new Promise(resolve => setTimeout(resolve, 500))
+      
+      // Clear all auth data
+      setAuthData({
+        user: null,
+        token: null,
+        tokenExpiresAt: null,
+        sessionActive: false
+      })
+      
+      // Clear stored data
+      localStorage.removeItem('auth_token')
+      localStorage.removeItem('auth_user')
+      localStorage.removeItem('auth_expires')
+      sessionStorage.clear()
+      
+      toast.success('Logout realizado com sucesso')
+    } catch (error) {
+      console.error('Logout error:', error)
+      toast.error('Erro ao fazer logout')
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  // Refresh token function - defined early to prevent hoisting issues  
+  const refreshToken = async (): Promise<boolean> => {
+    if (!authData.token || !authData.sessionActive) return false
+
+    try {
+      // Simulate token refresh API call
+      await new Promise(resolve => setTimeout(resolve, 800))
+      
+      // Mock successful refresh - in real implementation, get new token from API
+      const newToken = authData.token.replace(/jwt_/, 'jwt_refreshed_')
+      const newExpiresAt = Date.now() + (8 * 60 * 60 * 1000) // 8 hours
+      
+      setAuthData(current => ({
+        ...current,
+        token: newToken,
+        tokenExpiresAt: newExpiresAt
+      }))
+      
+      return true
+    } catch (error) {
+      console.error('Token refresh failed:', error)
+      return false
+    }
+  }
+
+  // Refresh token function - defined early to prevent hoisting issues  
   // Enhanced session validation
   const validateSession = async (): Promise<boolean> => {
     if (!authData.token || !authData.tokenExpiresAt) return false
@@ -118,7 +190,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       // Simulate API call to validate session
       await new Promise(resolve => setTimeout(resolve, 300))
       return true
-    } catch (error) {
+    } catch {
       await logout()
       return false
     }
@@ -137,7 +209,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
 
     initAuth()
-  }, [])
+  }, [authData.sessionActive, authData.token, logout, validateSession])
 
   // Set up automatic token refresh and session monitoring
   useEffect(() => {
@@ -165,7 +237,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       clearInterval(sessionCheckInterval)
       clearInterval(refreshCheckInterval)
     }
-  }, [authData.token, authData.sessionActive, authData.tokenExpiresAt])
+  }, [authData.token, authData.sessionActive, authData.tokenExpiresAt, forceLogout, refreshToken, validateSession])
 
   const login = async (email: string, password: string, rememberMe = false): Promise<{ success: boolean; error?: string; requiresMFA?: boolean }> => {
     setIsLoading(true)
@@ -260,46 +332,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
   }
 
-  const logout = async (): Promise<void> => {
-    setIsLoading(true)
-    
-    try {
-      // Simulate API call to invalidate token securely
-      await new Promise(resolve => setTimeout(resolve, 500))
-      
-      // Clear all auth data
-      setAuthData({
-        user: null,
-        token: null,
-        tokenExpiresAt: null,
-        sessionActive: false
-      })
-      
-      // Clear any cached data
-      localStorage.removeItem('temp-auth-data')
-      sessionStorage.clear()
-      
-    } catch (error) {
-      console.error('Logout error:', error)
-    } finally {
-      setIsLoading(false)
-    }
-  }
-
-  const forceLogout = async (): Promise<void> => {
-    // Force logout without API call (for security issues)
-    setAuthData({
-      user: null,
-      token: null,
-      tokenExpiresAt: null,
-      sessionActive: false
-    })
-    
-    // Clear all stored data
-    localStorage.clear()
-    sessionStorage.clear()
-  }
-
   const refreshToken = async (): Promise<boolean> => {
     if (!authData.token || !authData.sessionActive) return false
 
@@ -338,7 +370,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       // Mock successful response - always return success for security
       // (Don't reveal if email exists or not)
       return { success: true }
-    } catch (error) {
+    } catch {
       return { success: false, error: 'Erro ao processar solicitação. Tente novamente.' }
     }
   }
@@ -359,7 +391,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       
       // Mock successful response
       return { success: true }
-    } catch (error) {
+    } catch {
       return { success: false, error: 'Token inválido ou expirado. Solicite uma nova recuperação.' }
     }
   }
@@ -421,7 +453,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       }))
       
       return { success: true }
-    } catch (error) {
+    } catch {
       return { success: false, error: 'Erro ao atualizar perfil.' }
     }
   }

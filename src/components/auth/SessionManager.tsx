@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { motion } from 'framer-motion'
 import { 
   DeviceDesktop, 
@@ -36,21 +36,21 @@ export default function SessionManager({ onClose }: SessionManagerProps) {
   const [isLoading, setIsLoading] = useState(true)
   const [terminatingSession, setTerminatingSession] = useState<string | null>(null)
 
-  useEffect(() => {
-    loadSessions()
-  }, [])
-
-  const loadSessions = async () => {
+  const loadSessions = useCallback(async () => {
     setIsLoading(true)
     try {
       const activeSessions = await getActiveSessions()
       setSessions(activeSessions)
-    } catch (error) {
+    } catch {
       toast.error('Erro ao carregar sessões ativas')
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [getActiveSessions])
+
+  useEffect(() => {
+    loadSessions()
+  }, [loadSessions])
 
   const handleTerminateSession = async (sessionId: string) => {
     if (terminatingSession) return
@@ -66,7 +66,7 @@ export default function SessionManager({ onClose }: SessionManagerProps) {
       } else {
         toast.error('Erro ao encerrar sessão')
       }
-    } catch (error) {
+    } catch {
       toast.error('Erro ao encerrar sessão')
     } finally {
       setTerminatingSession(null)

@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useReducer, useCallback, useEffect, useState } from 'react'
+import React, { createContext, useContext, useReducer, useCallback, useEffect, useState, useMemo } from 'react'
 import { useAuth } from './AuthContext'
 import { useCreditContext } from './CreditContext'
 import { 
@@ -6,7 +6,7 @@ import {
   Achievement, 
   StudySession, 
   StudyStreak, 
-  LearningMetrics,
+  LearningMetrics as _LearningMetrics,
   SubjectProgress,
   WeeklyProgress,
   LeaderboardEntry,
@@ -151,7 +151,7 @@ interface AnalyticsProviderProps {
 export function AnalyticsProvider({ children }: AnalyticsProviderProps) {
   const [state, dispatch] = useReducer(analyticsReducer, initialState)
   const { user, isAuthenticated } = useAuth()
-  const { credits, consumeCredits } = useCreditContext()
+  const { credits: _credits, consumeCredits: _consumeCredits } = useCreditContext()
   
   // Achievement unlock modal state
   const [unlockedAchievement, setUnlockedAchievement] = useState<Achievement | null>(null)
@@ -164,7 +164,7 @@ export function AnalyticsProvider({ children }: AnalyticsProviderProps) {
   const notificationStorage = useSupabaseStorage<SupabaseNotification>('notifications', user?.id)
 
   // Default achievements data stored in localStorage
-  const defaultAchievements = [
+  const defaultAchievements = useMemo(() => [
     {
       id: 'first-session',
       title: 'Primeira Lição',
@@ -209,7 +209,7 @@ export function AnalyticsProvider({ children }: AnalyticsProviderProps) {
       rarity: 'legendary',
       isUnlocked: false
     }
-  ]
+  ], [])
 
   // Initialize analytics data with Supabase storage
   const loadAnalytics = useCallback(async () => {
@@ -415,14 +415,14 @@ export function AnalyticsProvider({ children }: AnalyticsProviderProps) {
     await checkAchievements()
     
     toast.success(`Sessão concluída! ${duration} minutos estudados.`)
-  }, [state.currentSession, user, studySessionStorage, analyticsStorage, loadAnalytics])
+  }, [state.currentSession, user, studySessionStorage, analyticsStorage, loadAnalytics, checkAchievements, updateStreak])
 
   // Check and unlock achievements with Supabase storage
   const checkAchievements = useCallback(async () => {
     const currentAnalytics = analyticsStorage.data[0]
     if (!currentAnalytics) return
     
-    const sessions = studySessionStorage.data
+    const _sessions = studySessionStorage.data
     const totalTime = currentAnalytics.study_time_total
     const sessionsCount = currentAnalytics.sessions_completed
     
@@ -448,18 +448,18 @@ export function AnalyticsProvider({ children }: AnalyticsProviderProps) {
         await unlockAchievement(achievement.id)
       }
     }
-  }, [analyticsStorage.data, studySessionStorage.data])
+  }, [analyticsStorage.data, studySessionStorage.data, unlockAchievement])
 
   // Unlock specific achievement with Supabase storage
   const unlockAchievement = useCallback(async (achievementId: string) => {
     const currentAnalytics = analyticsStorage.data[0]
     if (!currentAnalytics) return
     
-    const achievement = currentAnalytics.data.achievements?.find((a: any) => a.id === achievementId)
+    const achievement = currentAnalytics.data.achievements?.find((a: Achievement) => a.id === achievementId)
     if (!achievement || achievement.isUnlocked) return
     
     // Create achievement record in Supabase
-    const unlockedAchievement = await achievementStorage.insert({
+    const _unlockedAchievement = await achievementStorage.insert({
       user_id: user!.id,
       achievement_type: achievement.id,
       title: achievement.title,
@@ -499,7 +499,7 @@ export function AnalyticsProvider({ children }: AnalyticsProviderProps) {
     }})
     
     // Update analytics data
-    const updatedAchievements = currentAnalytics.data.achievements.map((a: any) =>
+    const updatedAchievements = currentAnalytics.data.achievements.map((a: Achievement) =>
       a.id === achievementId ? { ...a, isUnlocked: true, unlockedAt: new Date() } : a
     )
     
@@ -598,11 +598,11 @@ export function AnalyticsProvider({ children }: AnalyticsProviderProps) {
   }, [analyticsStorage.data, user])
 
   // Other utility functions
-  const logStudyTime = useCallback(async (minutes: number) => {
+  const logStudyTime = useCallback(async (_minutes: number) => {
     // Implementation for logging study time
   }, [])
 
-  const updateSubjectProgress = useCallback(async (subject: string, progress: Partial<SubjectProgress>) => {
+  const updateSubjectProgress = useCallback(async (_subject: string, _progress: Partial<SubjectProgress>) => {
     // Implementation for updating subject progress
   }, [])
 

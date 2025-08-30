@@ -306,7 +306,7 @@ test.describe('Paid Subscription + Stripe Flow', () => {
     expect(hasPremiumAccess).toBeTruthy();
 
     // Verify credit balance is updated for premium plan
-    const creditData = await page.evaluate((userId) => {
+    const creditData = await page.evaluate((_userId) => {
       const authData = localStorage.getItem('kv-auth-data');
       return authData ? JSON.parse(authData) : null;
     }, premiumUserId);
@@ -374,7 +374,7 @@ test.describe('Paid Subscription + Stripe Flow', () => {
       
       // Update payment status
       const transactions = JSON.parse(localStorage.getItem(`supabase_transactions_${userId}`) || '[]');
-      const updatedTransactions = transactions.map((transaction: any) => {
+      const updatedTransactions = transactions.map((transaction: Record<string, unknown>) => {
         if (transaction.metadata?.stripe_payment_id === 'pi_pending_123') {
           return {
             ...transaction,

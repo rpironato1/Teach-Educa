@@ -16,7 +16,7 @@ type ValidationErrors<T> = {
   [K in keyof T]?: string
 }
 
-export function useFormValidation<T extends Record<string, any>>(
+export function useFormValidation<T extends Record<string, unknown>>(
   initialData: T,
   rules: ValidationRules<T>
 ) {
@@ -98,11 +98,12 @@ export function useFormValidation<T extends Record<string, any>>(
     }
   }, [touched, validateField])
 
-  const touchField = useCallback((field: keyof T) => {
+  const touchField = useCallback((field: keyof T, value?: T[keyof T]) => {
     setTouched(prev => ({ ...prev, [field]: true }))
     
-    // Validate immediately when field is touched
-    const error = validateField(field, data[field])
+    // Use provided value or current data value
+    const fieldValue = value !== undefined ? value : data[field]
+    const error = validateField(field, fieldValue)
     setErrors(prev => ({
       ...prev,
       [field]: error || undefined

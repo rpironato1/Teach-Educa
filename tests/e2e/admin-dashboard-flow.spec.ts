@@ -184,7 +184,7 @@ test.describe('Admin Dashboard Flow', () => {
     // Test UPDATE operation - change user status
     await page.evaluate(() => {
       const users = JSON.parse(localStorage.getItem('supabase_users_') || '[]');
-      const userToUpdate = users.find((u: any) => u.id === 'user_3');
+      const userToUpdate = users.find((u: Record<string, unknown>) => u.id === 'user_3');
       if (userToUpdate) {
         userToUpdate.status = 'active';
         userToUpdate.updated_at = new Date().toISOString();
@@ -197,7 +197,7 @@ test.describe('Admin Dashboard Flow', () => {
       return users ? JSON.parse(users) : null;
     });
 
-    const updatedUser = updatedUsers.find((u: any) => u.id === 'user_3');
+    const updatedUser = updatedUsers.find((u: Record<string, unknown>) => u.id === 'user_3');
     expect(updatedUser?.status).toBe('active');
     expect(updatedUser?.updated_at).toBeTruthy();
 
@@ -231,7 +231,7 @@ test.describe('Admin Dashboard Flow', () => {
     // Test DELETE operation - remove user
     await page.evaluate(() => {
       const users = JSON.parse(localStorage.getItem('supabase_users_') || '[]');
-      const filteredUsers = users.filter((u: any) => u.id !== 'user_2');
+      const filteredUsers = users.filter((u: Record<string, unknown>) => u.id !== 'user_2');
       localStorage.setItem('supabase_users_', JSON.stringify(filteredUsers));
     });
 
@@ -241,7 +241,7 @@ test.describe('Admin Dashboard Flow', () => {
     });
 
     expect(finalUsers).toHaveLength(3);
-    expect(finalUsers.find((u: any) => u.id === 'user_2')).toBeUndefined();
+    expect(finalUsers.find((u: Record<string, unknown>) => u.id === 'user_2')).toBeUndefined();
   });
 
   test('should display and manage system analytics', async ({ page }) => {

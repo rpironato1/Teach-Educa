@@ -12,7 +12,7 @@
  * 7. Accessibility compliance
  */
 
-import { test, expect, Page } from '@playwright/test';
+import { test, expect, Page as _Page } from '@playwright/test';
 import { injectAxe, checkA11y } from 'axe-playwright';
 
 // User profiles for testing
@@ -582,7 +582,7 @@ test.describe('Comprehensive Usability Testing', () => {
         }
         
         await page.waitForTimeout(200);
-      } catch (error) {
+      } catch {
         console.log(`⚠️  Could not interact with input ${i}`);
       }
     }
@@ -624,7 +624,7 @@ test.describe('Comprehensive Usability Testing', () => {
       await page.locator('body').click({ button: 'right' });
       metrics.logAction('Right-click test');
       await page.waitForTimeout(500);
-    } catch (error) {
+    } catch {
       console.log('⚠️  Context menu test failed');
     }
     
@@ -840,7 +840,7 @@ test.describe('Comprehensive Usability Testing', () => {
     console.log('\n⌨️  Testing keyboard navigation...');
     
     let tabCount = 0;
-    let focusableElements: string[] = [];
+    const focusableElements: string[] = [];
     
     for (let i = 0; i < 20; i++) {
       await page.keyboard.press('Tab');
@@ -925,7 +925,7 @@ test.describe('Comprehensive Usability Testing', () => {
 });
 
 test.describe('Usability Findings Summary', () => {
-  test('Generate Comprehensive Usability Report', async ({ page }) => {
+  test('Generate Comprehensive Usability Report', async ({ page: _page }) => {
     console.log('\n📋 COMPREHENSIVE USABILITY TESTING REPORT');
     console.log('========================================');
     

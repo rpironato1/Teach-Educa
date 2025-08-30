@@ -35,7 +35,7 @@ export interface PaymentData {
   amount: number
   paymentMethod: 'credit-card' | 'pix' | 'boleto'
   userId?: string
-  [key: string]: any
+  [key: string]: unknown
 }
 
 // Credit costs for different services
@@ -159,7 +159,7 @@ export const CreditProvider: React.FC<CreditProviderProps> = ({ children }) => {
     } else {
       resetCreditData()
     }
-  }, [isAuthenticated, user])
+  }, [isAuthenticated, user, initializeCreditData])
 
   const initializeCreditData = async () => {
     setIsLoading(true)
@@ -193,9 +193,9 @@ export const CreditProvider: React.FC<CreditProviderProps> = ({ children }) => {
       }
 
       if (savedTransactions) {
-        const parsedTransactions = JSON.parse(savedTransactions).map((t: any) => ({
+        const parsedTransactions = JSON.parse(savedTransactions).map((t: Record<string, unknown>) => ({
           ...t,
-          timestamp: new Date(t.timestamp)
+          timestamp: new Date(t.timestamp as string)
         }))
         setTransactions(parsedTransactions)
       }
