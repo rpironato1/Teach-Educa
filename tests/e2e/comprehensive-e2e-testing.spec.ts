@@ -1,5 +1,5 @@
 import { test, expect, Page, ConsoleMessage, Request, Response } from '@playwright/test';
-import { injectAxe, checkA11y, getViolations } from 'axe-playwright';
+import { injectAxe, getViolations } from 'axe-playwright';
 import type { AxeResults } from 'axe-core';
 import * as fs from 'fs';
 import * as path from 'path';
