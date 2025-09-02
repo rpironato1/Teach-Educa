@@ -1,39 +1,39 @@
-<testsuites id="" name="" tests="1" failures="0" skipped="0" errors="0" time="13.277113000000002">
-<testsuite name="mcp-200x-protocol-executor.spec.ts" timestamp="2025-09-02T22:26:05.511Z" hostname="chromium" tests="1" failures="0" skipped="0" time="12.22" errors="0">
-<testcase name="🚀 PROTOCOLO MCP PLAYWRIGHT 200x - EXECUÇÃO SEQUENCIAL › Iteração 10/200 - Protocolo Completo 7 Fases" classname="mcp-200x-protocol-executor.spec.ts" time="12.22">
+<testsuites id="" name="" tests="1" failures="0" skipped="0" errors="0" time="13.314618000000001">
+<testsuite name="mcp-200x-protocol-executor.spec.ts" timestamp="2025-09-02T22:29:09.376Z" hostname="chromium" tests="1" failures="0" skipped="0" time="12.262" errors="0">
+<testcase name="🚀 PROTOCOLO MCP PLAYWRIGHT 200x - EXECUÇÃO SEQUENCIAL › Iteração 20/200 - Protocolo Completo 7 Fases" classname="mcp-200x-protocol-executor.spec.ts" time="12.262">
 <system-out>
 <![CDATA[
-🔄 === INICIANDO ITERAÇÃO 10/200 === Browser: chromium ===
-[10] 🔧 FASE 0: Preparação Inteligente
-[10] ✅ FASE 0: Preparação concluída com sucesso
-[10] ⚡ FASE 1: Interação e Fluxo do Usuário
-[10] ✅ Botão "Entrar" funcional
-[10] ✅ Botão "Começar Agora" funcional
-[10] ✅ Botão "Começar Gratuitamente" funcional
-[10] ✅ FASE 1: Fluxo de usuário testado
-[10] 📱 FASE 2: Responsividade e Performance
-[10] ✅ nav visível em mobile
-[10] ✅ main visível em mobile
-[10] ✅ h1 visível em mobile
-[10] ✅ nav visível em tablet
-[10] ✅ main visível em tablet
-[10] ✅ h1 visível em tablet
-[10] ✅ nav visível em desktop
-[10] ✅ main visível em desktop
-[10] ✅ h1 visível em desktop
-[10] ✅ FASE 2: Responsividade testada
-[10] 🔍 FASE 3: Console e Logs
-[10] ✅ FASE 3: Console analisado - 0 erros, 0 warnings
-[10] ♿ FASE 4: Acessibilidade WCAG
-[10] ⚠️ FASE 4: Violações de acessibilidade detectadas
-[10] ⚡ FASE 5: Performance
-[10] ✅ FASE 5: Performance medida - FCP: 1228ms, LCP: 1808ms
-[10] 🔄 FASE 6: Edge Cases
-[10] ✅ FASE 6: Edge cases testados
-[10] 📊 FASE 7: Relatórios
-[10] ✅ FASE 7: Relatório salvo - 0 issues (0 críticos)
+🔄 === INICIANDO ITERAÇÃO 20/200 === Browser: chromium ===
+[20] 🔧 FASE 0: Preparação Inteligente
+[20] ✅ FASE 0: Preparação concluída com sucesso
+[20] ⚡ FASE 1: Interação e Fluxo do Usuário
+[20] ✅ Botão "Entrar" funcional
+[20] ✅ Botão "Começar Agora" funcional
+[20] ✅ Botão "Começar Gratuitamente" funcional
+[20] ✅ FASE 1: Fluxo de usuário testado
+[20] 📱 FASE 2: Responsividade e Performance
+[20] ✅ nav visível em mobile
+[20] ✅ main visível em mobile
+[20] ✅ h1 visível em mobile
+[20] ✅ nav visível em tablet
+[20] ✅ main visível em tablet
+[20] ✅ h1 visível em tablet
+[20] ✅ nav visível em desktop
+[20] ✅ main visível em desktop
+[20] ✅ h1 visível em desktop
+[20] ✅ FASE 2: Responsividade testada
+[20] 🔍 FASE 3: Console e Logs
+[20] ✅ FASE 3: Console analisado - 0 erros, 0 warnings
+[20] ♿ FASE 4: Acessibilidade WCAG
+[20] ⚠️ FASE 4: Violações de acessibilidade detectadas
+[20] ⚡ FASE 5: Performance
+[20] ✅ FASE 5: Performance medida - FCP: 1236ms, LCP: 1816ms
+[20] 🔄 FASE 6: Edge Cases
+[20] ✅ FASE 6: Edge cases testados
+[20] 📊 FASE 7: Relatórios
+[20] ✅ FASE 7: Relatório salvo - 0 issues (0 críticos)
 
-🔄 === CONCLUÍDA ITERAÇÃO 10/200 === 0 issues encontrados ===
+🔄 === CONCLUÍDA ITERAÇÃO 20/200 === 0 issues encontrados ===
 
 📊 === GERANDO RELATÓRIO FINAL 200x EXECUÇÕES ===
 
