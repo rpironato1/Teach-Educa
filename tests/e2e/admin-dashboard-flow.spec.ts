@@ -13,6 +13,25 @@
 
 import { test, expect } from '@playwright/test';
 
+// Type definitions for analytics data
+interface UserAnalytics {
+  id: string;
+  study_time_total: number;
+  level: number;
+  sessions_completed: number;
+  achievements: string[];
+  created_at: string;
+  updated_at: string;
+}
+
+interface AuditTrailAction {
+  id: string;
+  action: string;
+  timestamp: string;
+  user_id: string;
+  details: Record<string, unknown>;
+}
+
 test.describe('Admin Dashboard Flow', () => {
   test.beforeEach(async ({ page }) => {
     // Clear all storage before each test
@@ -353,9 +372,9 @@ test.describe('Admin Dashboard Flow', () => {
     const calculatedMetrics = await page.evaluate(() => {
       const analytics = JSON.parse(localStorage.getItem('supabase_analytics_') || '[]');
       
-      const totalStudyTime = analytics.reduce((sum: number, user: any) => sum + user.study_time_total, 0);
-      const avgLevel = analytics.reduce((sum: number, user: any) => sum + user.level, 0) / analytics.length;
-      const totalSessions = analytics.reduce((sum: number, user: any) => sum + user.sessions_completed, 0);
+      const totalStudyTime = analytics.reduce((sum: number, user: UserAnalytics) => sum + user.study_time_total, 0);
+      const avgLevel = analytics.reduce((sum: number, user: UserAnalytics) => sum + user.level, 0) / analytics.length;
+      const totalSessions = analytics.reduce((sum: number, user: UserAnalytics) => sum + user.sessions_completed, 0);
       
       return {
         totalStudyTime,
@@ -595,7 +614,7 @@ test.describe('Admin Dashboard Flow', () => {
       const trail = JSON.parse(localStorage.getItem('admin_audit_trail') || '[]');
       const lastHour = new Date(Date.now() - 60 * 60 * 1000).getTime();
       
-      return trail.filter((action: any) => 
+      return trail.filter((action: AuditTrailAction) => 
         new Date(action.timestamp).getTime() > lastHour
       );
     });

@@ -4,6 +4,22 @@ import type { AxeResults } from 'axe-core';
 import * as fs from 'fs';
 import * as path from 'path';
 
+interface PerformanceMetric {
+  name: string;
+  value: number;
+  rating: 'good' | 'needs-improvement' | 'poor';
+  timestamp: number;
+}
+
+interface CoverageData {
+  url: string;
+  ranges: Array<{
+    start: number;
+    end: number;
+  }>;
+  text?: string;
+}
+
 interface TestSession {
   startTime: number;
   logs: {
@@ -11,10 +27,10 @@ interface TestSession {
     network: { request: Request; response?: Response }[];
     errors: string[];
     accessibility: AxeResults[];
-    performance: any[];
+    performance: PerformanceMetric[];
   };
   screenshots: string[];
-  coverage: any;
+  coverage: CoverageData[];
 }
 
 interface E2ETestReport {
