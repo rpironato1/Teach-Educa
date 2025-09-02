@@ -360,7 +360,7 @@ test.describe('Paid Subscription + Stripe Flow', () => {
     // Step 2: Simulate Stripe webhook confirmation
     await page.evaluate((userId) => {
       // Simulate webhook payload processing
-      const webhookData = {
+      const _webhookData = {
         type: 'payment_intent.succeeded',
         data: {
           object: {

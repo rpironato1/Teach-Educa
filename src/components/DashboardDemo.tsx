@@ -128,7 +128,7 @@ export default function DashboardDemo({ onBackToHome }: DashboardDemoProps) {
   // Current conversation state
   const [currentConversationId, setCurrentConversationId] = useState<string | null>(null)
   const [messages, setMessages] = useState<ChatMessage[]>([])
-  const [completedLessons, setCompletedLessons] = useState<string[]>(() => {
+  const [completedLessons, _setCompletedLessons] = useState<string[]>(() => {
     const saved = localStorage.getItem(`completed_lessons_${user?.id}`)
     return saved ? JSON.parse(saved) : []
   })

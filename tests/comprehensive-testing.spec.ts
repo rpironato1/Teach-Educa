@@ -159,7 +159,7 @@ test.describe('Comprehensive Accessibility and Functionality Testing', () => {
     await page.goto('/');
     
     // Use Chrome DevTools Protocol for Lighthouse
-    const client = await page.context().newCDPSession(page);
+    const _client = await page.context().newCDPSession(page);
     
     try {
       // Run Lighthouse audit focused on accessibility

@@ -1,4 +1,4 @@
-import { test, expect, Page } from '@playwright/test';
+import { test, expect } from '@playwright/test';
 import { injectAxe, checkA11y } from 'axe-playwright';
 
 /**
@@ -7,7 +7,7 @@ import { injectAxe, checkA11y } from 'axe-playwright';
  */
 
 // Global test state
-let globalReport: any = {
+const globalReport: any = {
   fase0: { status: 'pending', issues: [], evidence: [] },
   fase1: { status: 'pending', issues: [], evidence: [] },
   fase2: { status: 'pending', issues: [], evidence: [] },
@@ -20,7 +20,7 @@ let globalReport: any = {
 };
 
 let performanceBaseline: any = {};
-let consoleMessages: any[] = [];
+const consoleMessages: any[] = [];
 
 test.describe('🚀 PROTOCOLO MCP PLAYWRIGHT UNIVERSAL - 7 FASES', () => {
   
@@ -262,12 +262,12 @@ test.describe('🚀 PROTOCOLO MCP PLAYWRIGHT UNIVERSAL - 7 FASES', () => {
             const element = page.locator(selector).first();
             await expect(element).toBeVisible({ timeout: 3000 });
             console.log(`✅ Elemento ${selector} visível em ${viewport.name}`);
-          } catch (error) {
+          } catch {
             issues.push({
               type: 'warning',
               viewport: viewport.name,
               element: selector,
-              message: `Elemento não visível: ${error.message}`,
+              message: `Elemento não visível em ${viewport.name}`,
               timestamp: new Date().toISOString()
             });
             console.log(`⚠️  Elemento ${selector} não visível em ${viewport.name}`);
@@ -284,7 +284,7 @@ test.describe('🚀 PROTOCOLO MCP PLAYWRIGHT UNIVERSAL - 7 FASES', () => {
               await page.waitForTimeout(500);
               console.log(`✅ Menu hamburger funcionando em ${viewport.name}`);
             }
-          } catch (error) {
+          } catch {
             // Não é crítico se não houver hamburger menu
             console.log(`ℹ️  Menu hamburger não encontrado em ${viewport.name}`);
           }
@@ -341,11 +341,11 @@ test.describe('🚀 PROTOCOLO MCP PLAYWRIGHT UNIVERSAL - 7 FASES', () => {
             viewport: viewport.name 
           });
           
-        } catch (error) {
+        } catch {
           console.log(`⚠️  Não foi possível medir Web Vitals em ${viewport.name}`);
         }
         
-      } catch (error) {
+      } catch {
         issues.push({
           type: 'critical',
           viewport: viewport.name,
@@ -488,7 +488,7 @@ test.describe('🚀 PROTOCOLO MCP PLAYWRIGHT UNIVERSAL - 7 FASES', () => {
     
     try {
       // Executar análise de acessibilidade completa
-      const accessibilityResults = await checkA11y(page, null, {
+      const _accessibilityResults = await checkA11y(page, null, {
         detailedReport: true,
         detailedReportOptions: { html: true }
       });
@@ -496,15 +496,15 @@ test.describe('🚀 PROTOCOLO MCP PLAYWRIGHT UNIVERSAL - 7 FASES', () => {
       // A função checkA11y pode lançar exceção se houver violações
       console.log('✅ Nenhuma violação crítica de acessibilidade encontrada');
       
-    } catch (error) {
+    } catch {
       // Capturar violações de acessibilidade
       console.log('⚠️  Violações de acessibilidade detectadas');
       
       // Executar verificação manual adicional
       const a11yIssues = await page.evaluate(async () => {
-        // @ts-ignore
+        // @ts-expect-error - axe is loaded externally
         if (typeof axe !== 'undefined') {
-          // @ts-ignore
+          // @ts-expect-error - axe is loaded externally
           const results = await axe.run();
           return results.violations;
         }
@@ -555,7 +555,7 @@ test.describe('🚀 PROTOCOLO MCP PLAYWRIGHT UNIVERSAL - 7 FASES', () => {
         globalReport.summary.warningIssues++;
       }
       
-    } catch (error) {
+    } catch {
       console.log('⚠️  Erro ao testar navegação por teclado');
     }
     
@@ -752,7 +752,7 @@ test.describe('🚀 PROTOCOLO MCP PLAYWRIGHT UNIVERSAL - 7 FASES', () => {
       for (const selector of criticalElements) {
         try {
           await expect(page.locator(selector).first()).toBeVisible({ timeout: 3000 });
-        } catch (error) {
+        } catch {
           issues.push({
             type: 'critical',
             category: 'Post-Edge Case Recovery',
