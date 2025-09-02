@@ -13,6 +13,23 @@ import path from 'path';
 
 const execAsync = promisify(exec);
 
+interface TestIssue {
+  id: string;
+  type: 'critical' | 'warning' | 'info';
+  category: string;
+  description: string;
+  location?: string;
+  fixed?: boolean;
+  autoFixable?: boolean;
+}
+
+interface TestEvidence {
+  type: 'screenshot' | 'log' | 'metric' | 'network' | 'accessibility';
+  data: string | number | object;
+  timestamp: number;
+  description: string;
+}
+
 interface TestResult {
   iteration: number;
   timestamp: string;
@@ -21,18 +38,83 @@ interface TestResult {
   phases: {
     [key: string]: {
       status: 'passed' | 'failed' | 'warning';
-      issues: any[];
-      evidence: any[];
+      issues: TestIssue[];
+      evidence: TestEvidence[];
     }
   };
   issues: {
-    critical: any[];
-    warnings: any[];
+    critical: TestIssue[];
+    warnings: TestIssue[];
     total: number;
   };
   fixes: string[];
 }
 
+interface PlaywrightTestResult {
+  status: string;
+  error?: {
+    message: string;
+    stack?: string;
+  };
+  stdout?: string;
+}
+
+interface PlaywrightTest {
+  results?: PlaywrightTestResult[];
+}
+
+interface PlaywrightSpec {
+  title: string;
+  tests?: PlaywrightTest[];
+}
+
+interface PlaywrightSuite {
+  specs?: PlaywrightSpec[];
+}
+
+interface PlaywrightResults {
+  suites?: PlaywrightSuite[];
+}
+
+interface ParsedTestResults {
+  phases: Record<string, {
+    status: string;
+    issues: TestIssue[];
+    evidence: TestEvidence[];
+  }>;
+  issues: TestIssue[];
+}
+
+interface PhaseStats {
+  totalExecutions: number;
+  successfulExecutions: number;
+  totalIssues: number;
+  successRate?: number;
+}
+
+interface PhasePerformanceReport {
+  [phaseName: string]: PhaseStats;
+}
+
+interface FinalReport {
+  execution: {
+    startTime: string;
+    endTime: string;
+    totalDuration: number;
+    totalIterations: number;
+    successfulIterations: number;
+    successRate: number;
+  };
+  issues: {
+    totalFound: number;
+    totalFixed: number;
+    fixRate: number;
+    remainingIssues: number;
+  };
+  phases: PhasePerformanceReport;
+  recommendations: string[];
+  results: TestResult[];
+}
 interface IssuePattern {
   pattern: RegExp;
   type: 'critical' | 'warning';
@@ -183,7 +265,7 @@ class MCPUniversal100xExecutor {
     };
   }
 
-  private parsePlaywrightResults(stdout: string): any {
+  private parsePlaywrightResults(stdout: string): ParsedTestResults {
     try {
       const jsonMatch = stdout.match(/\{[\s\S]*\}/);
       if (jsonMatch) {
@@ -197,29 +279,34 @@ class MCPUniversal100xExecutor {
     return { phases: {}, issues: [] };
   }
 
-  private extractIssuesFromPlaywrightResults(results: any): any {
-    const issues: any[] = [];
-    const phases: any = {};
+  private extractIssuesFromPlaywrightResults(results: PlaywrightResults): ParsedTestResults {
+    const issues: TestIssue[] = [];
+    const phases: Record<string, {
+      status: string;
+      issues: TestIssue[];
+      evidence: TestEvidence[];
+    }> = {};
     
     if (results.suites) {
-      results.suites.forEach((suite: any) => {
-        suite.specs?.forEach((spec: any) => {
+      results.suites.forEach((suite: PlaywrightSuite) => {
+        suite.specs?.forEach((spec: PlaywrightSpec) => {
           const phaseName = this.extractPhaseFromSpecTitle(spec.title);
           
           phases[phaseName] = {
-            status: spec.tests[0]?.results[0]?.status || 'unknown',
+            status: spec.tests?.[0]?.results?.[0]?.status || 'unknown',
             issues: [],
             evidence: []
           };
           
-          spec.tests?.forEach((test: any) => {
-            test.results?.forEach((result: any) => {
+          spec.tests?.forEach((test: PlaywrightTest) => {
+            test.results?.forEach((result: PlaywrightTestResult) => {
               if (result.status === 'failed') {
                 issues.push({
+                  id: `${phaseName}-${Date.now()}`,
                   type: 'critical',
-                  phase: phaseName,
-                  message: result.error?.message || 'Teste falhou',
-                  stack: result.error?.stack
+                  category: phaseName,
+                  description: result.error?.message || 'Teste falhou',
+                  location: result.error?.stack
                 });
               }
               
@@ -242,19 +329,20 @@ class MCPUniversal100xExecutor {
     return phaseMatch ? `fase${phaseMatch[1]}` : 'unknown';
   }
 
-  private extractConsoleIssues(output: string): any[] {
-    const issues: any[] = [];
+  private extractConsoleIssues(output: string): TestIssue[] {
+    const issues: TestIssue[] = [];
     const lines = output.split('\n');
     
     lines.forEach(line => {
       this.issuePatterns.forEach(pattern => {
         if (pattern.pattern.test(line)) {
           issues.push({
+            id: `console-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
             type: pattern.type,
             category: pattern.category,
-            message: line.trim(),
-            autoFixable: pattern.autoFixable,
-            pattern: pattern.pattern.source
+            description: line.trim(),
+            location: `Console output`,
+            autoFixable: pattern.autoFixable
           });
         }
       });
@@ -269,7 +357,7 @@ class MCPUniversal100xExecutor {
     for (const issue of [...result.issues.critical, ...result.issues.warnings]) {
       if (issue.autoFixable) {
         const pattern = this.issuePatterns.find(p => 
-          p.pattern.test(issue.message) && p.fixFunction
+          p.pattern.test(issue.description) && p.fixFunction
         );
         
         if (pattern && pattern.fixFunction) {
@@ -278,8 +366,9 @@ class MCPUniversal100xExecutor {
             const fixed = await pattern.fixFunction();
             
             if (fixed) {
-              fixesApplied.push(`${issue.category}: ${issue.message}`);
+              fixesApplied.push(`${issue.category}: ${issue.description}`);
               this.totalIssuesFixed++;
+              issue.fixed = true;
               console.log(`✅ Correção aplicada com sucesso: ${issue.category}`);
             }
           } catch (error) {
@@ -584,11 +673,11 @@ class MCPUniversal100xExecutor {
     }
   }
 
-  private analyzePhasesPerformance(): any {
-    const phaseStats: any = {};
+  private analyzePhasesPerformance(): PhasePerformanceReport {
+    const phaseStats: PhasePerformanceReport = {};
     
     this.results.forEach(result => {
-      Object.entries(result.phases).forEach(([phaseName, phaseData]: [string, any]) => {
+      Object.entries(result.phases).forEach(([phaseName, phaseData]) => {
         if (!phaseStats[phaseName]) {
           phaseStats[phaseName] = {
             totalExecutions: 0,
@@ -626,7 +715,7 @@ class MCPUniversal100xExecutor {
     return recommendations;
   }
 
-  private generateMarkdownReport(report: any): string {
+  private generateMarkdownReport(report: FinalReport): string {
     return `# 🚀 RELATÓRIO FINAL - EXECUÇÃO 100x PROTOCOLO MCP PLAYWRIGHT UNIVERSAL
 
 ## 📊 Resumo Executivo
@@ -639,7 +728,7 @@ class MCPUniversal100xExecutor {
 
 ## 🎯 Resultados por Fase
 
-${Object.entries(report.phases).map(([phase, stats]: [string, any]) => `
+${Object.entries(report.phases).map(([phase, stats]: [string, PhaseStats]) => `
 ### ${phase.toUpperCase()}
 - Execuções: ${stats.totalExecutions}
 - Sucessos: ${stats.successfulExecutions}

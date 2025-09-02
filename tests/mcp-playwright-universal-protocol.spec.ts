@@ -6,8 +6,78 @@ import { injectAxe, checkA11y } from 'axe-playwright';
  * Execução integral conforme especificação do usuário
  */
 
+// Type definitions for the MCP Protocol
+interface PhaseReport {
+  status: 'pending' | 'passed' | 'failed' | 'warning';
+  issues: TestIssue[];
+  evidence: TestEvidence[];
+}
+
+interface TestIssue {
+  id: string;
+  type: 'critical' | 'warning' | 'info';
+  category: string;
+  description: string;
+  location?: string;
+}
+
+interface TestEvidence {
+  type: 'screenshot' | 'log' | 'metric' | 'network' | 'accessibility';
+  data: string | number | object;
+  timestamp: number;
+  description: string;
+}
+
+interface GlobalReport {
+  fase0: PhaseReport;
+  fase1: PhaseReport;
+  fase2: PhaseReport;
+  fase3: PhaseReport;
+  fase4: PhaseReport;
+  fase5: PhaseReport;
+  fase6: PhaseReport;
+  fase7: PhaseReport;
+  summary: {
+    totalIssues: number;
+    criticalIssues: number;
+    warningIssues: number;
+  };
+}
+
+interface PerformanceBaseline {
+  [key: string]: number | string | object;
+}
+
+interface AxeViolation {
+  id: string;
+  impact: 'critical' | 'serious' | 'moderate' | 'minor';
+  description: string;
+  help: string;
+  nodes: Array<{
+    target: string[];
+    html: string;
+  }>;
+}
+
+interface WebVitals {
+  lcp?: number;
+  fcp?: number;
+  cls?: number;
+  fid?: number;
+  ttfb?: number;
+}
+
+interface ConsoleMessage {
+  type: string;
+  text: string;
+  timestamp: string;
+  level?: 'log' | 'error' | 'warn' | 'info';
+  location?: object;
+  stack?: string;
+}
+
 // Global test state
-const globalReport: any = {
+const globalReport: GlobalReport = {
   fase0: { status: 'pending', issues: [], evidence: [] },
   fase1: { status: 'pending', issues: [], evidence: [] },
   fase2: { status: 'pending', issues: [], evidence: [] },
@@ -19,8 +89,8 @@ const globalReport: any = {
   summary: { totalIssues: 0, criticalIssues: 0, warningIssues: 0 }
 };
 
-let performanceBaseline: any = {};
-const consoleMessages: any[] = [];
+let performanceBaseline: PerformanceBaseline = {};
+const consoleMessages: ConsoleMessage[] = [];
 
 test.describe('🚀 PROTOCOLO MCP PLAYWRIGHT UNIVERSAL - 7 FASES', () => {
   
@@ -120,7 +190,7 @@ test.describe('🚀 PROTOCOLO MCP PLAYWRIGHT UNIVERSAL - 7 FASES', () => {
     await page.waitForLoadState('networkidle');
     
     const consoleMessagesStart = consoleMessages.length;
-    const issues: any[] = [];
+    const issues: TestIssue[] = [];
     
     try {
       // Testar navegação principal
@@ -239,8 +309,8 @@ test.describe('🚀 PROTOCOLO MCP PLAYWRIGHT UNIVERSAL - 7 FASES', () => {
       { name: 'Desktop', width: 1440, height: 900 }
     ];
     
-    const issues: any[] = [];
-    const evidences: any[] = [];
+    const issues: TestIssue[] = [];
+    const evidences: TestEvidence[] = [];
     
     for (const viewport of viewports) {
       try {
@@ -307,7 +377,7 @@ test.describe('🚀 PROTOCOLO MCP PLAYWRIGHT UNIVERSAL - 7 FASES', () => {
         try {
           const webVitals = await page.evaluate(() => {
             return new Promise((resolve) => {
-              const vitals: any = {};
+              const vitals: WebVitals = {};
               
               // LCP (Largest Contentful Paint)
               new PerformanceObserver((list) => {
@@ -381,7 +451,7 @@ test.describe('🚀 PROTOCOLO MCP PLAYWRIGHT UNIVERSAL - 7 FASES', () => {
     
     // Analisar todas as mensagens de console capturadas
     const newMessages = consoleMessages.slice(previousMessagesCount);
-    const issues: any[] = [];
+    const issues: TestIssue[] = [];
     
     // Categorizar mensagens por tipo
     const errorMessages = newMessages.filter(msg => msg.type === 'error');
@@ -484,7 +554,7 @@ test.describe('🚀 PROTOCOLO MCP PLAYWRIGHT UNIVERSAL - 7 FASES', () => {
     // Injetar axe-core para análise de acessibilidade
     await injectAxe(page);
     
-    const issues: any[] = [];
+    const issues: TestIssue[] = [];
     
     try {
       // Executar análise de acessibilidade completa
@@ -511,16 +581,13 @@ test.describe('🚀 PROTOCOLO MCP PLAYWRIGHT UNIVERSAL - 7 FASES', () => {
         return [];
       });
       
-      a11yIssues.forEach((violation: any) => {
+      a11yIssues.forEach((violation: AxeViolation) => {
         issues.push({
+          id: `wcag-${violation.id}-${Date.now()}`,
           type: violation.impact === 'critical' || violation.impact === 'serious' ? 'critical' : 'warning',
           category: 'WCAG Violation',
-          rule: violation.id,
-          message: violation.description,
-          impact: violation.impact,
-          nodes: violation.nodes.length,
-          helpUrl: violation.helpUrl,
-          timestamp: new Date().toISOString()
+          description: `${violation.description} (${violation.id})`,
+          location: violation.nodes.length > 0 ? violation.nodes[0].target.join(' > ') : undefined
         });
         
         if (violation.impact === 'critical' || violation.impact === 'serious') {
@@ -585,7 +652,7 @@ test.describe('🚀 PROTOCOLO MCP PLAYWRIGHT UNIVERSAL - 7 FASES', () => {
     await page.goto('/');
     await page.waitForLoadState('networkidle');
     
-    const issues: any[] = [];
+    const issues: TestIssue[] = [];
     
     try {
       // Coletar métricas detalhadas de performance
@@ -695,7 +762,7 @@ test.describe('🚀 PROTOCOLO MCP PLAYWRIGHT UNIVERSAL - 7 FASES', () => {
   test('🌐 FASE 6: CROSS-BROWSER E EDGE CASES', async ({ page }) => {
     console.log('\n🌐 INICIANDO FASE 6: CROSS-BROWSER E EDGE CASES');
     
-    const issues: any[] = [];
+    const issues: TestIssue[] = [];
     
     try {
       // Teste de cenários de edge cases

@@ -9,6 +9,62 @@ import { injectAxe, checkA11y } from 'axe-playwright';
 import { writeFileSync, existsSync, mkdirSync } from 'fs';
 import path from 'path';
 
+// Type definitions
+interface ConsoleMessage {
+  type: string;
+  text: string;
+  timestamp: string;
+  location?: object;
+}
+
+interface TestIssue {
+  id: string;
+  type: 'critical' | 'warning' | 'info';
+  category: string;
+  description: string;
+  location?: string;
+}
+
+interface AxeViolation {
+  id: string;
+  impact: 'critical' | 'serious' | 'moderate' | 'minor';
+  description: string;
+  help: string;
+  nodes: Array<{
+    target: string[];
+    html: string;
+  }>;
+}
+
+interface WebVitals {
+  lcp?: number;
+  fcp?: number;
+  cls?: number;
+  fid?: number;
+  ttfb?: number;
+}
+
+interface FinalReport {
+  executionSummary: {
+    totalIterations: number;
+    totalIssues: number;
+    criticalIssues: number;
+    warningIssues: number;
+    successfulIterations: number;
+    failedIterations: number;
+    averageDuration: number;
+    startTime: string;
+    endTime: string;
+  };
+  issuesByCategory: Record<string, TestIssue[]>;
+  phases: Record<string, {
+    successRate: number;
+    averageDuration: number;
+    totalIssues: number;
+  }>;
+  recommendations: string[];
+}
+
 // Configurações do protocolo
 const TOTAL_ITERATIONS = 200;
 const RESULTS_DIR = 'test-results/200x-execution';
@@ -278,7 +334,7 @@ test.describe('🚀 PROTOCOLO MCP PLAYWRIGHT 200x - EXECUÇÃO SEQUENCIAL', () =
         console.log(`[${iteration}] 🔍 FASE 3: Console e Logs`);
         
         // Capturar mensagens do console
-        const consoleMessages: any[] = [];
+        const consoleMessages: ConsoleMessage[] = [];
         
         page.on('console', msg => {
           consoleMessages.push({
@@ -361,7 +417,7 @@ test.describe('🚀 PROTOCOLO MCP PLAYWRIGHT 200x - EXECUÇÃO SEQUENCIAL', () =
             return [];
           });
           
-          a11yIssues.slice(0, 10).forEach((violation: any, index: number) => { // Limitar a 10
+          a11yIssues.slice(0, 10).forEach((violation: AxeViolation, index: number) => { // Limitar a 10
             const issue: TestIssue = {
               type: violation.impact === 'critical' || violation.impact === 'serious' ? 'critical' : 'warning',
               category: 'Fase 4 - Acessibilidade',
@@ -387,7 +443,7 @@ test.describe('🚀 PROTOCOLO MCP PLAYWRIGHT 200x - EXECUÇÃO SEQUENCIAL', () =
           // Medir Web Vitals
           const webVitals = await page.evaluate(() => {
             return new Promise((resolve) => {
-              const vitals: any = {};
+              const vitals: WebVitals = {};
               
               // FCP
               new PerformanceObserver((list) => {
@@ -514,7 +570,7 @@ test.describe('🚀 PROTOCOLO MCP PLAYWRIGHT 200x - EXECUÇÃO SEQUENCIAL', () =
     const infoIssues = globalIssueTracker.filter(i => i.type === 'info').length;
     
     // Agrupar issues por categoria
-    const issuesByCategory = globalIssueTracker.reduce((acc: any, issue) => {
+    const issuesByCategory = globalIssueTracker.reduce((acc: Record<string, TestIssue[]>, issue) => {
       if (!acc[issue.category]) acc[issue.category] = [];
       acc[issue.category].push(issue);
       return acc;
@@ -573,7 +629,7 @@ test.describe('🚀 PROTOCOLO MCP PLAYWRIGHT 200x - EXECUÇÃO SEQUENCIAL', () =
   });
 });
 
-function generateMarkdownReport(finalReport: any, allIssues: TestIssue[]): string {
+function generateMarkdownReport(finalReport: FinalReport, allIssues: TestIssue[]): string {
   return `# 🚀 RELATÓRIO FINAL - PROTOCOLO MCP PLAYWRIGHT 200x EXECUÇÕES
 
 ## 📊 RESUMO EXECUTIVO
@@ -589,8 +645,8 @@ function generateMarkdownReport(finalReport: any, allIssues: TestIssue[]): strin
 
 ## 🔍 ANÁLISE POR CATEGORIA
 
-${Object.entries(finalReport.issuesByCategory).map(([category, issues]: [string, any]) => 
-  `### ${category}\n- **Total**: ${issues.length} issues\n- **Críticos**: ${issues.filter((i: any) => i.type === 'critical').length}\n- **Warnings**: ${issues.filter((i: any) => i.type === 'warning').length}\n`
+${Object.entries(finalReport.issuesByCategory).map(([category, issues]: [string, TestIssue[]]) => 
+  `### ${category}\n- **Total**: ${issues.length} issues\n- **Críticos**: ${issues.filter((i: TestIssue) => i.type === 'critical').length}\n- **Warnings**: ${issues.filter((i: TestIssue) => i.type === 'warning').length}\n`
 ).join('\n')}
 
 ## 📈 ANÁLISE POR FASE

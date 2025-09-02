@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react'
+import React, { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react'
 import { useAuth } from '@/contexts/AuthContext'
 import { toast } from 'sonner'
 
@@ -154,7 +154,7 @@ export const CreditProvider: React.FC<CreditProviderProps> = ({ children }) => {
   const [transactions, setTransactions] = useState<CreditTransaction[]>([])
   const [isLoading, setIsLoading] = useState(false)
 
-  const initializeCreditData = async () => {
+  const initializeCreditData = useCallback(async () => {
     setIsLoading(true)
     try {
       // Load user's credit data from localStorage or API
@@ -198,7 +198,7 @@ export const CreditProvider: React.FC<CreditProviderProps> = ({ children }) => {
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [user?.id])
 
   // Initialize credit data when user authenticates
   useEffect(() => {
@@ -207,7 +207,7 @@ export const CreditProvider: React.FC<CreditProviderProps> = ({ children }) => {
     } else {
       resetCreditData()
     }
-  }, [isAuthenticated, user])
+  }, [isAuthenticated, user, initializeCreditData])
 
   const resetCreditData = () => {
     setBalance({
