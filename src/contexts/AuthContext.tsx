@@ -332,30 +332,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
   }
 
-  const refreshToken = async (): Promise<boolean> => {
-    if (!authData.token || !authData.sessionActive) return false
-
-    try {
-      // Simulate token refresh API call
-      await new Promise(resolve => setTimeout(resolve, 800))
-      
-      // Mock successful refresh - in real implementation, get new token from API
-      const newToken = authData.token.replace(/jwt_/, 'jwt_refreshed_')
-      const newExpiresAt = Date.now() + (8 * 60 * 60 * 1000) // 8 hours
-      
-      setAuthData(current => ({
-        ...current,
-        token: newToken,
-        tokenExpiresAt: newExpiresAt
-      }))
-      
-      return true
-    } catch (error) {
-      console.error('Token refresh failed:', error)
-      return false
-    }
-  }
-
   const forgotPassword = async (email: string): Promise<{ success: boolean; error?: string }> => {
     try {
       // Simulate secure password reset API call

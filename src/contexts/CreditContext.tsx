@@ -152,15 +152,6 @@ export const CreditProvider: React.FC<CreditProviderProps> = ({ children }) => {
   const [transactions, setTransactions] = useState<CreditTransaction[]>([])
   const [isLoading, setIsLoading] = useState(false)
 
-  // Initialize credit data when user authenticates
-  useEffect(() => {
-    if (isAuthenticated && user) {
-      initializeCreditData()
-    } else {
-      resetCreditData()
-    }
-  }, [isAuthenticated, user, initializeCreditData])
-
   const initializeCreditData = async () => {
     setIsLoading(true)
     try {
@@ -206,6 +197,15 @@ export const CreditProvider: React.FC<CreditProviderProps> = ({ children }) => {
       setIsLoading(false)
     }
   }
+
+  // Initialize credit data when user authenticates
+  useEffect(() => {
+    if (isAuthenticated && user) {
+      initializeCreditData()
+    } else {
+      resetCreditData()
+    }
+  }, [isAuthenticated, user])
 
   const resetCreditData = () => {
     setBalance({

@@ -368,88 +368,6 @@ export function AnalyticsProvider({ children }: AnalyticsProviderProps) {
     toast.success(`Sessão de ${subject} iniciada!`)
   }, [user, studySessionStorage])
 
-  // End study session with Supabase storage
-  const endStudySession = useCallback(async (score?: number, notes?: string) => {
-    if (!state.currentSession || !user) return
-    
-    const endTime = new Date()
-    const duration = Math.round((endTime.getTime() - state.currentSession.startTime.getTime()) / (1000 * 60))
-    
-    // Update the session in Supabase storage
-    await studySessionStorage.update(state.currentSession.id, {
-      end_time: endTime.toISOString(),
-      duration_minutes: duration,
-      score,
-      notes,
-      completed: true
-    })
-    
-    // Update analytics data
-    const currentAnalytics = analyticsStorage.data[0]
-    if (currentAnalytics) {
-      const newTotalPoints = currentAnalytics.total_points + (score ? score * 10 : duration * 5)
-      const newSessionsCompleted = currentAnalytics.sessions_completed + 1
-      const newTotalStudyTime = currentAnalytics.study_time_total + duration
-      
-      await analyticsStorage.update(currentAnalytics.id, {
-        total_points: newTotalPoints,
-        sessions_completed: newSessionsCompleted,
-        study_time_total: newTotalStudyTime,
-        data: {
-          ...currentAnalytics.data,
-          metrics: {
-            ...currentAnalytics.data.metrics,
-            totalStudyTime: newTotalStudyTime,
-            sessionsCompleted: newSessionsCompleted,
-            averageSessionTime: Math.round(newTotalStudyTime / newSessionsCompleted)
-          }
-        }
-      })
-      
-      // Reload analytics data
-      await loadAnalytics()
-    }
-    
-    dispatch({ type: 'END_SESSION' })
-    await updateStreak()
-    await checkAchievements()
-    
-    toast.success(`Sessão concluída! ${duration} minutos estudados.`)
-  }, [state.currentSession, user, studySessionStorage, analyticsStorage, loadAnalytics, checkAchievements, updateStreak])
-
-  // Check and unlock achievements with Supabase storage
-  const checkAchievements = useCallback(async () => {
-    const currentAnalytics = analyticsStorage.data[0]
-    if (!currentAnalytics) return
-    
-    const _sessions = studySessionStorage.data
-    const totalTime = currentAnalytics.study_time_total
-    const sessionsCount = currentAnalytics.sessions_completed
-    
-    // Check each achievement
-    for (const achievement of currentAnalytics.data.achievements || []) {
-      if (achievement.isUnlocked) continue
-      
-      let shouldUnlock = false
-      
-      switch (achievement.requirement.type) {
-        case 'lessons_completed':
-          shouldUnlock = sessionsCount >= achievement.requirement.value
-          break
-        case 'total_time':
-          shouldUnlock = totalTime >= achievement.requirement.value
-          break
-        case 'streak':
-          shouldUnlock = currentAnalytics.streak_current >= achievement.requirement.value
-          break
-      }
-      
-      if (shouldUnlock) {
-        await unlockAchievement(achievement.id)
-      }
-    }
-  }, [analyticsStorage.data, studySessionStorage.data, unlockAchievement])
-
   // Unlock specific achievement with Supabase storage
   const unlockAchievement = useCallback(async (achievementId: string) => {
     const currentAnalytics = analyticsStorage.data[0]
@@ -573,6 +491,88 @@ export function AnalyticsProvider({ children }: AnalyticsProviderProps) {
       streakStartDate: new Date(newStreakData.streakStartDate || today)
     }})
   }, [analyticsStorage])
+
+  // Check and unlock achievements with Supabase storage
+  const checkAchievements = useCallback(async () => {
+    const currentAnalytics = analyticsStorage.data[0]
+    if (!currentAnalytics) return
+    
+    const _sessions = studySessionStorage.data
+    const totalTime = currentAnalytics.study_time_total
+    const sessionsCount = currentAnalytics.sessions_completed
+    
+    // Check each achievement
+    for (const achievement of currentAnalytics.data.achievements || []) {
+      if (achievement.isUnlocked) continue
+      
+      let shouldUnlock = false
+      
+      switch (achievement.requirement.type) {
+        case 'lessons_completed':
+          shouldUnlock = sessionsCount >= achievement.requirement.value
+          break
+        case 'total_time':
+          shouldUnlock = totalTime >= achievement.requirement.value
+          break
+        case 'streak':
+          shouldUnlock = currentAnalytics.streak_current >= achievement.requirement.value
+          break
+      }
+      
+      if (shouldUnlock) {
+        await unlockAchievement(achievement.id)
+      }
+    }
+  }, [analyticsStorage.data, studySessionStorage.data, unlockAchievement])
+
+  // End study session with Supabase storage
+  const endStudySession = useCallback(async (score?: number, notes?: string) => {
+    if (!state.currentSession || !user) return
+    
+    const endTime = new Date()
+    const duration = Math.round((endTime.getTime() - state.currentSession.startTime.getTime()) / (1000 * 60))
+    
+    // Update the session in Supabase storage
+    await studySessionStorage.update(state.currentSession.id, {
+      end_time: endTime.toISOString(),
+      duration_minutes: duration,
+      score,
+      notes,
+      completed: true
+    })
+    
+    // Update analytics data
+    const currentAnalytics = analyticsStorage.data[0]
+    if (currentAnalytics) {
+      const newTotalPoints = currentAnalytics.total_points + (score ? score * 10 : duration * 5)
+      const newSessionsCompleted = currentAnalytics.sessions_completed + 1
+      const newTotalStudyTime = currentAnalytics.study_time_total + duration
+      
+      await analyticsStorage.update(currentAnalytics.id, {
+        total_points: newTotalPoints,
+        sessions_completed: newSessionsCompleted,
+        study_time_total: newTotalStudyTime,
+        data: {
+          ...currentAnalytics.data,
+          metrics: {
+            ...currentAnalytics.data.metrics,
+            totalStudyTime: newTotalStudyTime,
+            sessionsCompleted: newSessionsCompleted,
+            averageSessionTime: Math.round(newTotalStudyTime / newSessionsCompleted)
+          }
+        }
+      })
+      
+      // Reload analytics data
+      await loadAnalytics()
+    }
+    
+    dispatch({ type: 'END_SESSION' })
+    await updateStreak()
+    await checkAchievements()
+    
+    toast.success(`Sessão concluída! ${duration} minutos estudados.`)
+  }, [state.currentSession, user, studySessionStorage, analyticsStorage, loadAnalytics, checkAchievements, updateStreak])
 
   // Generate mock leaderboard with persistent storage
   const loadLeaderboard = useCallback(async () => {
