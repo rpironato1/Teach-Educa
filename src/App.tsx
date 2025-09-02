@@ -458,62 +458,63 @@ function AppContent() {
         </div>
       </nav>
 
-      {/* Hero Section */}
-      <main>
-      <section id="inicio" className="gradient-hero py-20 lg:py-32">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center sm:px-4 md:px-6 lg:px-8">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-            >
-              <Badge variant="secondary" className="mb-6 text-sm px-4 py-1 sm:px-4 md:px-6 lg:px-8">
-                🧠 Tecnologia Neuroadaptativa
-              </Badge>
-              <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-foreground mb-6 leading-tight">
-                Aprenda com a{' '}
-                <span className="text-primary sm:px-4 md:px-6 lg:px-8">Inteligência</span>
-                <br />
-                que se adapta a você
-              </h1>
-              <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-3xl mx-auto leading-relaxed">
-                Descubra o futuro da educação com nossa plataforma que utiliza IA avançada 
-                para personalizar sua experiência de aprendizado em tempo real.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                <Button 
-                  size="lg" 
-                  className="text-lg px-8 py-4 focus-enhanced sm:px-4 md:px-6 lg:px-8"
-                  onClick={() => navigate('registration')}
-                  onMouseEnter={preloadRegistration}
-                >
-                  Começar Gratuitamente
-                  <ArrowRight className="ml-2 h-5 w-5 sm:px-4 md:px-6 lg:px-8" />
-                </Button>
-                <Button variant="outline" size="lg" className="text-lg px-8 py-4 focus-enhanced sm:px-4 md:px-6 lg:px-8"
-                  onClick={() => {
-                    if (isAuthenticated && user) {
-                      if (user.role === 'admin') {
-                        navigate('admin-dashboard')
-                        toast.success('Redirecionando para o painel administrativo!')
+      {/* Main Content */}
+      <main role="main">
+        {/* Hero Section */}
+        <section id="inicio" className="gradient-hero py-20 lg:py-32">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center sm:px-4 md:px-6 lg:px-8">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+              >
+                <Badge variant="secondary" className="mb-6 text-sm px-4 py-1 sm:px-4 md:px-6 lg:px-8">
+                  🧠 Tecnologia Neuroadaptativa
+                </Badge>
+                <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-foreground mb-6 leading-tight">
+                  Aprenda com a{' '}
+                  <span className="text-primary sm:px-4 md:px-6 lg:px-8">Inteligência</span>
+                  <br />
+                  que se adapta a você
+                </h1>
+                <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-3xl mx-auto leading-relaxed">
+                  Descubra o futuro da educação com nossa plataforma que utiliza IA avançada 
+                  para personalizar sua experiência de aprendizado em tempo real.
+                </p>
+                <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                  <Button 
+                    size="lg" 
+                    className="text-lg px-8 py-4 focus-enhanced sm:px-4 md:px-6 lg:px-8"
+                    onClick={() => navigate('registration')}
+                    onMouseEnter={preloadRegistration}
+                  >
+                    Começar Gratuitamente
+                    <ArrowRight className="ml-2 h-5 w-5 sm:px-4 md:px-6 lg:px-8" />
+                  </Button>
+                  <Button variant="outline" size="lg" className="text-lg px-8 py-4 focus-enhanced sm:px-4 md:px-6 lg:px-8"
+                    onClick={() => {
+                      if (isAuthenticated && user) {
+                        if (user.role === 'admin') {
+                          navigate('admin-dashboard')
+                          toast.success('Redirecionando para o painel administrativo!')
+                        } else {
+                          navigate('dashboard')
+                          toast.success('Redirecionando para seu dashboard!')
+                        }
                       } else {
-                        navigate('dashboard')
-                        toast.success('Redirecionando para seu dashboard!')
+                        // Show demo info modal for non-authenticated users
+                        setShowDemoInfo(true)
                       }
-                    } else {
-                      // Show demo info modal for non-authenticated users
-                      setShowDemoInfo(true)
-                    }
-                  }}
-                >
-                  Ver Demonstração
-                </Button>
-              </div>
-            </motion.div>
+                    }}
+                  >
+                    Ver Demonstração
+                  </Button>
+                </div>
+              </motion.div>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
       {/* Metodologia Section */}
       <section id="metodologia" className="py-20 lg:py-32">
@@ -653,43 +654,43 @@ function AppContent() {
         </div>
       </section>
 
-      {/* FAQ Section */}
-      <section id="faq" className="py-20 lg:py-32">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-16 sm:px-4 md:px-6 lg:px-8"
-          >
-            <h2 className="text-3xl md:text-5xl font-bold text-foreground mb-6">
-              Perguntas <span className="text-accent sm:px-4 md:px-6 lg:px-8">Frequentes</span>
-            </h2>
-            <p className="text-xl text-muted-foreground sm:px-4 md:px-6 lg:px-8">
-              Esclarecemos as dúvidas mais comuns sobre nossa plataforma
-            </p>
-          </motion.div>
+        {/* FAQ Section */}
+        <section id="faq" className="py-20 lg:py-32">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-center mb-16 sm:px-4 md:px-6 lg:px-8"
+            >
+              <h2 className="text-3xl md:text-5xl font-bold text-foreground mb-6">
+                Perguntas <span className="text-accent sm:px-4 md:px-6 lg:px-8">Frequentes</span>
+              </h2>
+              <p className="text-xl text-muted-foreground sm:px-4 md:px-6 lg:px-8">
+                Esclarecemos as dúvidas mais comuns sobre nossa plataforma
+              </p>
+            </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
-            <Accordion type="single" collapsible className="space-y-4 sm:px-4 md:px-6 lg:px-8">
-              {faqs.map((faq, index) => (
-                <AccordionItem key={index} value={`item-${index}`} className="border border-border rounded-lg px-6 sm:px-4 md:px-6 lg:px-8">
-                  <AccordionTrigger className="text-left font-medium hover:no-underline focus-enhanced sm:px-4 md:px-6 lg:px-8">
-                    {faq.question}
-                  </AccordionTrigger>
-                  <AccordionContent className="text-muted-foreground leading-relaxed pt-2 sm:px-4 md:px-6 lg:px-8">
-                    {faq.answer}
-                  </AccordionContent>
-                </AccordionItem>
-              ))}
-            </Accordion>
-          </motion.div>
-        </div>
-      </section>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+            >
+              <Accordion type="single" collapsible className="space-y-4 sm:px-4 md:px-6 lg:px-8">
+                {faqs.map((faq, index) => (
+                  <AccordionItem key={index} value={`item-${index}`} className="border border-border rounded-lg px-6 sm:px-4 md:px-6 lg:px-8">
+                    <AccordionTrigger className="text-left font-medium hover:no-underline focus-enhanced sm:px-4 md:px-6 lg:px-8">
+                      {faq.question}
+                    </AccordionTrigger>
+                    <AccordionContent className="text-muted-foreground leading-relaxed pt-2 sm:px-4 md:px-6 lg:px-8">
+                      {faq.answer}
+                    </AccordionContent>
+                  </AccordionItem>
+                ))}
+              </Accordion>
+            </motion.div>
+          </div>
+        </section>
       </main>
 
       {/* Footer */}
