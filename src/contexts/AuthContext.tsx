@@ -85,6 +85,7 @@ interface AuthContextType extends AuthState {
   terminateSession: (sessionId: string) => Promise<boolean>
 }
 
+// Context definition
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
 interface AuthProviderProps {

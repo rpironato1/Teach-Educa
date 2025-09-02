@@ -122,6 +122,7 @@ interface CreditContextType {
   getRemainingCreditsPercentage: () => number
 }
 
+// Context definition
 const CreditContext = createContext<CreditContextType | undefined>(undefined)
 
 export const useCredit = (): CreditContextType => {
@@ -133,7 +134,8 @@ export const useCredit = (): CreditContextType => {
 }
 
 // Alias for compatibility
-export const useCreditContext = useCredit
+export // Context definition
+const useCreditContext = useCredit
 
 interface CreditProviderProps {
   children: ReactNode

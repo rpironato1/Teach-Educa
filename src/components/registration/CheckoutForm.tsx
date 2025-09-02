@@ -155,11 +155,11 @@ export default function CheckoutForm({ registrationData, onNext, onBack }: Check
     switch (paymentMethod) {
       case 'card':
         return (
-          <div className="space-y-4">
+          <div className="space-y-4 sm:px-4 md:px-6 lg:px-8">
             {/* Card Number */}
-            <div className="space-y-2">
+            <div className="space-y-2 sm:px-4 md:px-6 lg:px-8">
               <Label htmlFor="cardNumber">Número do cartão</Label>
-              <div className="relative">
+              <div className="relative sm:px-4 md:px-6 lg:px-8">
                 <Input
                   id="cardNumber"
                   type="text"
@@ -168,13 +168,13 @@ export default function CheckoutForm({ registrationData, onNext, onBack }: Check
                     ...prev, 
                     number: formatCardNumber(e.target.value) 
                   }))}
-                  className="pr-20 focus-enhanced"
+                  className="pr-20 focus-enhanced sm:px-4 md:px-6 lg:px-8"
                   placeholder="0000 0000 0000 0000"
                   maxLength={19}
                 />
                 {getCardBrand(cardData.number) && (
-                  <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
-                    <Badge variant="outline" className="text-xs">
+                  <div className="absolute right-3 top-1/2 transform -translate-y-1/2 sm:px-4 md:px-6 lg:px-8">
+                    <Badge variant="outline" className="text-xs sm:px-4 md:px-6 lg:px-8">
                       {getCardBrand(cardData.number)}
                     </Badge>
                   </div>
@@ -183,7 +183,7 @@ export default function CheckoutForm({ registrationData, onNext, onBack }: Check
             </div>
 
             {/* Cardholder Name */}
-            <div className="space-y-2">
+            <div className="space-y-2 sm:px-4 md:px-6 lg:px-8">
               <Label htmlFor="cardName">Nome no cartão</Label>
               <Input
                 id="cardName"
@@ -193,14 +193,14 @@ export default function CheckoutForm({ registrationData, onNext, onBack }: Check
                   ...prev, 
                   name: e.target.value.toUpperCase() 
                 }))}
-                className="focus-enhanced"
+                className="focus-enhanced sm:px-4 md:px-6 lg:px-8"
                 placeholder="NOME COMO IMPRESSO NO CARTÃO"
               />
             </div>
 
             {/* Expiry and CVV */}
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
+            <div className="grid grid-cols-2 gap-4 sm:px-4 md:px-6 lg:px-8">
+              <div className="space-y-2 sm:px-4 md:px-6 lg:px-8">
                 <Label htmlFor="expiry">Validade</Label>
                 <Input
                   id="expiry"
@@ -210,12 +210,12 @@ export default function CheckoutForm({ registrationData, onNext, onBack }: Check
                     ...prev, 
                     expiry: formatExpiry(e.target.value) 
                   }))}
-                  className="focus-enhanced"
+                  className="focus-enhanced sm:px-4 md:px-6 lg:px-8"
                   placeholder="MM/AA"
                   maxLength={5}
                 />
               </div>
-              <div className="space-y-2">
+              <div className="space-y-2 sm:px-4 md:px-6 lg:px-8">
                 <Label htmlFor="cvv">CVV</Label>
                 <Input
                   id="cvv"
@@ -225,7 +225,7 @@ export default function CheckoutForm({ registrationData, onNext, onBack }: Check
                     ...prev, 
                     cvv: formatCVV(e.target.value) 
                   }))}
-                  className="focus-enhanced"
+                  className="focus-enhanced sm:px-4 md:px-6 lg:px-8"
                   placeholder="000"
                   maxLength={4}
                 />
@@ -233,7 +233,7 @@ export default function CheckoutForm({ registrationData, onNext, onBack }: Check
             </div>
 
             {/* Installments */}
-            <div className="space-y-2">
+            <div className="space-y-2 sm:px-4 md:px-6 lg:px-8">
               <Label htmlFor="installments">Parcelamento</Label>
               <Select
                 value={cardData.installments}
@@ -242,7 +242,7 @@ export default function CheckoutForm({ registrationData, onNext, onBack }: Check
                   installments: value 
                 }))}
               >
-                <SelectTrigger className="focus-enhanced">
+                <SelectTrigger className="focus-enhanced sm:px-4 md:px-6 lg:px-8">
                   <SelectValue placeholder="Escolha o parcelamento" />
                 </SelectTrigger>
                 <SelectContent>
@@ -259,13 +259,13 @@ export default function CheckoutForm({ registrationData, onNext, onBack }: Check
 
       case 'pix':
         return (
-          <div className="text-center py-8">
-            <QrCode className="h-16 w-16 mx-auto mb-4 text-primary" />
-            <h3 className="text-lg font-semibold mb-2">Pagamento via PIX</h3>
-            <p className="text-muted-foreground mb-4">
+          <div className="text-center py-8 sm:px-4 md:px-6 lg:px-8">
+            <QrCode className="h-16 w-16 mx-auto mb-4 text-primary sm:px-4 md:px-6 lg:px-8" />
+            <h3 className="text-lg font-semibold mb-2 sm:px-4 md:px-6 lg:px-8">Pagamento via PIX</h3>
+            <p className="text-muted-foreground mb-4 sm:px-4 md:px-6 lg:px-8">
               Após confirmar, você receberá o código PIX para pagamento
             </p>
-            <Badge className="bg-secondary">
+            <Badge className="bg-secondary sm:px-4 md:px-6 lg:px-8">
               Aprovação instantânea
             </Badge>
           </div>
@@ -273,10 +273,10 @@ export default function CheckoutForm({ registrationData, onNext, onBack }: Check
 
       case 'boleto':
         return (
-          <div className="text-center py-8">
-            <Bank className="h-16 w-16 mx-auto mb-4 text-primary" />
-            <h3 className="text-lg font-semibold mb-2">Boleto Bancário</h3>
-            <p className="text-muted-foreground mb-4">
+          <div className="text-center py-8 sm:px-4 md:px-6 lg:px-8">
+            <Bank className="h-16 w-16 mx-auto mb-4 text-primary sm:px-4 md:px-6 lg:px-8" />
+            <h3 className="text-lg font-semibold mb-2 sm:px-4 md:px-6 lg:px-8">Boleto Bancário</h3>
+            <p className="text-muted-foreground mb-4 sm:px-4 md:px-6 lg:px-8">
               O boleto será enviado para seu email para pagamento
             </p>
             <Badge variant="outline">
@@ -291,30 +291,30 @@ export default function CheckoutForm({ registrationData, onNext, onBack }: Check
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form onSubmit={handleSubmit} className="space-y-6 sm:px-4 md:px-6 lg:px-8">
       {/* Order Summary */}
       <Card>
         <CardHeader>
-          <CardTitle className="text-lg">Resumo do pedido</CardTitle>
+          <CardTitle className="text-lg sm:px-4 md:px-6 lg:px-8">Resumo do pedido</CardTitle>
         </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="flex justify-between items-center">
+        <CardContent className="space-y-4 sm:px-4 md:px-6 lg:px-8">
+          <div className="flex justify-between items-center sm:px-4 md:px-6 lg:px-8">
             <div>
-              <h4 className="font-medium">{plan.name}</h4>
-              <p className="text-sm text-muted-foreground">{plan.description}</p>
-              <Badge variant="outline" className="mt-1">
+              <h4 className="font-medium sm:px-4 md:px-6 lg:px-8">{plan.name}</h4>
+              <p className="text-sm text-muted-foreground sm:px-4 md:px-6 lg:px-8">{plan.description}</p>
+              <Badge variant="outline" className="mt-1 sm:px-4 md:px-6 lg:px-8">
                 {plan.credits} créditos mensais
               </Badge>
             </div>
-            <div className="text-right">
-              <div className="text-lg font-bold">{plan.price}</div>
-              <div className="text-sm text-muted-foreground">{plan.period}</div>
+            <div className="text-right sm:px-4 md:px-6 lg:px-8">
+              <div className="text-lg font-bold sm:px-4 md:px-6 lg:px-8">{plan.price}</div>
+              <div className="text-sm text-muted-foreground sm:px-4 md:px-6 lg:px-8">{plan.period}</div>
             </div>
           </div>
           
           <Separator />
           
-          <div className="flex justify-between items-center font-semibold">
+          <div className="flex justify-between items-center font-semibold sm:px-4 md:px-6 lg:px-8">
             <span>Total</span>
             <span>{plan.price}{plan.period}</span>
           </div>
@@ -324,8 +324,8 @@ export default function CheckoutForm({ registrationData, onNext, onBack }: Check
       {/* Payment Method Selection */}
       <Card>
         <CardHeader>
-          <CardTitle className="text-lg flex items-center gap-2">
-            <Lock className="h-5 w-5" />
+          <CardTitle className="text-lg flex items-center gap-2 sm:px-4 md:px-6 lg:px-8">
+            <Lock className="h-5 w-5 sm:px-4 md:px-6 lg:px-8" />
             Forma de pagamento
           </CardTitle>
           <CardDescription>
@@ -336,39 +336,39 @@ export default function CheckoutForm({ registrationData, onNext, onBack }: Check
           <RadioGroup
             value={paymentMethod}
             onValueChange={(value) => setPaymentMethod(value as PaymentMethod)}
-            className="space-y-3"
+            className="space-y-3 sm:px-4 md:px-6 lg:px-8"
           >
-            <div className="flex items-center space-x-3 p-3 rounded-lg border hover:bg-muted/50 transition-colors">
+            <div className="flex items-center space-x-3 p-3 rounded-lg border hover:bg-muted/50 transition-colors sm:px-4 md:px-6 lg:px-8">
               <RadioGroupItem value="card" id="card" />
-              <Label htmlFor="card" className="flex items-center gap-2 cursor-pointer flex-1">
-                <CreditCard className="h-5 w-5" />
+              <Label htmlFor="card" className="flex items-center gap-2 cursor-pointer flex-1 sm:px-4 md:px-6 lg:px-8">
+                <CreditCard className="h-5 w-5 sm:px-4 md:px-6 lg:px-8" />
                 <div>
-                  <div className="font-medium">Cartão de crédito</div>
-                  <div className="text-sm text-muted-foreground">Visa, Mastercard, Elo</div>
+                  <div className="font-medium sm:px-4 md:px-6 lg:px-8">Cartão de crédito</div>
+                  <div className="text-sm text-muted-foreground sm:px-4 md:px-6 lg:px-8">Visa, Mastercard, Elo</div>
                 </div>
               </Label>
               <Badge variant="secondary">Recomendado</Badge>
             </div>
 
-            <div className="flex items-center space-x-3 p-3 rounded-lg border hover:bg-muted/50 transition-colors">
+            <div className="flex items-center space-x-3 p-3 rounded-lg border hover:bg-muted/50 transition-colors sm:px-4 md:px-6 lg:px-8">
               <RadioGroupItem value="pix" id="pix" />
-              <Label htmlFor="pix" className="flex items-center gap-2 cursor-pointer flex-1">
-                <QrCode className="h-5 w-5" />
+              <Label htmlFor="pix" className="flex items-center gap-2 cursor-pointer flex-1 sm:px-4 md:px-6 lg:px-8">
+                <QrCode className="h-5 w-5 sm:px-4 md:px-6 lg:px-8" />
                 <div>
-                  <div className="font-medium">PIX</div>
-                  <div className="text-sm text-muted-foreground">Aprovação instantânea</div>
+                  <div className="font-medium sm:px-4 md:px-6 lg:px-8">PIX</div>
+                  <div className="text-sm text-muted-foreground sm:px-4 md:px-6 lg:px-8">Aprovação instantânea</div>
                 </div>
               </Label>
-              <Badge className="bg-secondary">Desconto 5%</Badge>
+              <Badge className="bg-secondary sm:px-4 md:px-6 lg:px-8">Desconto 5%</Badge>
             </div>
 
-            <div className="flex items-center space-x-3 p-3 rounded-lg border hover:bg-muted/50 transition-colors">
+            <div className="flex items-center space-x-3 p-3 rounded-lg border hover:bg-muted/50 transition-colors sm:px-4 md:px-6 lg:px-8">
               <RadioGroupItem value="boleto" id="boleto" />
-              <Label htmlFor="boleto" className="flex items-center gap-2 cursor-pointer flex-1">
-                <Bank className="h-5 w-5" />
+              <Label htmlFor="boleto" className="flex items-center gap-2 cursor-pointer flex-1 sm:px-4 md:px-6 lg:px-8">
+                <Bank className="h-5 w-5 sm:px-4 md:px-6 lg:px-8" />
                 <div>
-                  <div className="font-medium">Boleto bancário</div>
-                  <div className="text-sm text-muted-foreground">Vencimento em 3 dias</div>
+                  <div className="font-medium sm:px-4 md:px-6 lg:px-8">Boleto bancário</div>
+                  <div className="text-sm text-muted-foreground sm:px-4 md:px-6 lg:px-8">Vencimento em 3 dias</div>
                 </div>
               </Label>
             </div>
@@ -379,7 +379,7 @@ export default function CheckoutForm({ registrationData, onNext, onBack }: Check
       {/* Payment Form */}
       <Card>
         <CardHeader>
-          <CardTitle className="text-lg">
+          <CardTitle className="text-lg sm:px-4 md:px-6 lg:px-8">
             {paymentMethod === 'card' && 'Dados do cartão'}
             {paymentMethod === 'pix' && 'Confirmação PIX'}
             {paymentMethod === 'boleto' && 'Confirmação boleto'}
@@ -392,7 +392,7 @@ export default function CheckoutForm({ registrationData, onNext, onBack }: Check
 
       {/* Security Notice */}
       <Alert>
-        <Shield className="h-4 w-4" />
+        <Shield className="h-4 w-4 sm:px-4 md:px-6 lg:px-8" />
         <AlertDescription>
           <strong>Pagamento 100% seguro:</strong> Seus dados são protegidos com criptografia SSL de 256 bits. 
           Não armazenamos informações do seu cartão.
@@ -400,19 +400,19 @@ export default function CheckoutForm({ registrationData, onNext, onBack }: Check
       </Alert>
 
       {/* Terms reminder */}
-      <div className="text-center text-sm text-muted-foreground">
+      <div className="text-center text-sm text-muted-foreground sm:px-4 md:px-6 lg:px-8">
         <p>
           Ao finalizar, você confirma que leu e aceita nossos{' '}
-          <a href="#" className="text-primary hover:underline">Termos de Uso</a> e{' '}
-          <a href="#" className="text-primary hover:underline">Política de Privacidade</a>
+          <a href="#" className="text-primary hover:underline sm:px-4 md:px-6 lg:px-8">Termos de Uso</a> e{' '}
+          <a href="#" className="text-primary hover:underline sm:px-4 md:px-6 lg:px-8">Política de Privacidade</a>
         </p>
       </div>
 
       {/* Action Buttons */}
-      <div className="flex flex-col gap-3">
+      <div className="flex flex-col gap-3 sm:px-4 md:px-6 lg:px-8">
         <Button
           type="submit"
-          className="w-full focus-enhanced"
+          className="w-full focus-enhanced sm:px-4 md:px-6 lg:px-8"
           size="lg"
           disabled={isLoading}
         >
@@ -420,7 +420,7 @@ export default function CheckoutForm({ registrationData, onNext, onBack }: Check
             <motion.div
               animate={{ rotate: 360 }}
               transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-              className="mr-2"
+              className="mr-2 sm:px-4 md:px-6 lg:px-8"
             >
               ⏳
             </motion.div>
@@ -435,10 +435,10 @@ export default function CheckoutForm({ registrationData, onNext, onBack }: Check
           type="button"
           variant="ghost"
           onClick={onBack}
-          className="focus-enhanced"
+          className="focus-enhanced sm:px-4 md:px-6 lg:px-8"
           disabled={isLoading}
         >
-          <ArrowLeft className="h-4 w-4 mr-2" />
+          <ArrowLeft className="h-4 w-4 mr-2 sm:px-4 md:px-6 lg:px-8" />
           Voltar aos planos
         </Button>
       </div>

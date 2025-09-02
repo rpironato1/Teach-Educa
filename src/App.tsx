@@ -301,32 +301,32 @@ function AppContent() {
 
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background sm:px-4 md:px-6 lg:px-8">
       {/* Navigation */}
-      <nav className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-border" role="navigation" aria-label="Main navigation">
+      <nav className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-border sm:px-4 md:px-6 lg:px-8" role="navigation" aria-label="Main navigation">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
+          <div className="flex justify-between items-center h-16 sm:px-4 md:px-6 lg:px-8">
             <motion.div 
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
-              className="flex items-center space-x-2"
+              className="flex items-center space-x-2 sm:px-4 md:px-6 lg:px-8"
             >
-              <Brain className="h-8 w-8 text-primary" weight="duotone" aria-hidden="true" />
-              <span className="text-2xl font-bold text-foreground">TeacH</span>
+              <Brain className="h-8 w-8 text-primary sm:px-4 md:px-6 lg:px-8" weight="duotone" aria-hidden="true" />
+              <span className="text-2xl font-bold text-foreground sm:px-4 md:px-6 lg:px-8">TeacH</span>
             </motion.div>
 
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center space-x-8">
-              <a href="#inicio" className="text-foreground hover:text-primary transition-colors focus-enhanced">Início</a>
-              <a href="#metodologia" className="text-foreground hover:text-primary transition-colors focus-enhanced">Metodologia</a>
-              <a href="#planos" className="text-foreground hover:text-primary transition-colors focus-enhanced">Planos</a>
-              <a href="#faq" className="text-foreground hover:text-primary transition-colors focus-enhanced">FAQ</a>
+              <a href="#inicio" className="text-foreground hover:text-primary transition-colors focus-enhanced sm:px-4 md:px-6 lg:px-8">Início</a>
+              <a href="#metodologia" className="text-foreground hover:text-primary transition-colors focus-enhanced sm:px-4 md:px-6 lg:px-8">Metodologia</a>
+              <a href="#planos" className="text-foreground hover:text-primary transition-colors focus-enhanced sm:px-4 md:px-6 lg:px-8">Planos</a>
+              <a href="#faq" className="text-foreground hover:text-primary transition-colors focus-enhanced sm:px-4 md:px-6 lg:px-8">FAQ</a>
               
               {isAuthenticated ? (
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button variant="outline" className="focus-enhanced">
-                      <User className="h-4 w-4 mr-2" />
+                    <Button variant="outline" className="focus-enhanced sm:px-4 md:px-6 lg:px-8">
+                      <User className="h-4 w-4 mr-2 sm:px-4 md:px-6 lg:px-8" />
                       {user?.fullName || 'Usuário'}
                     </Button>
                   </DropdownMenuTrigger>
@@ -341,7 +341,7 @@ function AppContent() {
                       Ir para Dashboard
                     </DropdownMenuItem>
                     <DropdownMenuItem onClick={handleLogout}>
-                      <SignOut className="h-4 w-4 mr-2" />
+                      <SignOut className="h-4 w-4 mr-2 sm:px-4 md:px-6 lg:px-8" />
                       Sair
                     </DropdownMenuItem>
                   </DropdownMenuContent>
@@ -350,14 +350,14 @@ function AppContent() {
                 <>
                   <Button 
                     variant="outline" 
-                    className="focus-enhanced"
+                    className="focus-enhanced sm:px-4 md:px-6 lg:px-8"
                     onClick={() => navigate('auth')}
                     onMouseEnter={preloadAuth}
                   >
                     Entrar
                   </Button>
                   <Button 
-                    className="focus-enhanced"
+                    className="focus-enhanced sm:px-4 md:px-6 lg:px-8"
                     onClick={() => navigate('registration')}
                     onMouseEnter={preloadRegistration}
                   >
@@ -373,12 +373,12 @@ function AppContent() {
                 variant="ghost"
                 size="sm"
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="focus-enhanced"
+                className="focus-enhanced sm:px-4 md:px-6 lg:px-8"
                 aria-label={mobileMenuOpen ? "Fechar menu" : "Abrir menu"}
                 aria-expanded={mobileMenuOpen}
                 aria-controls="mobile-navigation"
               >
-                {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+                {mobileMenuOpen ? <X className="h-6 w-6 sm:px-4 md:px-6 lg:px-8" /> : <Menu className="h-6 w-6 sm:px-4 md:px-6 lg:px-8" />}
               </Button>
             </div>
           </div>
@@ -391,17 +391,17 @@ function AppContent() {
               animate={{ opacity: 1, y: 0 }}
               className="md:hidden pb-4"
             >
-              <div className="flex flex-col space-y-4">
-                <a href="#inicio" className="text-foreground hover:text-primary transition-colors focus-enhanced">Início</a>
-                <a href="#metodologia" className="text-foreground hover:text-primary transition-colors focus-enhanced">Metodologia</a>
-                <a href="#planos" className="text-foreground hover:text-primary transition-colors focus-enhanced">Planos</a>
-                <a href="#faq" className="text-foreground hover:text-primary transition-colors focus-enhanced">FAQ</a>
-                <div className="flex flex-col space-y-2 pt-4">
+              <div className="flex flex-col space-y-4 sm:px-4 md:px-6 lg:px-8">
+                <a href="#inicio" className="text-foreground hover:text-primary transition-colors focus-enhanced sm:px-4 md:px-6 lg:px-8">Início</a>
+                <a href="#metodologia" className="text-foreground hover:text-primary transition-colors focus-enhanced sm:px-4 md:px-6 lg:px-8">Metodologia</a>
+                <a href="#planos" className="text-foreground hover:text-primary transition-colors focus-enhanced sm:px-4 md:px-6 lg:px-8">Planos</a>
+                <a href="#faq" className="text-foreground hover:text-primary transition-colors focus-enhanced sm:px-4 md:px-6 lg:px-8">FAQ</a>
+                <div className="flex flex-col space-y-2 pt-4 sm:px-4 md:px-6 lg:px-8">
                   {isAuthenticated ? (
                     <>
                       <Button 
                         variant="outline" 
-                        className="focus-enhanced"
+                        className="focus-enhanced sm:px-4 md:px-6 lg:px-8"
                         onClick={() => {
                           if (user.role === 'admin') {
                             navigate('admin-dashboard')
@@ -411,18 +411,18 @@ function AppContent() {
                           setMobileMenuOpen(false)
                         }}
                       >
-                        <User className="h-4 w-4 mr-2" />
+                        <User className="h-4 w-4 mr-2 sm:px-4 md:px-6 lg:px-8" />
                         Dashboard
                       </Button>
                       <Button 
                         variant="outline" 
-                        className="focus-enhanced"
+                        className="focus-enhanced sm:px-4 md:px-6 lg:px-8"
                         onClick={() => {
                           handleLogout()
                           setMobileMenuOpen(false)
                         }}
                       >
-                        <SignOut className="h-4 w-4 mr-2" />
+                        <SignOut className="h-4 w-4 mr-2 sm:px-4 md:px-6 lg:px-8" />
                         Sair
                       </Button>
                     </>
@@ -430,7 +430,7 @@ function AppContent() {
                     <>
                       <Button 
                         variant="outline" 
-                        className="focus-enhanced"
+                        className="focus-enhanced sm:px-4 md:px-6 lg:px-8"
                         onClick={() => {
                           navigate('auth')
                           setMobileMenuOpen(false)
@@ -440,7 +440,7 @@ function AppContent() {
                         Entrar
                       </Button>
                       <Button 
-                        className="focus-enhanced"
+                        className="focus-enhanced sm:px-4 md:px-6 lg:px-8"
                         onClick={() => {
                           navigate('registration')
                           setMobileMenuOpen(false)
@@ -462,18 +462,18 @@ function AppContent() {
       <main>
       <section id="inicio" className="gradient-hero py-20 lg:py-32">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
+          <div className="text-center sm:px-4 md:px-6 lg:px-8">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
             >
-              <Badge variant="secondary" className="mb-6 text-sm px-4 py-1">
+              <Badge variant="secondary" className="mb-6 text-sm px-4 py-1 sm:px-4 md:px-6 lg:px-8">
                 🧠 Tecnologia Neuroadaptativa
               </Badge>
               <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-foreground mb-6 leading-tight">
                 Aprenda com a{' '}
-                <span className="text-primary">Inteligência</span>
+                <span className="text-primary sm:px-4 md:px-6 lg:px-8">Inteligência</span>
                 <br />
                 que se adapta a você
               </h1>
@@ -484,14 +484,14 @@ function AppContent() {
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
                 <Button 
                   size="lg" 
-                  className="text-lg px-8 py-4 focus-enhanced"
+                  className="text-lg px-8 py-4 focus-enhanced sm:px-4 md:px-6 lg:px-8"
                   onClick={() => navigate('registration')}
                   onMouseEnter={preloadRegistration}
                 >
                   Começar Gratuitamente
-                  <ArrowRight className="ml-2 h-5 w-5" />
+                  <ArrowRight className="ml-2 h-5 w-5 sm:px-4 md:px-6 lg:px-8" />
                 </Button>
-                <Button variant="outline" size="lg" className="text-lg px-8 py-4 focus-enhanced"
+                <Button variant="outline" size="lg" className="text-lg px-8 py-4 focus-enhanced sm:px-4 md:px-6 lg:px-8"
                   onClick={() => {
                     if (isAuthenticated && user) {
                       if (user.role === 'admin') {
@@ -522,12 +522,12 @@ function AppContent() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-16"
+            className="text-center mb-16 sm:px-4 md:px-6 lg:px-8"
           >
             <h2 className="text-3xl md:text-5xl font-bold text-foreground mb-6">
-              Metodologia <span className="text-secondary">Neuroadaptativa</span>
+              Metodologia <span className="text-secondary sm:px-4 md:px-6 lg:px-8">Neuroadaptativa</span>
             </h2>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto sm:px-4 md:px-6 lg:px-8">
               Nossa tecnologia revolucionária analisa seus padrões de aprendizado e 
               adapta o conteúdo para maximizar sua retenção e compreensão.
             </p>
@@ -536,17 +536,17 @@ function AppContent() {
           <div className="grid md:grid-cols-3 gap-8">
             {[
               {
-                icon: <Brain className="h-12 w-12 text-primary" weight="duotone" />,
+                icon: <Brain className="h-12 w-12 text-primary sm:px-4 md:px-6 lg:px-8" weight="duotone" />,
                 title: "Análise Neural",
                 description: "Algoritmos avançados monitoram seu progresso e identificam padrões únicos de aprendizado."
               },
               {
-                icon: <Target className="h-12 w-12 text-secondary" weight="duotone" />,
+                icon: <Target className="h-12 w-12 text-secondary sm:px-4 md:px-6 lg:px-8" weight="duotone" />,
                 title: "Personalização Inteligente", 
                 description: "Conteúdo adaptado automaticamente ao seu ritmo, estilo e objetivos de aprendizado."
               },
               {
-                icon: <Zap className="h-12 w-12 text-accent" weight="duotone" />,
+                icon: <Zap className="h-12 w-12 text-accent sm:px-4 md:px-6 lg:px-8" weight="duotone" />,
                 title: "Otimização Contínua",
                 description: "Sistema que evolui com você, melhorando constantemente sua experiência educacional."
               }
@@ -558,15 +558,15 @@ function AppContent() {
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
               >
-                <Card className="h-full hover:shadow-lg transition-shadow duration-300 group">
-                  <CardHeader className="text-center pb-4">
-                    <div className="mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
+                <Card className="h-full hover:shadow-lg transition-shadow duration-300 group sm:px-4 md:px-6 lg:px-8">
+                  <CardHeader className="text-center pb-4 sm:px-4 md:px-6 lg:px-8">
+                    <div className="mx-auto mb-4 group-hover:scale-110 transition-transform duration-300 sm:px-4 md:px-6 lg:px-8">
                       {feature.icon}
                     </div>
-                    <CardTitle className="text-xl font-semibold">{feature.title}</CardTitle>
+                    <CardTitle className="text-xl font-semibold sm:px-4 md:px-6 lg:px-8">{feature.title}</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-muted-foreground text-center leading-relaxed">
+                    <p className="text-muted-foreground text-center leading-relaxed sm:px-4 md:px-6 lg:px-8">
                       {feature.description}
                     </p>
                   </CardContent>
@@ -584,12 +584,12 @@ function AppContent() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-16"
+            className="text-center mb-16 sm:px-4 md:px-6 lg:px-8"
           >
             <h2 className="text-3xl md:text-5xl font-bold text-foreground mb-6">
-              Planos de <span className="text-primary">Créditos</span>
+              Planos de <span className="text-primary sm:px-4 md:px-6 lg:px-8">Créditos</span>
             </h2>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto sm:px-4 md:px-6 lg:px-8">
               Escolha o plano ideal para sua jornada de aprendizado. 
               Todos incluem acesso à nossa tecnologia neuroadaptativa.
             </p>
@@ -603,11 +603,11 @@ function AppContent() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
-                className="relative"
+                className="relative sm:px-4 md:px-6 lg:px-8"
               >
                 {plan.popular && (
-                  <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                    <Badge className="bg-secondary text-secondary-foreground px-4 py-1">
+                  <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 sm:px-4 md:px-6 lg:px-8">
+                    <Badge className="bg-secondary text-secondary-foreground px-4 py-1 sm:px-4 md:px-6 lg:px-8">
                       Mais Popular
                     </Badge>
                   </div>
@@ -615,22 +615,22 @@ function AppContent() {
                 <Card className={`h-full transition-all duration-300 hover:shadow-xl ${
                   plan.popular ? 'ring-2 ring-secondary scale-105' : 'hover:scale-105'
                 }`}>
-                  <CardHeader className="text-center pb-4">
-                    <CardTitle className="text-2xl font-bold">{plan.name}</CardTitle>
-                    <CardDescription className="text-sm">{plan.description}</CardDescription>
-                    <div className="mt-4">
-                      <span className="text-4xl font-bold text-foreground">{plan.price}</span>
-                      <span className="text-muted-foreground">{plan.period}</span>
+                  <CardHeader className="text-center pb-4 sm:px-4 md:px-6 lg:px-8">
+                    <CardTitle className="text-2xl font-bold sm:px-4 md:px-6 lg:px-8">{plan.name}</CardTitle>
+                    <CardDescription className="text-sm sm:px-4 md:px-6 lg:px-8">{plan.description}</CardDescription>
+                    <div className="mt-4 sm:px-4 md:px-6 lg:px-8">
+                      <span className="text-4xl font-bold text-foreground sm:px-4 md:px-6 lg:px-8">{plan.price}</span>
+                      <span className="text-muted-foreground sm:px-4 md:px-6 lg:px-8">{plan.period}</span>
                     </div>
-                    <Badge variant="outline" className="mt-2">
+                    <Badge variant="outline" className="mt-2 sm:px-4 md:px-6 lg:px-8">
                       {plan.credits} créditos
                     </Badge>
                   </CardHeader>
-                  <CardContent className="space-y-3">
+                  <CardContent className="space-y-3 sm:px-4 md:px-6 lg:px-8">
                     {plan.features.map((feature, featureIndex) => (
-                      <div key={featureIndex} className="flex items-center space-x-3">
-                        <CheckCircle className="h-5 w-5 text-secondary flex-shrink-0" weight="fill" />
-                        <span className="text-sm text-muted-foreground">{feature}</span>
+                      <div key={featureIndex} className="flex items-center space-x-3 sm:px-4 md:px-6 lg:px-8">
+                        <CheckCircle className="h-5 w-5 text-secondary flex-shrink-0 sm:px-4 md:px-6 lg:px-8" weight="fill" />
+                        <span className="text-sm text-muted-foreground sm:px-4 md:px-6 lg:px-8">{feature}</span>
                       </div>
                     ))}
                   </CardContent>
@@ -660,12 +660,12 @@ function AppContent() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-16"
+            className="text-center mb-16 sm:px-4 md:px-6 lg:px-8"
           >
             <h2 className="text-3xl md:text-5xl font-bold text-foreground mb-6">
-              Perguntas <span className="text-accent">Frequentes</span>
+              Perguntas <span className="text-accent sm:px-4 md:px-6 lg:px-8">Frequentes</span>
             </h2>
-            <p className="text-xl text-muted-foreground">
+            <p className="text-xl text-muted-foreground sm:px-4 md:px-6 lg:px-8">
               Esclarecemos as dúvidas mais comuns sobre nossa plataforma
             </p>
           </motion.div>
@@ -675,13 +675,13 @@ function AppContent() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <Accordion type="single" collapsible className="space-y-4">
+            <Accordion type="single" collapsible className="space-y-4 sm:px-4 md:px-6 lg:px-8">
               {faqs.map((faq, index) => (
-                <AccordionItem key={index} value={`item-${index}`} className="border border-border rounded-lg px-6">
-                  <AccordionTrigger className="text-left font-medium hover:no-underline focus-enhanced">
+                <AccordionItem key={index} value={`item-${index}`} className="border border-border rounded-lg px-6 sm:px-4 md:px-6 lg:px-8">
+                  <AccordionTrigger className="text-left font-medium hover:no-underline focus-enhanced sm:px-4 md:px-6 lg:px-8">
                     {faq.question}
                   </AccordionTrigger>
-                  <AccordionContent className="text-muted-foreground leading-relaxed pt-2">
+                  <AccordionContent className="text-muted-foreground leading-relaxed pt-2 sm:px-4 md:px-6 lg:px-8">
                     {faq.answer}
                   </AccordionContent>
                 </AccordionItem>
@@ -693,61 +693,61 @@ function AppContent() {
       </main>
 
       {/* Footer */}
-      <footer className="bg-muted/30 border-t border-border" role="contentinfo" aria-label="Site footer">
+      <footer className="bg-muted/30 border-t border-border sm:px-4 md:px-6 lg:px-8" role="contentinfo" aria-label="Site footer">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="grid md:grid-cols-4 gap-8">
-            <div className="space-y-4">
-              <div className="flex items-center space-x-2">
-                <Brain className="h-8 w-8 text-primary" weight="duotone" aria-hidden="true" />
-                <span className="text-2xl font-bold text-foreground">TeacH</span>
+            <div className="space-y-4 sm:px-4 md:px-6 lg:px-8">
+              <div className="flex items-center space-x-2 sm:px-4 md:px-6 lg:px-8">
+                <Brain className="h-8 w-8 text-primary sm:px-4 md:px-6 lg:px-8" weight="duotone" aria-hidden="true" />
+                <span className="text-2xl font-bold text-foreground sm:px-4 md:px-6 lg:px-8">TeacH</span>
               </div>
-              <p className="text-muted-foreground text-sm leading-relaxed">
+              <p className="text-muted-foreground text-sm leading-relaxed sm:px-4 md:px-6 lg:px-8">
                 Revolucionando a educação com tecnologia neuroadaptativa para 
                 um aprendizado verdadeiramente personalizado.
               </p>
             </div>
 
-            <div className="space-y-4">
-              <h3 className="font-semibold text-foreground">Produto</h3>
-              <div className="space-y-2 text-sm">
-                <a href="#" className="block text-muted-foreground hover:text-primary transition-colors focus-enhanced">Funcionalidades</a>
-                <a href="#" className="block text-muted-foreground hover:text-primary transition-colors focus-enhanced">Preços</a>
-                <a href="#" className="block text-muted-foreground hover:text-primary transition-colors focus-enhanced">API</a>
-                <a href="#" className="block text-muted-foreground hover:text-primary transition-colors focus-enhanced">Segurança</a>
+            <div className="space-y-4 sm:px-4 md:px-6 lg:px-8">
+              <h3 className="font-semibold text-foreground sm:px-4 md:px-6 lg:px-8">Produto</h3>
+              <div className="space-y-2 text-sm sm:px-4 md:px-6 lg:px-8">
+                <a href="#" className="block text-muted-foreground hover:text-primary transition-colors focus-enhanced sm:px-4 md:px-6 lg:px-8">Funcionalidades</a>
+                <a href="#" className="block text-muted-foreground hover:text-primary transition-colors focus-enhanced sm:px-4 md:px-6 lg:px-8">Preços</a>
+                <a href="#" className="block text-muted-foreground hover:text-primary transition-colors focus-enhanced sm:px-4 md:px-6 lg:px-8">API</a>
+                <a href="#" className="block text-muted-foreground hover:text-primary transition-colors focus-enhanced sm:px-4 md:px-6 lg:px-8">Segurança</a>
               </div>
             </div>
 
-            <div className="space-y-4">
-              <h3 className="font-semibold text-foreground">Empresa</h3>
-              <div className="space-y-2 text-sm">
-                <a href="#" className="block text-muted-foreground hover:text-primary transition-colors focus-enhanced">Sobre</a>
-                <a href="#" className="block text-muted-foreground hover:text-primary transition-colors focus-enhanced">Blog</a>
-                <a href="#" className="block text-muted-foreground hover:text-primary transition-colors focus-enhanced">Carreiras</a>
-                <a href="#" className="block text-muted-foreground hover:text-primary transition-colors focus-enhanced">Contato</a>
+            <div className="space-y-4 sm:px-4 md:px-6 lg:px-8">
+              <h3 className="font-semibold text-foreground sm:px-4 md:px-6 lg:px-8">Empresa</h3>
+              <div className="space-y-2 text-sm sm:px-4 md:px-6 lg:px-8">
+                <a href="#" className="block text-muted-foreground hover:text-primary transition-colors focus-enhanced sm:px-4 md:px-6 lg:px-8">Sobre</a>
+                <a href="#" className="block text-muted-foreground hover:text-primary transition-colors focus-enhanced sm:px-4 md:px-6 lg:px-8">Blog</a>
+                <a href="#" className="block text-muted-foreground hover:text-primary transition-colors focus-enhanced sm:px-4 md:px-6 lg:px-8">Carreiras</a>
+                <a href="#" className="block text-muted-foreground hover:text-primary transition-colors focus-enhanced sm:px-4 md:px-6 lg:px-8">Contato</a>
               </div>
             </div>
 
-            <div className="space-y-4">
-              <h3 className="font-semibold text-foreground">Suporte</h3>
-              <div className="space-y-2 text-sm">
-                <a href="#" className="block text-muted-foreground hover:text-primary transition-colors focus-enhanced">Centro de Ajuda</a>
-                <a href="#" className="block text-muted-foreground hover:text-primary transition-colors focus-enhanced">Documentação</a>
-                <a href="#" className="block text-muted-foreground hover:text-primary transition-colors focus-enhanced">Status</a>
-                <a href="#" className="block text-muted-foreground hover:text-primary transition-colors focus-enhanced">Comunidade</a>
+            <div className="space-y-4 sm:px-4 md:px-6 lg:px-8">
+              <h3 className="font-semibold text-foreground sm:px-4 md:px-6 lg:px-8">Suporte</h3>
+              <div className="space-y-2 text-sm sm:px-4 md:px-6 lg:px-8">
+                <a href="#" className="block text-muted-foreground hover:text-primary transition-colors focus-enhanced sm:px-4 md:px-6 lg:px-8">Centro de Ajuda</a>
+                <a href="#" className="block text-muted-foreground hover:text-primary transition-colors focus-enhanced sm:px-4 md:px-6 lg:px-8">Documentação</a>
+                <a href="#" className="block text-muted-foreground hover:text-primary transition-colors focus-enhanced sm:px-4 md:px-6 lg:px-8">Status</a>
+                <a href="#" className="block text-muted-foreground hover:text-primary transition-colors focus-enhanced sm:px-4 md:px-6 lg:px-8">Comunidade</a>
               </div>
             </div>
           </div>
 
-          <Separator className="my-8" />
+          <Separator className="my-8 sm:px-4 md:px-6 lg:px-8" />
 
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-            <div className="text-sm text-muted-foreground">
+            <div className="text-sm text-muted-foreground sm:px-4 md:px-6 lg:px-8">
               © 2024 TeacH. Todos os direitos reservados.
             </div>
-            <div className="flex space-x-6 text-sm">
-              <a href="#" className="text-muted-foreground hover:text-primary transition-colors focus-enhanced">Privacidade</a>
-              <a href="#" className="text-muted-foreground hover:text-primary transition-colors focus-enhanced">Termos</a>
-              <a href="#" className="text-muted-foreground hover:text-primary transition-colors focus-enhanced">Cookies</a>
+            <div className="flex space-x-6 text-sm sm:px-4 md:px-6 lg:px-8">
+              <a href="#" className="text-muted-foreground hover:text-primary transition-colors focus-enhanced sm:px-4 md:px-6 lg:px-8">Privacidade</a>
+              <a href="#" className="text-muted-foreground hover:text-primary transition-colors focus-enhanced sm:px-4 md:px-6 lg:px-8">Termos</a>
+              <a href="#" className="text-muted-foreground hover:text-primary transition-colors focus-enhanced sm:px-4 md:px-6 lg:px-8">Cookies</a>
             </div>
           </div>
         </div>

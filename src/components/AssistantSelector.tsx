@@ -122,8 +122,7 @@ export default function AssistantSelector({
                     }
                     ${!canAfford ? 'opacity-60' : ''}
                   `}>
-                    <div
-                      onClick={() => {
+                    <div role="button" tabIndex={0} onClick={() => {
                         if (canAfford) {
                           onAssistantSelect(assistant)
                         }

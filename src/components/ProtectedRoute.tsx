@@ -105,14 +105,12 @@ export default function ProtectedRoute({
             {requireRole === 'admin' && ' Apenas administradores podem acessar.'}
           </p>
           <div className="space-y-2">
-            <button
-              onClick={() => redirectToAppropriateRoute({ validateRole: true })}
+            <button aria-label="Action button" onClick={() => redirectToAppropriateRoute({ validateRole: true })}
               className="block w-full px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
             >
               Ir para meu painel
             </button>
-            <button
-              onClick={() => window.history.back()}
+            <button aria-label="Action button" onClick={() => window.history.back()}
               className="text-primary hover:underline"
             >
               Voltar

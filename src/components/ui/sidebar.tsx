@@ -283,8 +283,7 @@ function SidebarRail({ className, ...props }: ComponentProps<"button">) {
   const { toggleSidebar } = useSidebar()
 
   return (
-    <button
-      data-sidebar="rail"
+    <button aria-label="Action button" data-sidebar="rail"
       data-slot="sidebar-rail"
       aria-label="Toggle Sidebar"
       tabIndex={-1}

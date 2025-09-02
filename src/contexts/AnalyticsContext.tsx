@@ -134,6 +134,7 @@ interface AnalyticsContextType extends AnalyticsState {
   refreshData: () => Promise<void>
 }
 
+// Context definition
 const AnalyticsContext = createContext<AnalyticsContextType | null>(null)
 
 export function useAnalytics() {
