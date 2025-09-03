@@ -112,8 +112,8 @@ test.describe('Performance Tests', () => {
       
       return {
         duration: measure.duration,
-        jsHeapUsed: (performance as any).memory?.usedJSHeapSize || 0,
-        jsHeapTotal: (performance as any).memory?.totalJSHeapSize || 0,
+        jsHeapUsed: (performance as unknown).memory?.usedJSHeapSize || 0,
+        jsHeapTotal: (performance as unknown).memory?.totalJSHeapSize || 0,
       };
     });
     

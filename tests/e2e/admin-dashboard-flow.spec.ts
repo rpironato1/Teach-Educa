@@ -499,7 +499,7 @@ test.describe('Admin Dashboard Flow', () => {
     // Test export functionality
     const exportedData = await page.evaluate(() => {
       const tables = ['users', 'analytics', 'transactions'];
-      const exportData: Record<string, any[]> = {};
+      const exportData: Record<string, unknown[]> = {};
       
       tables.forEach(table => {
         const data = localStorage.getItem(`supabase_${table}_`);

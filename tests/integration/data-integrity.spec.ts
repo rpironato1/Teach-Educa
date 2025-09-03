@@ -46,7 +46,7 @@ test.describe('Data Integrity Tests', () => {
       const conversations = JSON.parse(localStorage.getItem('teacheduca_conversations') || '[]');
       const messages = JSON.parse(localStorage.getItem('teacheduca_messages') || '[]');
 
-      const conversationIds = new Set(conversations.map((c: any) => c.id));
+      const conversationIds = new Set(conversations.map((c: unknown) => c.id));
       const orphanMessages = messages.filter((m: any) => !conversationIds.has(m.conversation_id));
 
       return {

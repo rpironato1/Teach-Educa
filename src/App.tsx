@@ -332,7 +332,7 @@ function AppContent() {
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">
                     <DropdownMenuItem onClick={() => {
-                      if (user.role === 'admin') {
+                      if (user?.role === 'admin') {
                         navigate('admin-dashboard')
                       } else {
                         navigate('dashboard')
@@ -403,7 +403,7 @@ function AppContent() {
                         variant="outline" 
                         className="focus-enhanced sm:px-4 md:px-6 lg:px-8"
                         onClick={() => {
-                          if (user.role === 'admin') {
+                          if (user?.role === 'admin') {
                             navigate('admin-dashboard')
                           } else {
                             navigate('dashboard')

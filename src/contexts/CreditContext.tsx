@@ -154,6 +154,12 @@ export const CreditProvider: React.FC<CreditProviderProps> = ({ children }) => {
   const [transactions, setTransactions] = useState<CreditTransaction[]>([])
   const [isLoading, setIsLoading] = useState(false)
 
+  const saveBalanceToStorage = useCallback((newBalance: CreditBalance) => {
+    if (user?.id) {
+      localStorage.setItem(`credits_${user.id}`, JSON.stringify(newBalance))
+    }
+  }, [user?.id])
+
   const initializeCreditData = useCallback(async () => {
     setIsLoading(true)
     try {
@@ -198,7 +204,7 @@ export const CreditProvider: React.FC<CreditProviderProps> = ({ children }) => {
     } finally {
       setIsLoading(false)
     }
-  }, [user?.id])
+  }, [user?.id, saveBalanceToStorage])
 
   // Initialize credit data when user authenticates
   useEffect(() => {
@@ -219,12 +225,6 @@ export const CreditProvider: React.FC<CreditProviderProps> = ({ children }) => {
     })
     setCurrentPlan(null)
     setTransactions([])
-  }
-
-  const saveBalanceToStorage = (newBalance: CreditBalance) => {
-    if (user?.id) {
-      localStorage.setItem(`credits_${user.id}`, JSON.stringify(newBalance))
-    }
   }
 
   const savePlanToStorage = (plan: SubscriptionPlan) => {

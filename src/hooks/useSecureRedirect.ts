@@ -1,6 +1,6 @@
 import { useCallback, useRef } from 'react'
 import { useAuth } from '@/contexts/AuthContext'
-import { useRouter } from '@/hooks/useRouter'
+import { useRouter, type RouteType } from '@/hooks/useRouter'
 import { toast } from 'sonner'
 
 export interface RedirectOptions {
@@ -111,7 +111,12 @@ export function useSecureRedirect() {
 
     // Custom redirect URL
     if (redirectUrl) {
-      navigate(redirectUrl as string)
+      if (['home', 'registration', 'auth', 'dashboard', 'admin-dashboard'].includes(redirectUrl)) {
+        navigate(redirectUrl as RouteType)
+      } else {
+        // For non-RouteType URLs, fallback to home or handle differently
+        navigate('home')
+      }
       logSecurityEvent({
         userId: user.id,
         action: 'redirect',

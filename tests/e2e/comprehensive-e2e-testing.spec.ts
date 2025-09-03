@@ -503,18 +503,28 @@ test.describe('Comprehensive E2E Testing with MCP Playwright + Axe Core', () => 
   }
 
   async function checkPerformanceMetrics(page: Page) {
-    const metrics = await page.evaluate(() => ({
-      memory: (performance as any).memory ? {
-        usedJSHeapSize: (performance as any).memory.usedJSHeapSize,
-        totalJSHeapSize: (performance as any).memory.totalJSHeapSize,
-        jsHeapSizeLimit: (performance as any).memory.jsHeapSizeLimit
-      } : null,
-      timing: performance.timing ? {
-        loadComplete: performance.timing.loadEventEnd - performance.timing.navigationStart,
-        domReady: performance.timing.domContentLoadedEventEnd - performance.timing.navigationStart,
-        firstByte: performance.timing.responseStart - performance.timing.navigationStart
-      } : null
-    }));
+    const metrics = await page.evaluate(() => {
+      interface MemoryInfo {
+        usedJSHeapSize: number;
+        totalJSHeapSize: number;
+        jsHeapSizeLimit: number;
+      }
+      
+      const performanceWithMemory = performance as Performance & { memory?: MemoryInfo };
+      
+      return {
+        memory: performanceWithMemory.memory ? {
+          usedJSHeapSize: performanceWithMemory.memory.usedJSHeapSize,
+          totalJSHeapSize: performanceWithMemory.memory.totalJSHeapSize,
+          jsHeapSizeLimit: performanceWithMemory.memory.jsHeapSizeLimit
+        } : null,
+        timing: performance.timing ? {
+          loadComplete: performance.timing.loadEventEnd - performance.timing.navigationStart,
+          domReady: performance.timing.domContentLoadedEventEnd - performance.timing.navigationStart,
+          firstByte: performance.timing.responseStart - performance.timing.navigationStart
+        } : null
+      };
+    });
 
     console.log('   📊 Performance metrics:', metrics);
     currentSession.logs.performance.push(metrics);
