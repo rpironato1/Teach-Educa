@@ -269,7 +269,7 @@ test.describe('Login and Password Recovery Flow', () => {
       // Simulate password reset process
       const resetResult = await page.evaluate((token) => {
         const stored = JSON.parse(localStorage.getItem('password_recovery_requests') || '[]');
-        const tokenData = stored.find((req: any) => req.token === token);
+        const tokenData = stored.find((req: unknown) => req.token === token);
         
         if (tokenData && !tokenData.used && new Date() < new Date(tokenData.expiresAt)) {
           tokenData.used = true;
@@ -306,7 +306,7 @@ test.describe('Login and Password Recovery Flow', () => {
     // Try to use expired token
     const expirationCheck = await page.evaluate((token) => {
       const stored = JSON.parse(localStorage.getItem('password_recovery_requests') || '[]');
-      const tokenData = stored.find((req: any) => req.token === token);
+      const tokenData = stored.find((req: unknown) => req.token === token);
       
       if (!tokenData) {
         return { valid: false, reason: 'Token not found' };
@@ -512,13 +512,13 @@ test.describe('Login and Password Recovery Flow', () => {
     });
 
     expect(sessions).toHaveLength(3);
-    expect(sessions.filter((s: any) => s.current).length).toBe(1);
+    expect(sessions.filter((s: unknown) => s.current).length).toBe(1);
     expect(sessions[0].device_info).toBe('Chrome - Windows');
     expect(sessions[1].device_info).toBe('Safari - iOS');
     expect(sessions[2].device_info).toBe('Firefox - Android');
     
     // Each session should have required fields
-    sessions.forEach((session: any) => {
+    sessions.forEach((session: unknown) => {
       expect(session).toHaveProperty('id');
       expect(session).toHaveProperty('user_id');
       expect(session).toHaveProperty('device_info');

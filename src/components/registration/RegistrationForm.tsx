@@ -159,18 +159,18 @@ export default function RegistrationForm({ data, onUpdate, onNext }: Registratio
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-xl">Informações pessoais</CardTitle>
+        <CardTitle className="text-xl sm:px-4 md:px-6 lg:px-8">Informações pessoais</CardTitle>
         <CardDescription>
           Preencha seus dados para criar sua conta na TeacH
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-6 sm:px-4 md:px-6 lg:px-8">
           {/* Full Name */}
-          <div className="space-y-2">
+          <div className="space-y-2 sm:px-4 md:px-6 lg:px-8">
             <Label htmlFor="fullName">Nome completo *</Label>
-            <div className="relative">
-              <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <div className="relative sm:px-4 md:px-6 lg:px-8">
+              <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground sm:px-4 md:px-6 lg:px-8" />
               <Input
                 id="fullName"
                 type="text"
@@ -182,15 +182,15 @@ export default function RegistrationForm({ data, onUpdate, onNext }: Registratio
               />
             </div>
             {errors.fullName && (
-              <p className="text-sm text-destructive">{errors.fullName}</p>
+              <p className="text-sm text-destructive sm:px-4 md:px-6 lg:px-8">{errors.fullName}</p>
             )}
           </div>
 
           {/* Email */}
-          <div className="space-y-2">
+          <div className="space-y-2 sm:px-4 md:px-6 lg:px-8">
             <Label htmlFor="email">Email *</Label>
-            <div className="relative">
-              <Envelope className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <div className="relative sm:px-4 md:px-6 lg:px-8">
+              <Envelope className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground sm:px-4 md:px-6 lg:px-8" />
               <Input
                 id="email"
                 type="email"
@@ -202,15 +202,15 @@ export default function RegistrationForm({ data, onUpdate, onNext }: Registratio
               />
             </div>
             {errors.email && (
-              <p className="text-sm text-destructive">{errors.email}</p>
+              <p className="text-sm text-destructive sm:px-4 md:px-6 lg:px-8">{errors.email}</p>
             )}
           </div>
 
           {/* CPF */}
-          <div className="space-y-2">
+          <div className="space-y-2 sm:px-4 md:px-6 lg:px-8">
             <Label htmlFor="cpf">CPF *</Label>
-            <div className="relative">
-              <IdentificationCard className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <div className="relative sm:px-4 md:px-6 lg:px-8">
+              <IdentificationCard className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground sm:px-4 md:px-6 lg:px-8" />
               <Input
                 id="cpf"
                 type="text"
@@ -223,15 +223,15 @@ export default function RegistrationForm({ data, onUpdate, onNext }: Registratio
               />
             </div>
             {errors.cpf && (
-              <p className="text-sm text-destructive">{errors.cpf}</p>
+              <p className="text-sm text-destructive sm:px-4 md:px-6 lg:px-8">{errors.cpf}</p>
             )}
           </div>
 
           {/* Phone */}
-          <div className="space-y-2">
+          <div className="space-y-2 sm:px-4 md:px-6 lg:px-8">
             <Label htmlFor="phone">Telefone *</Label>
-            <div className="relative">
-              <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <div className="relative sm:px-4 md:px-6 lg:px-8">
+              <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground sm:px-4 md:px-6 lg:px-8" />
               <Input
                 id="phone"
                 type="tel"
@@ -244,14 +244,14 @@ export default function RegistrationForm({ data, onUpdate, onNext }: Registratio
               />
             </div>
             {errors.phone && (
-              <p className="text-sm text-destructive">{errors.phone}</p>
+              <p className="text-sm text-destructive sm:px-4 md:px-6 lg:px-8">{errors.phone}</p>
             )}
           </div>
 
           {/* Password */}
-          <div className="space-y-2">
+          <div className="space-y-2 sm:px-4 md:px-6 lg:px-8">
             <Label htmlFor="password">Senha *</Label>
-            <div className="relative">
+            <div className="relative sm:px-4 md:px-6 lg:px-8">
               <Input
                 id="password"
                 type={showPassword ? 'text' : 'password'}
@@ -265,37 +265,37 @@ export default function RegistrationForm({ data, onUpdate, onNext }: Registratio
                 type="button"
                 variant="ghost"
                 size="sm"
-                className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent sm:px-4 md:px-6 lg:px-8"
                 onClick={() => setShowPassword(!showPassword)}
               >
                 {showPassword ? (
-                  <EyeSlash className="h-4 w-4 text-muted-foreground" />
+                  <EyeSlash className="h-4 w-4 text-muted-foreground sm:px-4 md:px-6 lg:px-8" />
                 ) : (
-                  <Eye className="h-4 w-4 text-muted-foreground" />
+                  <Eye className="h-4 w-4 text-muted-foreground sm:px-4 md:px-6 lg:px-8" />
                 )}
               </Button>
             </div>
             {errors.password && (
-              <p className="text-sm text-destructive">{errors.password}</p>
+              <p className="text-sm text-destructive sm:px-4 md:px-6 lg:px-8">{errors.password}</p>
             )}
-            <p className="text-xs text-muted-foreground">
+            <p className="text-xs text-muted-foreground sm:px-4 md:px-6 lg:px-8">
               Deve conter ao menos: 1 letra minúscula, 1 maiúscula e 1 número
             </p>
           </div>
 
           {/* Terms and Privacy */}
-          <div className="space-y-4">
-            <div className="flex items-start space-x-3">
+          <div className="space-y-4 sm:px-4 md:px-6 lg:px-8">
+            <div className="flex items-start space-x-3 sm:px-4 md:px-6 lg:px-8">
               <Checkbox
                 id="terms"
                 checked={data.acceptedTerms}
                 onCheckedChange={(checked) => onUpdate({ acceptedTerms: checked as boolean })}
-                className="mt-1"
+                className="mt-1 sm:px-4 md:px-6 lg:px-8"
               />
-              <div className="grid gap-1.5 leading-none">
-                <Label htmlFor="terms" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+              <div className="grid gap-1.5 leading-none sm:px-4 md:px-6 lg:px-8">
+                <Label htmlFor="terms" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 sm:px-4 md:px-6 lg:px-8">
                   Aceito os{' '}
-                  <a href="#" className="text-primary hover:underline">
+                  <a href="#" className="text-primary hover:underline sm:px-4 md:px-6 lg:px-8">
                     Termos de Uso
                   </a>{' '}
                   da TeacH *
@@ -303,20 +303,20 @@ export default function RegistrationForm({ data, onUpdate, onNext }: Registratio
               </div>
             </div>
             {errors.terms && (
-              <p className="text-sm text-destructive">{errors.terms}</p>
+              <p className="text-sm text-destructive sm:px-4 md:px-6 lg:px-8">{errors.terms}</p>
             )}
 
-            <div className="flex items-start space-x-3">
+            <div className="flex items-start space-x-3 sm:px-4 md:px-6 lg:px-8">
               <Checkbox
                 id="privacy"
                 checked={data.acceptedPrivacy}
                 onCheckedChange={(checked) => onUpdate({ acceptedPrivacy: checked as boolean })}
-                className="mt-1"
+                className="mt-1 sm:px-4 md:px-6 lg:px-8"
               />
-              <div className="grid gap-1.5 leading-none">
-                <Label htmlFor="privacy" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+              <div className="grid gap-1.5 leading-none sm:px-4 md:px-6 lg:px-8">
+                <Label htmlFor="privacy" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 sm:px-4 md:px-6 lg:px-8">
                   Aceito a{' '}
-                  <a href="#" className="text-primary hover:underline">
+                  <a href="#" className="text-primary hover:underline sm:px-4 md:px-6 lg:px-8">
                     Política de Privacidade
                   </a>{' '}
                   e o tratamento dos meus dados pessoais (LGPD) *
@@ -324,21 +324,21 @@ export default function RegistrationForm({ data, onUpdate, onNext }: Registratio
               </div>
             </div>
             {errors.privacy && (
-              <p className="text-sm text-destructive">{errors.privacy}</p>
+              <p className="text-sm text-destructive sm:px-4 md:px-6 lg:px-8">{errors.privacy}</p>
             )}
 
-            <div className="flex items-start space-x-3">
+            <div className="flex items-start space-x-3 sm:px-4 md:px-6 lg:px-8">
               <Checkbox
                 id="marketing"
                 checked={data.marketingOptIn}
                 onCheckedChange={(checked) => onUpdate({ marketingOptIn: checked as boolean })}
-                className="mt-1"
+                className="mt-1 sm:px-4 md:px-6 lg:px-8"
               />
-              <div className="grid gap-1.5 leading-none">
-                <Label htmlFor="marketing" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+              <div className="grid gap-1.5 leading-none sm:px-4 md:px-6 lg:px-8">
+                <Label htmlFor="marketing" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 sm:px-4 md:px-6 lg:px-8">
                   Aceito receber comunicações de marketing por email
                 </Label>
-                <p className="text-xs text-muted-foreground">
+                <p className="text-xs text-muted-foreground sm:px-4 md:px-6 lg:px-8">
                   Você pode cancelar a qualquer momento
                 </p>
               </div>
@@ -353,7 +353,7 @@ export default function RegistrationForm({ data, onUpdate, onNext }: Registratio
 
           <Button
             type="submit"
-            className="w-full focus-enhanced"
+            className="w-full focus-enhanced sm:px-4 md:px-6 lg:px-8"
             size="lg"
             disabled={isLoading}
           >

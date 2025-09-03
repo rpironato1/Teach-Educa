@@ -98,15 +98,15 @@ export default function EmailVerification({ email, onNext, onBack }: EmailVerifi
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-xl flex items-center gap-2">
+        <CardTitle className="text-xl flex items-center gap-2 sm:px-4 md:px-6 lg:px-8">
           {isVerified ? (
             <>
-              <CheckCircle className="h-6 w-6 text-secondary" weight="fill" />
+              <CheckCircle className="h-6 w-6 text-secondary sm:px-4 md:px-6 lg:px-8" weight="fill" />
               Email verificado!
             </>
           ) : (
             <>
-              <Envelope className="h-6 w-6 text-primary" />
+              <Envelope className="h-6 w-6 text-primary sm:px-4 md:px-6 lg:px-8" />
               Verificar email
             </>
           )}
@@ -121,20 +121,20 @@ export default function EmailVerification({ email, onNext, onBack }: EmailVerifi
       </CardHeader>
       <CardContent>
         {!isVerified ? (
-          <form onSubmit={handleVerifyCode} className="space-y-6">
-            <div className="space-y-2">
+          <form onSubmit={handleVerifyCode} className="space-y-6 sm:px-4 md:px-6 lg:px-8">
+            <div className="space-y-2 sm:px-4 md:px-6 lg:px-8">
               <Label htmlFor="code">Código de verificação</Label>
               <Input
                 id="code"
                 type="text"
                 value={code}
                 onChange={(e) => setCode(formatCode(e.target.value))}
-                className="text-center text-2xl tracking-widest font-mono focus-enhanced"
+                className="text-center text-2xl tracking-widest font-mono focus-enhanced sm:px-4 md:px-6 lg:px-8"
                 placeholder="000000"
                 maxLength={6}
                 autoComplete="one-time-code"
               />
-              <p className="text-sm text-muted-foreground text-center">
+              <p className="text-sm text-muted-foreground text-center sm:px-4 md:px-6 lg:px-8">
                 Digite o código de 6 dígitos enviado para seu email
               </p>
             </div>
@@ -145,10 +145,10 @@ export default function EmailVerification({ email, onNext, onBack }: EmailVerifi
               </AlertDescription>
             </Alert>
 
-            <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-3 sm:px-4 md:px-6 lg:px-8">
               <Button
                 type="submit"
-                className="w-full focus-enhanced"
+                className="w-full focus-enhanced sm:px-4 md:px-6 lg:px-8"
                 size="lg"
                 disabled={isLoading || code.length !== 6}
               >
@@ -158,7 +158,7 @@ export default function EmailVerification({ email, onNext, onBack }: EmailVerifi
               <Button
                 type="button"
                 variant="outline"
-                className="w-full focus-enhanced"
+                className="w-full focus-enhanced sm:px-4 md:px-6 lg:px-8"
                 onClick={handleResendCode}
                 disabled={resendCooldown > 0 || isLoading}
               >
@@ -169,14 +169,14 @@ export default function EmailVerification({ email, onNext, onBack }: EmailVerifi
               </Button>
             </div>
 
-            <div className="flex justify-center">
+            <div className="flex justify-center sm:px-4 md:px-6 lg:px-8">
               <Button
                 type="button"
                 variant="ghost"
                 onClick={onBack}
-                className="focus-enhanced"
+                className="focus-enhanced sm:px-4 md:px-6 lg:px-8"
               >
-                <ArrowLeft className="h-4 w-4 mr-2" />
+                <ArrowLeft className="h-4 w-4 mr-2 sm:px-4 md:px-6 lg:px-8" />
                 Voltar aos dados
               </Button>
             </div>
@@ -185,13 +185,13 @@ export default function EmailVerification({ email, onNext, onBack }: EmailVerifi
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-center py-8"
+            className="text-center py-8 sm:px-4 md:px-6 lg:px-8"
           >
-            <CheckCircle className="h-16 w-16 text-secondary mx-auto mb-4" weight="fill" />
-            <h3 className="text-lg font-semibold text-foreground mb-2">
+            <CheckCircle className="h-16 w-16 text-secondary mx-auto mb-4 sm:px-4 md:px-6 lg:px-8" weight="fill" />
+            <h3 className="text-lg font-semibold text-foreground mb-2 sm:px-4 md:px-6 lg:px-8">
               Verificação concluída!
             </h3>
-            <p className="text-muted-foreground">
+            <p className="text-muted-foreground sm:px-4 md:px-6 lg:px-8">
               Preparando a próxima etapa...
             </p>
           </motion.div>
@@ -199,11 +199,11 @@ export default function EmailVerification({ email, onNext, onBack }: EmailVerifi
 
         {/* Email format tips */}
         {!isVerified && (
-          <div className="mt-6 p-4 bg-muted/50 rounded-lg">
-            <h4 className="text-sm font-medium text-foreground mb-2">
+          <div className="mt-6 p-4 bg-muted/50 rounded-lg sm:px-4 md:px-6 lg:px-8">
+            <h4 className="text-sm font-medium text-foreground mb-2 sm:px-4 md:px-6 lg:px-8">
               Dicas importantes:
             </h4>
-            <ul className="text-xs text-muted-foreground space-y-1">
+            <ul className="text-xs text-muted-foreground space-y-1 sm:px-4 md:px-6 lg:px-8">
               <li>• O código expira em 10 minutos</li>
               <li>• Verifique a caixa de spam se não receber</li>
               <li>• O email pode levar alguns minutos para chegar</li>

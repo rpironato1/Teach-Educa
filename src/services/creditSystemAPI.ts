@@ -206,14 +206,12 @@ class CreditSystemAPI {
       
       if (stored) {
         const transactions = JSON.parse(stored);
-        return transactions.slice(0, limit).map((t: Transaction) => ({
+        return transactions.slice(0, limit).map((t: CreditTransaction) => ({
           id: t.id,
-          type: t.type === 'debit' ? 'consumption' : 
-                t.type === 'credit' ? 'purchase' : 
-                t.type,
+          type: t.type,
           amount: Math.abs(t.amount),
           description: t.description,
-          timestamp: new Date(t.created_at),
+          timestamp: new Date(t.timestamp),
           metadata: t.metadata
         }));
       }
@@ -318,9 +316,6 @@ class CreditSystemAPI {
 
 // Export singleton instance
 export const creditSystemAPI = new CreditSystemAPI();
-
-// Export types for use in components
-export type { CreditBalance, CreditTransaction, SubscriptionStatus, PaymentResult };
 
 // Export credit cost constants
 export const CREDIT_COSTS = {

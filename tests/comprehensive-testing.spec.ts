@@ -1,6 +1,25 @@
 import { test, expect, Page } from '@playwright/test';
 import * as fs from 'fs';
 
+// Type definitions for better type safety
+interface AxeResults {
+  violations: AxeViolation[];
+  passes: AxeViolation[];
+  incomplete: AxeViolation[];
+  inapplicable: AxeViolation[];
+}
+
+interface AxeViolation {
+  id: string;
+  impact: 'critical' | 'serious' | 'moderate' | 'minor';
+  description: string;
+  help: string;
+  nodes: Array<{
+    target: string[];
+    html: string;
+  }>;
+}
+
 // Define all the pages/routes to test
 const ROUTES_TO_TEST = [
   { path: '/', name: 'Home Page', requiresAuth: false },
@@ -85,7 +104,7 @@ test.describe('Comprehensive Accessibility and Functionality Testing', () => {
         const axeResults = await page.evaluate(() => {
           return new Promise((resolve) => {
             // @ts-expect-error - axe is added via script injection
-            window.axe.run((err: any, results: any) => {
+            window.axe.run((err: Error | null, results: AxeResults) => {
               resolve(results);
             });
           });
@@ -98,7 +117,7 @@ test.describe('Comprehensive Accessibility and Functionality Testing', () => {
           console.log(`Accessibility violations found in ${route.name}:`, violations);
           accessibilityIssues.push({
             route: route.name,
-            violations: violations.map((v: any) => ({
+            violations: violations.map((v: AxeViolation) => ({
               id: v.id,
               impact: v.impact,
               description: v.description,
@@ -159,7 +178,7 @@ test.describe('Comprehensive Accessibility and Functionality Testing', () => {
     await page.goto('/');
     
     // Use Chrome DevTools Protocol for Lighthouse
-    const client = await page.context().newCDPSession(page);
+    const _client = await page.context().newCDPSession(page);
     
     try {
       // Run Lighthouse audit focused on accessibility
@@ -197,12 +216,12 @@ test.describe('Comprehensive Accessibility and Functionality Testing', () => {
         
         // Log detailed accessibility audits
         const auditRefs = report.categories.accessibility.auditRefs;
-        const failedAudits = auditRefs.filter((audit: any) => 
+        const failedAudits = auditRefs.filter((audit: { id: string }) => 
           report.audits[audit.id].score !== null && report.audits[audit.id].score < 1
         );
         
         if (failedAudits.length > 0) {
-          console.log('Failed accessibility audits:', failedAudits.map((audit: any) => ({
+          console.log('Failed accessibility audits:', failedAudits.map((audit: { id: string }) => ({
             id: audit.id,
             title: report.audits[audit.id].title,
             description: report.audits[audit.id].description,
@@ -469,7 +488,7 @@ async function testInteractiveElements(page: Page, routeName: string) {
     // Test that element has accessible name
     const accessibleName = await element.evaluate(el => {
       // Get accessible name using various methods
-      return (el as any).accessibleName || 
+      return (el as HTMLElement).accessibleName || 
              el.getAttribute('aria-label') || 
              el.getAttribute('alt') || 
              el.textContent?.trim() || 

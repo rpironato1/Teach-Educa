@@ -1,8 +1,43 @@
 import { test, expect as _expect } from '@playwright/test';
 import * as fs from 'fs';
 
+interface EvidenceItem {
+  name: string;
+  description: string;
+  timestamp: string;
+}
+
+interface AccessibilityIssue {
+  id: string;
+  impact: string;
+  description: string;
+  nodes: number;
+}
+
+interface FunctionalIssue {
+  type: string;
+  description: string;
+  selector?: string;
+  timestamp: string;
+}
+
+interface MissingAsset {
+  url: string;
+  type: string;
+  status: number;
+  timestamp: string;
+}
+
+interface EvidenceCollection {
+  accessibilityIssues: AccessibilityIssue[];
+  missingAssets: MissingAsset[];
+  functionalIssues: FunctionalIssue[];
+  screenshots: EvidenceItem[];
+  timestamp: string;
+}
+
 test.describe('Quick Accessibility and Evidence Collection', () => {
-  const evidenceCollection: any = {
+  const evidenceCollection: EvidenceCollection = {
     accessibilityIssues: [],
     missingAssets: [],
     functionalIssues: [],
@@ -44,7 +79,7 @@ test.describe('Quick Accessibility and Evidence Collection', () => {
     const axeResults = await page.evaluate(() => {
       return new Promise((resolve) => {
         // @ts-expect-error - axe is added via script injection
-        window.axe.run((err: any, results: any) => {
+        (window as unknown as { axe: { run: (callback: (err: unknown, results: unknown) => void) => void } }).axe.run((err: unknown, results: unknown) => {
           resolve(results);
         });
       });
@@ -57,14 +92,14 @@ test.describe('Quick Accessibility and Evidence Collection', () => {
     
     // Process violations
     if (violations.length > 0) {
-      evidenceCollection.accessibilityIssues = violations.map((violation: any) => ({
+      evidenceCollection.accessibilityIssues = violations.map((violation: unknown) => ({
         id: violation.id,
         impact: violation.impact,
         description: violation.description,
         help: violation.help,
         helpUrl: violation.helpUrl,
         nodeCount: violation.nodes.length,
-        nodes: violation.nodes.map((node: any) => ({
+        nodes: violation.nodes.map((node: unknown) => ({
           target: node.target,
           html: node.html.substring(0, 200),
           failureSummary: node.failureSummary
@@ -73,11 +108,11 @@ test.describe('Quick Accessibility and Evidence Collection', () => {
       
       // Highlight violations visually
       await page.evaluate((violationsToHighlight) => {
-        violationsToHighlight.forEach((violation: any) => {
-          violation.nodes.forEach((node: any) => {
+        violationsToHighlight.forEach((violation: unknown) => {
+          violation.nodes.forEach((node: unknown) => {
             try {
               const elements = document.querySelectorAll(node.target[0]);
-              elements.forEach((el: any) => {
+              elements.forEach((el: unknown) => {
                 el.style.border = '3px solid red';
                 el.style.backgroundColor = 'rgba(255, 0, 0, 0.1)';
                 const label = document.createElement('div');
@@ -394,7 +429,7 @@ test.describe('Quick Accessibility and Evidence Collection', () => {
   });
 });
 
-function generateRecommendations(evidence: any): unknown[] {
+function generateRecommendations(evidence: unknown): unknown[] {
   const recommendations = [];
   
   if (evidence.accessibilityIssues.length > 0) {
@@ -403,7 +438,7 @@ function generateRecommendations(evidence: any): unknown[] {
       category: 'Accessibility',
       issue: `${evidence.accessibilityIssues.length} accessibility violations found`,
       action: 'Fix color contrast, add proper ARIA labels, ensure keyboard navigation',
-      details: evidence.accessibilityIssues.map((issue: any) => `${issue.id}: ${issue.description}`)
+      details: evidence.accessibilityIssues.map((issue: unknown) => `${issue.id}: ${issue.description}`)
     });
   }
   
@@ -413,7 +448,7 @@ function generateRecommendations(evidence: any): unknown[] {
       category: 'Assets',
       issue: `${evidence.missingAssets.length} missing assets found`,
       action: 'Fix broken images, add alt text, resolve network failures',
-      details: evidence.missingAssets.map((asset: any) => `${asset.type}: ${asset.issue || asset.url}`)
+      details: evidence.missingAssets.map((asset: unknown) => `${asset.type}: ${asset.issue || asset.url}`)
     });
   }
   
@@ -423,14 +458,14 @@ function generateRecommendations(evidence: any): unknown[] {
       category: 'Functionality',
       issue: `${evidence.functionalIssues.length} functional issues found`,
       action: 'Ensure all interactive elements are keyboard accessible and have proper names',
-      details: evidence.functionalIssues.map((issue: any) => `${issue.tagName}: ${issue.issues?.join(', ') || issue.issue}`)
+      details: evidence.functionalIssues.map((issue: unknown) => `${issue.tagName}: ${issue.issues?.join(', ') || issue.issue}`)
     });
   }
   
   return recommendations;
 }
 
-function generateMarkdownReport(evidence: any): string {
+function generateMarkdownReport(evidence: unknown): string {
   let markdown = `# Accessibility and Functionality Evidence Report\n\n`;
   markdown += `**Generated:** ${evidence.timestamp}\n\n`;
   
@@ -441,7 +476,7 @@ function generateMarkdownReport(evidence: any): string {
   markdown += `- **Screenshots Taken:** ${evidence.summary.screenshotsTaken}\n\n`;
   
   markdown += `## Evidence Screenshots\n\n`;
-  evidence.screenshots.forEach((screenshot: any) => {
+  evidence.screenshots.forEach((screenshot: unknown) => {
     markdown += `### ${screenshot.name}\n`;
     markdown += `${screenshot.description}\n\n`;
     markdown += `![${screenshot.name}](${screenshot.name})\n\n`;
@@ -449,7 +484,7 @@ function generateMarkdownReport(evidence: any): string {
   
   if (evidence.accessibilityIssues.length > 0) {
     markdown += `## Accessibility Issues Found\n\n`;
-    evidence.accessibilityIssues.forEach((issue: any, index: number) => {
+    evidence.accessibilityIssues.forEach((issue: unknown, index: number) => {
       markdown += `### ${index + 1}. ${issue.id} (${issue.impact})\n`;
       markdown += `**Description:** ${issue.description}\n\n`;
       if (issue.help) markdown += `**Help:** ${issue.help}\n\n`;
@@ -459,7 +494,7 @@ function generateMarkdownReport(evidence: any): string {
   
   if (evidence.missingAssets.length > 0) {
     markdown += `## Missing Assets\n\n`;
-    evidence.missingAssets.forEach((asset: any, index: number) => {
+    evidence.missingAssets.forEach((asset: unknown, index: number) => {
       markdown += `### ${index + 1}. ${asset.type}\n`;
       markdown += `**Issue:** ${asset.issue || 'Asset not found'}\n\n`;
       if (asset.url) markdown += `**URL:** ${asset.url}\n\n`;
@@ -469,7 +504,7 @@ function generateMarkdownReport(evidence: any): string {
   
   if (evidence.functionalIssues.length > 0) {
     markdown += `## Functional Issues\n\n`;
-    evidence.functionalIssues.forEach((issue: any, index: number) => {
+    evidence.functionalIssues.forEach((issue: unknown, index: number) => {
       markdown += `### ${index + 1}. ${issue.tagName} Element\n`;
       if (issue.textContent) markdown += `**Text:** ${issue.textContent}\n\n`;
       if (issue.issues) markdown += `**Issues:** ${issue.issues.join(', ')}\n\n`;
@@ -477,7 +512,7 @@ function generateMarkdownReport(evidence: any): string {
   }
   
   markdown += `## Recommendations\n\n`;
-  evidence.recommendations.forEach((rec: any, index: number) => {
+  evidence.recommendations.forEach((rec: unknown, index: number) => {
     markdown += `### ${index + 1}. ${rec.category} (${rec.priority})\n`;
     markdown += `**Issue:** ${rec.issue}\n\n`;
     markdown += `**Action:** ${rec.action}\n\n`;

@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import {
   CreditCard,
@@ -117,7 +117,7 @@ export default function CreditSystem({ showFullInterface = true }: CreditSystemP
   const isLowCredits = creditPercentage <= 20;
   const daysUntilRenewal = Math.ceil((subscription.renewDate.getTime() - Date.now()) / (1000 * 60 * 60 * 24));
 
-  const consumeCredits = async (type: keyof typeof CREDIT_COSTS, description: string) => {
+  const consumeCredits = useCallback(async (type: keyof typeof CREDIT_COSTS, description: string) => {
     const cost = CREDIT_COSTS[type];
     
     if (subscription.credits < cost) {
@@ -141,7 +141,7 @@ export default function CreditSystem({ showFullInterface = true }: CreditSystemP
 
     toast.success(`${cost} crédito(s) utilizado(s)`);
     return true;
-  };
+  }, [subscription.credits, setCreditUsage, setSubscription]);
 
   const handleUpgrade = async () => {
     setIsProcessingPayment(true);

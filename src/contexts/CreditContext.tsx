@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react'
+import React, { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react'
 import { useAuth } from '@/contexts/AuthContext'
 import { toast } from 'sonner'
 
@@ -39,6 +39,7 @@ export interface PaymentData {
 }
 
 // Credit costs for different services
+// eslint-disable-next-line react-refresh/only-export-components
 export const CREDIT_COSTS = {
   AI_CHAT_MESSAGE: 2,
   CONTENT_GENERATION: 5,
@@ -50,6 +51,7 @@ export const CREDIT_COSTS = {
 } as const
 
 // Available subscription plans
+// eslint-disable-next-line react-refresh/only-export-components
 export const SUBSCRIPTION_PLANS: Record<string, SubscriptionPlan> = {
   inicial: {
     id: 'inicial',
@@ -122,8 +124,10 @@ interface CreditContextType {
   getRemainingCreditsPercentage: () => number
 }
 
+// Context definition
 const CreditContext = createContext<CreditContextType | undefined>(undefined)
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useCredit = (): CreditContextType => {
   const context = useContext(CreditContext)
   if (!context) {
@@ -133,6 +137,7 @@ export const useCredit = (): CreditContextType => {
 }
 
 // Alias for compatibility
+// eslint-disable-next-line react-refresh/only-export-components
 export const useCreditContext = useCredit
 
 interface CreditProviderProps {
@@ -152,16 +157,13 @@ export const CreditProvider: React.FC<CreditProviderProps> = ({ children }) => {
   const [transactions, setTransactions] = useState<CreditTransaction[]>([])
   const [isLoading, setIsLoading] = useState(false)
 
-  // Initialize credit data when user authenticates
-  useEffect(() => {
-    if (isAuthenticated && user) {
-      initializeCreditData()
-    } else {
-      resetCreditData()
+  const saveBalanceToStorage = useCallback((newBalance: CreditBalance) => {
+    if (user?.id) {
+      localStorage.setItem(`credits_${user.id}`, JSON.stringify(newBalance))
     }
-  }, [isAuthenticated, user, initializeCreditData])
+  }, [user?.id])
 
-  const initializeCreditData = async () => {
+  const initializeCreditData = useCallback(async () => {
     setIsLoading(true)
     try {
       // Load user's credit data from localStorage or API
@@ -205,7 +207,16 @@ export const CreditProvider: React.FC<CreditProviderProps> = ({ children }) => {
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [user?.id, saveBalanceToStorage])
+
+  // Initialize credit data when user authenticates
+  useEffect(() => {
+    if (isAuthenticated && user) {
+      initializeCreditData()
+    } else {
+      resetCreditData()
+    }
+  }, [isAuthenticated, user, initializeCreditData])
 
   const resetCreditData = () => {
     setBalance({
@@ -217,12 +228,6 @@ export const CreditProvider: React.FC<CreditProviderProps> = ({ children }) => {
     })
     setCurrentPlan(null)
     setTransactions([])
-  }
-
-  const saveBalanceToStorage = (newBalance: CreditBalance) => {
-    if (user?.id) {
-      localStorage.setItem(`credits_${user.id}`, JSON.stringify(newBalance))
-    }
   }
 
   const savePlanToStorage = (plan: SubscriptionPlan) => {

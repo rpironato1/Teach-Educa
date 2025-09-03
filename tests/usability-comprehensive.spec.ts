@@ -802,10 +802,10 @@ test.describe('Comprehensive Usability Testing', () => {
     // Memory usage check
     console.log('\n🧠 Checking memory usage...');
     const memoryInfo = await page.evaluate(() => {
-      return (performance as any).memory ? {
-        usedJSHeapSize: (performance as any).memory.usedJSHeapSize,
-        totalJSHeapSize: (performance as any).memory.totalJSHeapSize,
-        jsHeapSizeLimit: (performance as any).memory.jsHeapSizeLimit
+      return (performance as unknown).memory ? {
+        usedJSHeapSize: (performance as unknown).memory.usedJSHeapSize,
+        totalJSHeapSize: (performance as unknown).memory.totalJSHeapSize,
+        jsHeapSizeLimit: (performance as unknown).memory.jsHeapSizeLimit
       } : null;
     });
     

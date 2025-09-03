@@ -459,7 +459,7 @@ export default function AdminDashboard({ onBackToHome }: AdminDashboardProps) {
                   <div className="flex items-center justify-between">
                     <span className="text-sm">Plano Inicial</span>
                     <div className="flex items-center space-x-2">
-                      <div className="w-32 bg-gray-200 rounded-full h-2">
+                      <div className="w-32 bg-gray-100 rounded-full h-2">
                         <div className="bg-blue-500 h-2 rounded-full" style={{width: '60%'}}></div>
                       </div>
                       <span className="text-sm font-medium">60%</span>
@@ -469,7 +469,7 @@ export default function AdminDashboard({ onBackToHome }: AdminDashboardProps) {
                   <div className="flex items-center justify-between">
                     <span className="text-sm">Plano Intermediário</span>
                     <div className="flex items-center space-x-2">
-                      <div className="w-32 bg-gray-200 rounded-full h-2">
+                      <div className="w-32 bg-gray-100 rounded-full h-2">
                         <div className="bg-green-500 h-2 rounded-full" style={{width: '25%'}}></div>
                       </div>
                       <span className="text-sm font-medium">25%</span>
@@ -479,7 +479,7 @@ export default function AdminDashboard({ onBackToHome }: AdminDashboardProps) {
                   <div className="flex items-center justify-between">
                     <span className="text-sm">Plano Profissional</span>
                     <div className="flex items-center space-x-2">
-                      <div className="w-32 bg-gray-200 rounded-full h-2">
+                      <div className="w-32 bg-gray-100 rounded-full h-2">
                         <div className="bg-purple-500 h-2 rounded-full" style={{width: '15%'}}></div>
                       </div>
                       <span className="text-sm font-medium">15%</span>

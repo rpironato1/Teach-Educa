@@ -270,7 +270,7 @@ class AIService {
     try {
       // Verifica se a API Spark está disponível
       if (typeof window !== 'undefined' && window.spark && window.spark.llm) {
-        const prompt = window.spark.llmPrompt`${adaptivePrompt}`
+        const prompt = window.spark.llmPrompt([adaptivePrompt])
         const response = await window.spark.llm(prompt, 'gpt-4o')
 
         // Analisa a resposta para extrair metadados
@@ -423,7 +423,7 @@ Sua resposta:`
     messages: ChatMessage[],
     profile: LearningProfile
   ): string[] {
-    const insights = []
+    const insights: string[] = []
 
     // Analisa frequência de dúvidas
     const questionCount = messages.filter(m => 
@@ -572,7 +572,7 @@ Sua resposta:`
     try {
       // Verifica se a API Spark está disponível
       if (typeof window !== 'undefined' && window.spark && window.spark.llm) {
-        const prompt = window.spark.llmPrompt`Gere um ${contentType} sobre "${topic}" para um aluno com:
+        const promptText = `Gere um ${contentType} sobre "${topic}" para um aluno com:
         - Estilo de aprendizagem: ${profile.preferredStyle}
         - Nível: ${profile.difficulty}
         - Interesses: ${profile.interests.join(', ')}
@@ -586,7 +586,8 @@ Sua resposta:`
         ${assistant ? `Assuma a personalidade de ${assistant.name}: ${assistant.personality}` : ''}
         
         Forneça o conteúdo:`
-
+        
+        const prompt = window.spark.llmPrompt([promptText])
         return await window.spark.llm(prompt, 'gpt-4o')
       } else {
         // Fallback: gera conteúdo simulado

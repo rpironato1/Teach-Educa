@@ -63,7 +63,7 @@ export const useLazySectionLoad = (deps: unknown[] = []) => {
     if (isIntersecting && !shouldLoad) {
       setShouldLoad(true)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+     
   }, [isIntersecting, shouldLoad, deps])
 
   return {

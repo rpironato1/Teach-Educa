@@ -158,21 +158,21 @@ test.describe('User Dashboard with AI Chat Flow', () => {
     expect(assistantsData).toHaveLength(3);
     
     // Test Math Tutor
-    const mathTutor = assistantsData.find((a: any) => a.id === 'math-tutor');
+    const mathTutor = assistantsData.find((a: unknown) => a.id === 'math-tutor');
     expect(mathTutor?.name).toBe('Prof. Magnus');
     expect(mathTutor?.specialty).toBe('Matemática');
     expect(mathTutor?.creditCost).toBe(2);
     expect(mathTutor?.capabilities).toContain('Resolução passo a passo');
 
     // Test Writing Assistant
-    const writingAssistant = assistantsData.find((a: any) => a.id === 'writing-assistant');
+    const writingAssistant = assistantsData.find((a: unknown) => a.id === 'writing-assistant');
     expect(writingAssistant?.name).toBe('Ana Letras');
     expect(writingAssistant?.specialty).toBe('Redação e Literatura');
     expect(writingAssistant?.creditCost).toBe(3);
     expect(writingAssistant?.capabilities).toContain('Revisão e correção');
 
     // Test Programming Coach
-    const programmingCoach = assistantsData.find((a: any) => a.id === 'programming-coach');
+    const programmingCoach = assistantsData.find((a: unknown) => a.id === 'programming-coach');
     expect(programmingCoach?.name).toBe('Dev Carlos');
     expect(programmingCoach?.specialty).toBe('Programação');
     expect(programmingCoach?.creditCost).toBe(4);
@@ -628,7 +628,7 @@ test.describe('User Dashboard with AI Chat Flow', () => {
     expect(contentData.content).toHaveLength(3);
 
     // Test elementary math content
-    const mathContent = contentData.content.find((c: any) => c.subject === 'Matemática');
+    const mathContent = contentData.content.find((c: unknown) => c.subject === 'Matemática');
     expect(mathContent?.level).toBe('elementary');
     expect(mathContent?.topic).toBe('Frações');
     expect(mathContent?.generated_content).toContain('pizza dividida em pedaços');
@@ -636,7 +636,7 @@ test.describe('User Dashboard with AI Chat Flow', () => {
     expect(mathContent?.credits_used).toBe(3);
 
     // Test middle school Portuguese content
-    const portugueseContent = contentData.content.find((c: any) => c.subject === 'Português');
+    const portugueseContent = contentData.content.find((c: unknown) => c.subject === 'Português');
     expect(portugueseContent?.level).toBe('middle_school');
     expect(portugueseContent?.topic).toBe('Redação Narrativa');
     expect(portugueseContent?.generated_content).toContain('elementos narrativos');
@@ -644,7 +644,7 @@ test.describe('User Dashboard with AI Chat Flow', () => {
     expect(portugueseContent?.credits_used).toBe(4);
 
     // Test high school programming content
-    const programmingContent = contentData.content.find((c: any) => c.subject === 'Programação');
+    const programmingContent = contentData.content.find((c: unknown) => c.subject === 'Programação');
     expect(programmingContent?.level).toBe('high_school');
     expect(programmingContent?.topic).toBe('Algoritmos de Ordenação');
     expect(programmingContent?.generated_content).toContain('bubble_sort');
@@ -653,7 +653,7 @@ test.describe('User Dashboard with AI Chat Flow', () => {
 
     // Verify transactions
     expect(contentData.transactions).toHaveLength(3);
-    const totalCreditsUsed = contentData.transactions.reduce((sum: number, t: any) => sum + Math.abs(t.amount), 0);
+    const totalCreditsUsed = contentData.transactions.reduce((sum: number, t: unknown) => sum + Math.abs(t.amount), 0);
     expect(totalCreditsUsed).toBe(12); // 3 + 4 + 5
   });
 
@@ -818,9 +818,9 @@ test.describe('User Dashboard with AI Chat Flow', () => {
       const analytics = JSON.parse(localStorage.getItem(`supabase_analytics_${userId}`) || '[]')[0];
       const sessions = JSON.parse(localStorage.getItem(`supabase_study_sessions_${userId}`) || '[]');
       
-      const avgScore = sessions.reduce((sum: number, s: any) => sum + s.score, 0) / sessions.length;
-      const totalStudyTime = sessions.reduce((sum: number, s: any) => sum + s.duration_minutes, 0);
-      const subjectProgress = Object.values(analytics.data.subjects).map((s: any) => s.points);
+      const avgScore = sessions.reduce((sum: number, s: unknown) => sum + s.score, 0) / sessions.length;
+      const totalStudyTime = sessions.reduce((sum: number, s: unknown) => sum + s.duration_minutes, 0);
+      const subjectProgress = Object.values(analytics.data.subjects).map((s: unknown) => s.points);
       
       return {
         avgScore,
@@ -960,12 +960,12 @@ test.describe('User Dashboard with AI Chat Flow', () => {
     const adaptationMetrics = await page.evaluate((userId) => {
       const profile = JSON.parse(localStorage.getItem(`learning_profile_${userId}`) || '{}');
       
-      const avgEffectiveness = profile.adaptationHistory.reduce((sum: number, adaptation: any) => 
+      const avgEffectiveness = profile.adaptationHistory.reduce((sum: number, adaptation: unknown) => 
         sum + adaptation.effectiveness, 0) / profile.adaptationHistory.length;
       
       const recentEffectiveness = profile.adaptationHistory
         .slice(-3)
-        .reduce((sum: number, adaptation: any) => sum + adaptation.effectiveness, 0) / 3;
+        .reduce((sum: number, adaptation: unknown) => sum + adaptation.effectiveness, 0) / 3;
       
       const adaptationTrend = recentEffectiveness > avgEffectiveness ? 'improving' : 'stable';
       

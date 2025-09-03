@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test } from '@playwright/test';
 
 test('Quick homepage check', async ({ page }) => {
   console.log('Testing basic homepage loading...');

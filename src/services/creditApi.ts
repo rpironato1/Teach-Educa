@@ -207,7 +207,14 @@ class CreditApiService {
   async getTransactionHistory(_userId: string, limit = 50): Promise<ApiResponse> {
     await this.delay(600)
     
-    const transactions = []
+    const transactions: Array<{
+      id: string;
+      type: string;
+      amount: number;
+      description: string;
+      timestamp: string;
+      orderId: string | undefined;
+    }> = []
     for (let i = 0; i < Math.min(limit, 20); i++) {
       transactions.push({
         id: `txn_${Date.now()}_${i}`,

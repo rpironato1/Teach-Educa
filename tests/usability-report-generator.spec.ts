@@ -33,7 +33,7 @@ test.describe('Comprehensive Usability Analysis', () => {
       return {
         loadTime: performance.timing.loadEventEnd - performance.timing.navigationStart,
         domReady: performance.timing.domContentLoadedEventEnd - performance.timing.navigationStart,
-        firstPaint: performance.getEntriesByType('navigation')[0] as any
+        firstPaint: performance.getEntriesByType('navigation')[0] as unknown
       };
     });
     

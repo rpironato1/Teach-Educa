@@ -1,4 +1,5 @@
-import { createContext, useContext, useEffect, useState, ReactNode } from 'react'
+import { createContext, useContext, useEffect, useState, ReactNode, useCallback } from 'react'
+import { toast } from 'sonner'
 
 // Custom hook to handle KV storage with fallback to localStorage
 function useKVWithFallback<T>(key: string, defaultValue: T): [T, (value: T) => void] {
@@ -85,6 +86,7 @@ interface AuthContextType extends AuthState {
   terminateSession: (sessionId: string) => Promise<boolean>
 }
 
+// Context definition
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
 interface AuthProviderProps {
@@ -105,7 +107,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const sessionActive = authData.sessionActive
 
   // Force logout function - defined early to prevent hoisting issues
-  const forceLogout = async (): Promise<void> => {
+  const forceLogout = useCallback(async (): Promise<void> => {
     // Force logout without API call (for security issues)
     setAuthData({
       user: null,
@@ -117,10 +119,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
     // Clear all stored data
     localStorage.clear()
     sessionStorage.clear()
-  }
+  }, [setAuthData])
 
   // Logout function - defined early to prevent hoisting issues
-  const logout = async (): Promise<void> => {
+  const logout = useCallback(async (): Promise<void> => {
     setIsLoading(true)
     
     try {
@@ -148,10 +150,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [setAuthData, setIsLoading])
 
   // Refresh token function - defined early to prevent hoisting issues  
-  const refreshToken = async (): Promise<boolean> => {
+  const refreshToken = useCallback(async (): Promise<boolean> => {
     if (!authData.token || !authData.sessionActive) return false
 
     try {
@@ -173,11 +175,11 @@ export function AuthProvider({ children }: AuthProviderProps) {
       console.error('Token refresh failed:', error)
       return false
     }
-  }
+  }, [authData.token, authData.sessionActive, setAuthData])
 
   // Refresh token function - defined early to prevent hoisting issues  
   // Enhanced session validation
-  const validateSession = async (): Promise<boolean> => {
+  const validateSession = useCallback(async (): Promise<boolean> => {
     if (!authData.token || !authData.tokenExpiresAt) return false
     
     // Check if token is expired
@@ -194,7 +196,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       await logout()
       return false
     }
-  }
+  }, [authData.token, authData.tokenExpiresAt, logout])
 
   // Auto-refresh token and validate session when component mounts
   useEffect(() => {
@@ -332,30 +334,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
   }
 
-  const refreshToken = async (): Promise<boolean> => {
-    if (!authData.token || !authData.sessionActive) return false
-
-    try {
-      // Simulate token refresh API call
-      await new Promise(resolve => setTimeout(resolve, 800))
-      
-      // Mock successful refresh - in real implementation, get new token from API
-      const newToken = authData.token.replace(/jwt_/, 'jwt_refreshed_')
-      const newExpiresAt = Date.now() + (8 * 60 * 60 * 1000) // 8 hours
-      
-      setAuthData(current => ({
-        ...current,
-        token: newToken,
-        tokenExpiresAt: newExpiresAt
-      }))
-      
-      return true
-    } catch (error) {
-      console.error('Token refresh failed:', error)
-      return false
-    }
-  }
-
   const forgotPassword = async (email: string): Promise<{ success: boolean; error?: string }> => {
     try {
       // Simulate secure password reset API call
@@ -484,6 +462,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   )
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function useAuth() {
   const context = useContext(AuthContext)
   if (context === undefined) {

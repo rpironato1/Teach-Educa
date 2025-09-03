@@ -1,8 +1,24 @@
 import { test, expect, Page, ConsoleMessage, Request, Response } from '@playwright/test';
-import { injectAxe, checkA11y, getViolations } from 'axe-playwright';
+import { injectAxe, getViolations } from 'axe-playwright';
 import type { AxeResults } from 'axe-core';
 import * as fs from 'fs';
 import * as path from 'path';
+
+interface PerformanceMetric {
+  name: string;
+  value: number;
+  rating: 'good' | 'needs-improvement' | 'poor';
+  timestamp: number;
+}
+
+interface CoverageData {
+  url: string;
+  ranges: Array<{
+    start: number;
+    end: number;
+  }>;
+  text?: string;
+}
 
 interface TestSession {
   startTime: number;
@@ -11,10 +27,10 @@ interface TestSession {
     network: { request: Request; response?: Response }[];
     errors: string[];
     accessibility: AxeResults[];
-    performance: any[];
+    performance: PerformanceMetric[];
   };
   screenshots: string[];
-  coverage: any;
+  coverage: CoverageData[];
 }
 
 interface E2ETestReport {
@@ -487,18 +503,28 @@ test.describe('Comprehensive E2E Testing with MCP Playwright + Axe Core', () => 
   }
 
   async function checkPerformanceMetrics(page: Page) {
-    const metrics = await page.evaluate(() => ({
-      memory: (performance as any).memory ? {
-        usedJSHeapSize: (performance as any).memory.usedJSHeapSize,
-        totalJSHeapSize: (performance as any).memory.totalJSHeapSize,
-        jsHeapSizeLimit: (performance as any).memory.jsHeapSizeLimit
-      } : null,
-      timing: performance.timing ? {
-        loadComplete: performance.timing.loadEventEnd - performance.timing.navigationStart,
-        domReady: performance.timing.domContentLoadedEventEnd - performance.timing.navigationStart,
-        firstByte: performance.timing.responseStart - performance.timing.navigationStart
-      } : null
-    }));
+    const metrics = await page.evaluate(() => {
+      interface MemoryInfo {
+        usedJSHeapSize: number;
+        totalJSHeapSize: number;
+        jsHeapSizeLimit: number;
+      }
+      
+      const performanceWithMemory = performance as Performance & { memory?: MemoryInfo };
+      
+      return {
+        memory: performanceWithMemory.memory ? {
+          usedJSHeapSize: performanceWithMemory.memory.usedJSHeapSize,
+          totalJSHeapSize: performanceWithMemory.memory.totalJSHeapSize,
+          jsHeapSizeLimit: performanceWithMemory.memory.jsHeapSizeLimit
+        } : null,
+        timing: performance.timing ? {
+          loadComplete: performance.timing.loadEventEnd - performance.timing.navigationStart,
+          domReady: performance.timing.domContentLoadedEventEnd - performance.timing.navigationStart,
+          firstByte: performance.timing.responseStart - performance.timing.navigationStart
+        } : null
+      };
+    });
 
     console.log('   📊 Performance metrics:', metrics);
     currentSession.logs.performance.push(metrics);
