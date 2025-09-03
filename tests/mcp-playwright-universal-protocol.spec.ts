@@ -393,8 +393,8 @@ test.describe('🚀 PROTOCOLO MCP PLAYWRIGHT UNIVERSAL - 7 FASES', () => {
               let clsValue = 0;
               new PerformanceObserver((list) => {
                 for (const entry of list.getEntries()) {
-                  if (!(entry as any).hadRecentInput) {
-                    clsValue += (entry as any).value;
+                  if (!(entry as unknown).hadRecentInput) {
+                    clsValue += (entry as unknown).value;
                   }
                 }
                 vitals.cls = clsValue;
@@ -495,8 +495,8 @@ test.describe('🚀 PROTOCOLO MCP PLAYWRIGHT UNIVERSAL - 7 FASES', () => {
       return entries.map(entry => ({
         name: entry.name,
         duration: entry.duration,
-        transferSize: (entry as any).transferSize || 0,
-        responseStatus: (entry as any).responseStatus || 200
+        transferSize: (entry as unknown).transferSize || 0,
+        responseStatus: (entry as unknown).responseStatus || 200
       }));
     });
     
@@ -672,14 +672,14 @@ test.describe('🚀 PROTOCOLO MCP PLAYWRIGHT UNIVERSAL - 7 FASES', () => {
           
           // Recursos
           totalResources: resources.length,
-          totalTransferSize: resources.reduce((sum, r) => sum + ((r as any).transferSize || 0), 0),
+          totalTransferSize: resources.reduce((sum, r) => sum + ((r as unknown).transferSize || 0), 0),
           slowResources: resources.filter(r => r.duration > 1000).length,
           
           // Memória (se disponível)
-          memoryUsage: (performance as any).memory ? {
-            usedJSHeapSize: (performance as any).memory.usedJSHeapSize,
-            totalJSHeapSize: (performance as any).memory.totalJSHeapSize,
-            jsHeapSizeLimit: (performance as any).memory.jsHeapSizeLimit
+          memoryUsage: (performance as unknown).memory ? {
+            usedJSHeapSize: (performance as unknown).memory.usedJSHeapSize,
+            totalJSHeapSize: (performance as unknown).memory.totalJSHeapSize,
+            jsHeapSizeLimit: (performance as unknown).memory.jsHeapSizeLimit
           } : null
         };
       });

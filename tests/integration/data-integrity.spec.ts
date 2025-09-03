@@ -47,13 +47,13 @@ test.describe('Data Integrity Tests', () => {
       const messages = JSON.parse(localStorage.getItem('teacheduca_messages') || '[]');
 
       const conversationIds = new Set(conversations.map((c: unknown) => c.id));
-      const orphanMessages = messages.filter((m: any) => !conversationIds.has(m.conversation_id));
+      const orphanMessages = messages.filter((m: unknown) => !conversationIds.has((m as { conversation_id: unknown }).conversation_id));
 
       return {
         totalConversations: conversations.length,
         totalMessages: messages.length,
         orphanMessages: orphanMessages.length,
-        messagesForConv123: messages.filter((m: any) => m.conversation_id === 'conv-123').length
+        messagesForConv123: messages.filter((m: unknown) => (m as { conversation_id: string }).conversation_id === 'conv-123').length
       };
     });
 
@@ -115,14 +115,14 @@ test.describe('Data Integrity Tests', () => {
 
       // Calculate expected final balance
       let calculatedBalance = 100; // Initial balance
-      const sortedTransactions = transactions.sort((a: any, b: any) => 
-        new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+      const sortedTransactions = transactions.sort((a: unknown, b: unknown) => 
+        new Date((a as { created_at: string }).created_at).getTime() - new Date((b as { created_at: string }).created_at).getTime()
       );
 
       let balanceErrors = 0;
-      sortedTransactions.forEach((trans: any) => {
-        calculatedBalance += trans.amount;
-        if (calculatedBalance !== trans.balance_after) {
+      sortedTransactions.forEach((trans: unknown) => {
+        calculatedBalance += (trans as { amount: number }).amount;
+        if (calculatedBalance !== (trans as { balance_after: number }).balance_after) {
           balanceErrors++;
         }
       });
@@ -290,7 +290,7 @@ test.describe('Data Integrity Tests', () => {
     });
 
     expect(operations.operations).toHaveLength(3);
-    expect(operations.operations.every((op: any) => op.success)).toBe(true);
+    expect(operations.operations.every((op: unknown) => (op as { success: boolean }).success)).toBe(true);
     expect(operations.finalState?.userExists).toBe(true);
     expect(operations.finalState?.conversationCount).toBe(1);
     expect(operations.finalState?.messageCount).toBe(1);
@@ -349,9 +349,9 @@ test.describe('Data Integrity Tests', () => {
     });
 
     // Should gracefully handle corruption
-    const userResult = recovery.find((r: any) => r.type === 'user');
-    const conversationsResult = recovery.find((r: any) => r.type === 'conversations');
-    const messagesResult = recovery.find((r: any) => r.type === 'messages');
+    const userResult = recovery.find((r: unknown) => (r as { type: string }).type === 'user');
+    const conversationsResult = recovery.find((r: unknown) => (r as { type: string }).type === 'conversations');
+    const messagesResult = recovery.find((r: unknown) => (r as { type: string }).type === 'messages');
 
     expect(userResult?.parsed).toBe(false);
     expect(userResult?.error).toContain('JSON');

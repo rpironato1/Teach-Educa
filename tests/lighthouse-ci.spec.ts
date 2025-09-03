@@ -84,11 +84,11 @@ test.describe('Lighthouse CI Accessibility Tests', () => {
         // Extract failed audits
         const accessibilityAudits = report.categories.accessibility.auditRefs;
         const failedAudits = accessibilityAudits
-          .map((auditRef: any) => ({
-            id: auditRef.id,
-            ...report.audits[auditRef.id]
+          .map((auditRef: unknown) => ({
+            id: (auditRef as { id: string }).id,
+            ...report.audits[(auditRef as { id: string }).id]
           }))
-          .filter((audit: any) => audit.score !== null && audit.score < 1);
+          .filter((audit: unknown) => (audit as { score: number | null }).score !== null && (audit as { score: number }).score < 1);
         
         const testResult = {
           route: route.name,
@@ -96,13 +96,13 @@ test.describe('Lighthouse CI Accessibility Tests', () => {
           accessibilityScore,
           totalAudits: accessibilityAudits.length,
           failedAudits: failedAudits.length,
-          failedAuditDetails: failedAudits.map((audit: any) => ({
-            id: audit.id,
-            title: audit.title,
-            description: audit.description,
-            score: audit.score,
-            scoreDisplayMode: audit.scoreDisplayMode,
-            details: audit.details
+          failedAuditDetails: failedAudits.map((audit: unknown) => ({
+            id: (audit as { id: string }).id,
+            title: (audit as { title: string }).title,
+            description: (audit as { description: string }).description,
+            score: (audit as { score: number }).score,
+            scoreDisplayMode: (audit as { scoreDisplayMode: string }).scoreDisplayMode,
+            details: (audit as { details: unknown }).details
           })),
           timestamp: new Date().toISOString(),
           reportPath
@@ -113,11 +113,11 @@ test.describe('Lighthouse CI Accessibility Tests', () => {
         // Log failed audits for debugging
         if (failedAudits.length > 0) {
           console.log(`\n❌ Failed Accessibility Audits for ${route.name}:`);
-          failedAudits.forEach((audit: any) => {
-            console.log(`  - ${audit.title} (Score: ${audit.score})`);
-            console.log(`    ${audit.description}`);
-            if (audit.details && audit.details.items) {
-              console.log(`    Issues found: ${audit.details.items.length}`);
+          failedAudits.forEach((audit: unknown) => {
+            console.log(`  - ${(audit as { title: string }).title} (Score: ${(audit as { score: number }).score})`);
+            console.log(`    ${(audit as { description: string }).description}`);
+            if ((audit as { details?: { items?: unknown[] } }).details && (audit as { details: { items: unknown[] } }).details.items) {
+              console.log(`    Issues found: ${(audit as { details: { items: unknown[] } }).details.items.length}`);
             }
           });
         } else {
@@ -126,7 +126,7 @@ test.describe('Lighthouse CI Accessibility Tests', () => {
         
         // Requirement: Accessibility score must be 100
         expect(accessibilityScore, 
-          `Accessibility score for ${route.name} was ${accessibilityScore}, expected 100. Failed audits: ${failedAudits.map((a: any) => a.title).join(', ')}`
+          `Accessibility score for ${route.name} was ${accessibilityScore}, expected 100. Failed audits: ${failedAudits.map((a: unknown) => (a as { title: string }).title).join(', ')}`
         ).toBe(100);
         
       } catch (error) {

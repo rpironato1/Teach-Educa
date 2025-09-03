@@ -241,7 +241,7 @@ test.describe('Enhanced Supabase localStorage Integration', () => {
         'teacheduca_user_achievements'
       ];
       
-      const exportData: Record<string, any> = {};
+      const exportData: Record<string, unknown> = {};
       tables.forEach(table => {
         const data = localStorage.getItem(table);
         if (data) {

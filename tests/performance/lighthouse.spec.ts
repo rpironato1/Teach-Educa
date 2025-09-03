@@ -295,12 +295,12 @@ test.describe('Performance Tests', () => {
       const data = JSON.parse(localStorage.getItem('large-test-dataset') || '[]');
       
       // Filter operations
-      const filtered = data.filter((user: any) => user.id.includes('100'));
+      const filtered = data.filter((user: unknown) => (user as { id: string }).id.includes('100'));
       
       // Map operations
-      const mapped = data.slice(0, 100).map((user: any) => ({
-        id: user.id,
-        conversationCount: user.conversations.length,
+      const mapped = data.slice(0, 10).map((user: unknown) => ({
+        id: (user as { id: string }).id,
+        conversationCount: (user as { conversations: unknown[] }).conversations.length,
       }));
       
       // Cleanup

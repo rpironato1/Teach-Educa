@@ -468,7 +468,7 @@ test.describe('🚀 PROTOCOLO MCP PLAYWRIGHT 200x - EXECUÇÃO SEQUENCIAL', () =
             });
           });
           
-          console.log(`[${iteration}] ✅ FASE 5: Performance medida - FCP: ${(webVitals as any).fcp}ms, LCP: ${(webVitals as any).lcp}ms`);
+          console.log(`[${iteration}] ✅ FASE 5: Performance medida - FCP: ${(webVitals as unknown).fcp}ms, LCP: ${(webVitals as unknown).lcp}ms`);
           
         } catch {
           const issue: TestIssue = {
