@@ -137,6 +137,7 @@ interface AnalyticsContextType extends AnalyticsState {
 // Context definition
 const AnalyticsContext = createContext<AnalyticsContextType | null>(null)
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function useAnalytics() {
   const context = useContext(AnalyticsContext)
   if (!context) {

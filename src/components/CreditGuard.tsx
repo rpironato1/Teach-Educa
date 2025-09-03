@@ -70,6 +70,7 @@ const CreditGuard: React.FC<CreditGuardProps> = ({
 /**
  * Hook to consume credits with automatic error handling
  */
+// eslint-disable-next-line react-refresh/only-export-components
 export const useCreditConsumption = () => {
   const { consumeCredits, checkCreditSufficiency } = useCredit()
   

@@ -5,6 +5,16 @@ import { aiService, AVAILABLE_ASSISTANTS } from '@/services/aiService'
 import AssistantSelector from '@/components/AssistantSelector'
 import AIChatInterface from '@/components/AIChatInterface'
 
+// Create typed mock for AI service
+interface MockAIService {
+  sendMessage: ReturnType<typeof vi.fn>
+  generateResponse: ReturnType<typeof vi.fn>
+  analyzeProgress: ReturnType<typeof vi.fn>
+  switchAssistant: ReturnType<typeof vi.fn>
+  getConversationHistory: ReturnType<typeof vi.fn>
+  clearConversation: ReturnType<typeof vi.fn>
+}
+
 // Mock AI service
 vi.mock('@/services/aiService', () => ({
   aiService: {
@@ -124,7 +134,7 @@ describe('AI Assistant Integration Tests', () => {
     ]
 
     beforeEach(() => {
-      ((aiService.getConversationHistory as any) as any).mockResolvedValue(mockConversation)
+      ;((aiService.getConversationHistory as MockAIService['getConversationHistory'])).mockResolvedValue(mockConversation)
     })
 
     it('should initialize with assistant greeting', async () => {
@@ -149,7 +159,7 @@ describe('AI Assistant Integration Tests', () => {
         }
       }
 
-      (aiService.sendMessage as any).mockResolvedValue(mockResponse)
+      ;(aiService.sendMessage as MockAIService['sendMessage']).mockResolvedValue(mockResponse)
 
       render(<AIChatInterface assistantId="math_tutor" />)
 
@@ -160,7 +170,7 @@ describe('AI Assistant Integration Tests', () => {
       await user.click(sendButton)
 
       // Check if message was sent
-      expect((aiService.sendMessage as any)).toHaveBeenCalledWith({
+      expect(aiService.sendMessage as MockAIService['sendMessage']).toHaveBeenCalledWith({
         content: 'Como resolver equações do primeiro grau?',
         assistantId: 'math_tutor'
       })
@@ -197,7 +207,7 @@ describe('AI Assistant Integration Tests', () => {
     })
 
     it('should handle AI service errors gracefully', async () => {
-      (aiService.sendMessage as any).mockRejectedValue(new Error('AI service unavailable'))
+      (aiService.sendMessage as MockAIService['sendMessage']).mockRejectedValue(new Error('AI service unavailable'))
 
       render(<AIChatInterface assistantId="math_tutor" />)
 
@@ -229,7 +239,7 @@ describe('AI Assistant Integration Tests', () => {
       await user.click(assistantSelector)
       await user.click(screen.getByText('Professor de Ciências'))
 
-      expect((aiService.switchAssistant as any)).toHaveBeenCalledWith('science_tutor')
+      expect(aiService.switchAssistant as MockAIService['switchAssistant']).toHaveBeenCalledWith('science_tutor')
       expect(mockAnalyticsContext.trackAssistantSwitch).toHaveBeenCalledWith({
         from: 'math_tutor',
         to: 'science_tutor'
@@ -243,7 +253,7 @@ describe('AI Assistant Integration Tests', () => {
 
     it('should show typing indicator during AI response', async () => {
       // Simulate delay in AI response
-      (aiService.sendMessage as any).mockImplementation(() => 
+      (aiService.sendMessage as MockAIService['sendMessage']).mockImplementation(() => 
         new Promise(resolve => setTimeout(() => resolve({
           id: '2',
           content: 'Resposta demorada...',
@@ -293,7 +303,7 @@ describe('AI Assistant Integration Tests', () => {
         }
       ]
 
-      (aiService.getConversationHistory as any).mockResolvedValue(extendedConversation)
+      ;(aiService.getConversationHistory as MockAIService['getConversationHistory']).mockResolvedValue(extendedConversation)
 
       render(<AIChatInterface assistantId="math_tutor" />)
 
@@ -315,13 +325,13 @@ describe('AI Assistant Integration Tests', () => {
         assistantId: 'math_tutor'
       }
 
-      (aiService.sendMessage as any).mockResolvedValue(mockFollowUpResponse)
+      ;(aiService.sendMessage as MockAIService['sendMessage']).mockResolvedValue(mockFollowUpResponse)
 
       const sendButton = screen.getByRole('button', { name: /enviar/i })
       await user.click(sendButton)
 
       // Should maintain context from previous messages
-      expect((aiService.sendMessage as any)).toHaveBeenCalledWith({
+      expect(aiService.sendMessage as MockAIService['sendMessage']).toHaveBeenCalledWith({
         content: 'E se fosse x + 3 = 15?',
         assistantId: 'math_tutor',
         context: extendedConversation
@@ -344,7 +354,7 @@ describe('AI Assistant Integration Tests', () => {
       const confirmButton = screen.getByRole('button', { name: /confirmar/i })
       await user.click(confirmButton)
 
-      expect((aiService.clearConversation as any)).toHaveBeenCalled()
+      expect(aiService.clearConversation as MockAIService['clearConversation']).toHaveBeenCalled()
 
       // Should show fresh greeting
       await waitFor(() => {

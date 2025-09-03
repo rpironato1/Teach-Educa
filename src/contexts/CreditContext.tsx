@@ -39,6 +39,7 @@ export interface PaymentData {
 }
 
 // Credit costs for different services
+// eslint-disable-next-line react-refresh/only-export-components
 export const CREDIT_COSTS = {
   AI_CHAT_MESSAGE: 2,
   CONTENT_GENERATION: 5,
@@ -50,6 +51,7 @@ export const CREDIT_COSTS = {
 } as const
 
 // Available subscription plans
+// eslint-disable-next-line react-refresh/only-export-components
 export const SUBSCRIPTION_PLANS: Record<string, SubscriptionPlan> = {
   inicial: {
     id: 'inicial',
@@ -125,6 +127,7 @@ interface CreditContextType {
 // Context definition
 const CreditContext = createContext<CreditContextType | undefined>(undefined)
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useCredit = (): CreditContextType => {
   const context = useContext(CreditContext)
   if (!context) {
@@ -134,8 +137,8 @@ export const useCredit = (): CreditContextType => {
 }
 
 // Alias for compatibility
-export // Context definition
-const useCreditContext = useCredit
+// eslint-disable-next-line react-refresh/only-export-components
+export const useCreditContext = useCredit
 
 interface CreditProviderProps {
   children: ReactNode

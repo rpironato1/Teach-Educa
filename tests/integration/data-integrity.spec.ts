@@ -156,7 +156,7 @@ test.describe('Data Integrity Tests', () => {
       const incompleteConversation = { user_id: 'user-123' }; // Missing id, title, timestamps
       
       // Check validation logic
-      const validateEntity = (entity: any, requiredFields: string[]) => {
+      const validateEntity = (entity: Record<string, unknown>, requiredFields: string[]) => {
         return requiredFields.every(field => field in entity);
       };
 
