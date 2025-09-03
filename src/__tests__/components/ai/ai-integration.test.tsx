@@ -1,8 +1,9 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { aiService } from '@/services/aiService'
+import { aiService, AVAILABLE_ASSISTANTS } from '@/services/aiService'
 import AssistantSelector from '@/components/AssistantSelector'
+import AIChatInterface from '@/components/AIChatInterface'
 
 // Mock AI service
 vi.mock('@/services/aiService', () => ({
@@ -74,9 +75,10 @@ describe('AI Assistant Integration Tests', () => {
 
   describe('AssistantSelector Integration', () => {
     it('should display available assistants correctly', async () => {
-      const onSelect = vi.fn()
+      const onAssistantSelect = vi.fn()
+      const selectedAssistant = AVAILABLE_ASSISTANTS[0] // Use the first assistant as selected
       
-      render(<AssistantSelector onSelect={onSelect} selectedId="math_tutor" />)
+      render(<AssistantSelector selectedAssistant={selectedAssistant} onAssistantSelect={onAssistantSelect} />)
 
       // Check if all assistants are displayed
       expect(screen.getByText('Professor de Matemática')).toBeInTheDocument()
@@ -88,20 +90,22 @@ describe('AI Assistant Integration Tests', () => {
     })
 
     it('should handle assistant selection', async () => {
-      const onSelect = vi.fn()
+      const onAssistantSelect = vi.fn()
+      const selectedAssistant = AVAILABLE_ASSISTANTS[0]
       
-      render(<AssistantSelector onSelect={onSelect} selectedId="math_tutor" />)
+      render(<AssistantSelector selectedAssistant={selectedAssistant} onAssistantSelect={onAssistantSelect} />)
 
       const scienceAssistant = screen.getByText('Professor de Ciências')
       await user.click(scienceAssistant)
 
-      expect(onSelect).toHaveBeenCalledWith('science_tutor')
+      expect(onAssistantSelect).toHaveBeenCalledWith(expect.objectContaining({ id: 'science_tutor' }))
     })
 
     it('should show selected assistant visually', () => {
-      const onSelect = vi.fn()
+      const onAssistantSelect = vi.fn()
+      const selectedAssistant = AVAILABLE_ASSISTANTS[0] // Math tutor
       
-      render(<AssistantSelector onSelect={onSelect} selectedId="math_tutor" />)
+      render(<AssistantSelector selectedAssistant={selectedAssistant} onAssistantSelect={onAssistantSelect} />)
 
       const mathAssistant = screen.getByText('Professor de Matemática').closest('div')
       expect(mathAssistant).toHaveClass('border-blue-500') // Selected state styling
@@ -120,7 +124,7 @@ describe('AI Assistant Integration Tests', () => {
     ]
 
     beforeEach(() => {
-      aiService.getConversationHistory.mockResolvedValue(mockConversation)
+      ((aiService.getConversationHistory as any) as any).mockResolvedValue(mockConversation)
     })
 
     it('should initialize with assistant greeting', async () => {
@@ -145,7 +149,7 @@ describe('AI Assistant Integration Tests', () => {
         }
       }
 
-      aiService.sendMessage.mockResolvedValue(mockResponse)
+      (aiService.sendMessage as any).mockResolvedValue(mockResponse)
 
       render(<AIChatInterface assistantId="math_tutor" />)
 
@@ -156,7 +160,7 @@ describe('AI Assistant Integration Tests', () => {
       await user.click(sendButton)
 
       // Check if message was sent
-      expect(aiService.sendMessage).toHaveBeenCalledWith({
+      expect((aiService.sendMessage as any)).toHaveBeenCalledWith({
         content: 'Como resolver equações do primeiro grau?',
         assistantId: 'math_tutor'
       })
@@ -193,7 +197,7 @@ describe('AI Assistant Integration Tests', () => {
     })
 
     it('should handle AI service errors gracefully', async () => {
-      aiService.sendMessage.mockRejectedValue(new Error('AI service unavailable'))
+      (aiService.sendMessage as any).mockRejectedValue(new Error('AI service unavailable'))
 
       render(<AIChatInterface assistantId="math_tutor" />)
 
@@ -225,7 +229,7 @@ describe('AI Assistant Integration Tests', () => {
       await user.click(assistantSelector)
       await user.click(screen.getByText('Professor de Ciências'))
 
-      expect(aiService.switchAssistant).toHaveBeenCalledWith('science_tutor')
+      expect((aiService.switchAssistant as any)).toHaveBeenCalledWith('science_tutor')
       expect(mockAnalyticsContext.trackAssistantSwitch).toHaveBeenCalledWith({
         from: 'math_tutor',
         to: 'science_tutor'
@@ -239,7 +243,7 @@ describe('AI Assistant Integration Tests', () => {
 
     it('should show typing indicator during AI response', async () => {
       // Simulate delay in AI response
-      aiService.sendMessage.mockImplementation(() => 
+      (aiService.sendMessage as any).mockImplementation(() => 
         new Promise(resolve => setTimeout(() => resolve({
           id: '2',
           content: 'Resposta demorada...',
@@ -289,7 +293,7 @@ describe('AI Assistant Integration Tests', () => {
         }
       ]
 
-      aiService.getConversationHistory.mockResolvedValue(extendedConversation)
+      (aiService.getConversationHistory as any).mockResolvedValue(extendedConversation)
 
       render(<AIChatInterface assistantId="math_tutor" />)
 
@@ -311,13 +315,13 @@ describe('AI Assistant Integration Tests', () => {
         assistantId: 'math_tutor'
       }
 
-      aiService.sendMessage.mockResolvedValue(mockFollowUpResponse)
+      (aiService.sendMessage as any).mockResolvedValue(mockFollowUpResponse)
 
       const sendButton = screen.getByRole('button', { name: /enviar/i })
       await user.click(sendButton)
 
       // Should maintain context from previous messages
-      expect(aiService.sendMessage).toHaveBeenCalledWith({
+      expect((aiService.sendMessage as any)).toHaveBeenCalledWith({
         content: 'E se fosse x + 3 = 15?',
         assistantId: 'math_tutor',
         context: extendedConversation
@@ -340,7 +344,7 @@ describe('AI Assistant Integration Tests', () => {
       const confirmButton = screen.getByRole('button', { name: /confirmar/i })
       await user.click(confirmButton)
 
-      expect(aiService.clearConversation).toHaveBeenCalled()
+      expect((aiService.clearConversation as any)).toHaveBeenCalled()
 
       // Should show fresh greeting
       await waitFor(() => {
