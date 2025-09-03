@@ -129,7 +129,7 @@
         "@types/react": "^19.0.10",
         "@types/react-dom": "^19.0.4",
         "@vitejs/plugin-react": "^4.3.4",
-        "@vitejs/plugin-react-swc": "^3.10.1",
+        "@vitejs/plugin-react-swc": "^4.0.1",
         "@vitest/coverage-v8": "^3.2.4",
         "axe-core": "^4.8.3",
         "axe-playwright": "^2.1.0",
